@@ -34,6 +34,13 @@
         <item name="android:layout_marginTop">@dimen/loading_text_margin_top</item>
     </style>
 
+    <style name="ProgressBarContainer" parent="ViewBase">
+        <item name="android:padding">@dimen/container_padding</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_marginBottom">@dimen/container_margin_bottom</item>
+    </style>
+
     <!-- Logo Image View -->
     <style name="ImageViewBase" parent="ViewBase">
         <item name="android:layout_width">wrap_content</item>

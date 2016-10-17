@@ -8,4 +8,6 @@
     <dimen name="loading_text_margin_top">15dp</dimen>
     <dimen name="logo_max_height">220dp</dimen>
     <dimen name="logo_max_width">120dp</dimen>
+    <dimen name="container_padding">15dp</dimen>
+    <dimen name="container_margin_bottom">20dp</dimen>
 </resources>
