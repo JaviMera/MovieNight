@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name"></string>
     <string name="movie_night_title">Movie Night</string>
+    <string name="loading_text">Loading...</string>
 </resources>

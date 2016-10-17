@@ -7,4 +7,42 @@
         <item name="colorAccent">@color/movie_title_text_color</item>
     </style>
 
+    <!-- Loading Activity Views -->
+    <style name="ViewBase">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="TextViewBase" parent="ViewBase">
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="MovieTitleTextView" parent="TextViewBase">
+        <item name="android:text">@string/movie_night_title</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/movie_title_text_size</item>
+        <item name="android:padding">@dimen/movie_title_padding</item>
+        <item name="android:textColor">@color/movie_title_text_color</item>
+        <item name="android:layout_centerInParent">true</item>
+    </style>
+
+    <style name="LoadingTextView" parent="TextViewBase">
+        <item name="android:text">@string/loading_text</item>
+        <item name="android:textSize">@dimen/loading_text_size</item>
+        <item name="android:textColor">@color/loading_text_color</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:layout_marginTop">@dimen/loading_text_margin_top</item>
+    </style>
+
+    <!-- Logo Image View -->
+    <style name="ImageViewBase" parent="ViewBase">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:src">@drawable/play_store</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:maxHeight">@dimen/logo_max_height</item>
+        <item name="android:maxWidth">@dimen/logo_max_width</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:layout_alignParentTop">true</item>
+    </style>
+
 </resources>

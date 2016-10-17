@@ -7,28 +7,12 @@
     android:layout_height="match_parent"
     android:background="@color/activity_background_color">
 
-    <ImageView
-        android:layout_above="@+id/movieTitleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/play_store"
-        android:layout_centerInParent="true"
-        android:layout_alignParentTop="true"
-        android:adjustViewBounds="true"
-        android:maxHeight="220dp"
-        android:maxWidth="120dp"/>
+    <include
+        layout="@layout/logo_layout" />
 
     <TextView
         android:id="@+id/movieTitleTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:text="@string/movie_night_title"
-        android:textColor="@color/movie_title_text_color"
-        android:textStyle="bold"
-        android:textSize="40sp"
-        android:padding="20dp"/>
+        style="@style/MovieTitleTextView"/>
 
 
     <LinearLayout
@@ -49,14 +33,7 @@
 
         <TextView
             android:id="@+id/loadingTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Loading..."
-            android:textColor="@color/loading_text_color"
-            android:textStyle="italic"
-            android:textSize="15sp"
-            android:gravity="center"
-            android:layout_marginTop="15dp"/>
+            style="@style/LoadingTextView"/>
 
     </LinearLayout>
 
