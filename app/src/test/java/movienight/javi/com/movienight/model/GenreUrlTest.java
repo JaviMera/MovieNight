@@ -4,8 +4,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import movienight.javi.com.movienight.model.urls.AbstractUrl;
-import movienight.javi.com.movienight.model.urls.GenreUrl;
+import movienight.javi.com.movienight.urls.AbstractUrl;
+import movienight.javi.com.movienight.urls.GenreUrl;
 
 /**
  * Created by Javi on 10/16/2016.

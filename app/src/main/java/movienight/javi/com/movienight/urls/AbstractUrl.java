@@ -1,4 +1,4 @@
-package movienight.javi.com.movienight.model.urls;
+package movienight.javi.com.movienight.urls;
 
 /**
  * Created by Javi on 10/16/2016.

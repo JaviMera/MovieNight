@@ -1,17 +1,21 @@
-package movienight.javi.com.movienight;
+package movienight.javi.com.movienight.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
+import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.model.Genre;
-import movienight.javi.com.movienight.model.parsers.GenreParser;
-import movienight.javi.com.movienight.model.urls.GenreUrl;
+import movienight.javi.com.movienight.model.jsonvalues.JSONGenre;
+import movienight.javi.com.movienight.urls.GenreUrl;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -55,8 +59,7 @@ public class MainActivity extends AppCompatActivity {
                             try
                             {
                                 String json = response.body().string();
-                                GenreParser parser = new GenreParser();
-                                List<Genre> genres = parser.parse(json);
+                                List<Genre> genres = getGenres(json);
 
                                 Toast.makeText(getApplicationContext(), Integer.toString(genres.size()), Toast.LENGTH_SHORT).show();
                             }
@@ -69,5 +72,22 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private List<Genre> getGenres(String jsonString) throws JSONException{
+
+        JSONObject genresObject = new JSONObject(jsonString);
+        JSONArray dataArray = genresObject.getJSONArray(JSONGenre.OBJECT_KEY);
+        Genre[] genres = new Genre[dataArray.length()];
+
+        for(int i = 0 ; i < dataArray.length() ; i++) {
+
+            Integer genreId = dataArray.getJSONObject(i).getInt(JSONGenre.ID_KEY);
+            String genreDesc = dataArray.getJSONObject(i).getString(JSONGenre.NAME_KEY);
+
+            genres[i] = new Genre(genreId, genreDesc);
+        }
+
+        return Arrays.asList(genres);
     }
 }
