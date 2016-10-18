@@ -1,5 +1,7 @@
 package movienight.javi.com.movienight.ui.SearchActivity;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
@@ -20,7 +22,9 @@ import movienight.javi.com.movienight.adapters.GenreSpinnerAdapter;
 import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity implements SearchActivityView{
+
+    private SearchActivityPresenter mPresenter;
 
     @BindView(R.id.ratingBarView) RatingBar mRatingBar;
     @BindView(R.id.genreSpinnerView) Spinner mGenreSpinner;
@@ -29,16 +33,25 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-
         ButterKnife.bind(this);
 
-        ((LayerDrawable)mRatingBar.getProgressDrawable())
-            .getDrawable(2)
-            .setColorFilter(ContextCompat.getColor(this, R.color.movie_dark_purple), PorterDuff.Mode.SRC_ATOP);
+        mPresenter = new SearchActivityPresenter(this);
 
-        Intent intent = getIntent();
-        Parcelable[] parcelables = intent.getParcelableArrayExtra(ActivityExtras.GENRE_ARRAY_KEY);
-        Genre[] genres = Arrays.copyOf(parcelables, parcelables.length, Genre[].class);
+        Genre[] genres = getGenresFromIntent(this, ActivityExtras.GENRE_ARRAY_KEY);
+        mPresenter.setGenreSpinnerAdapter(this, genres);
+    }
+
+    private Genre[] getGenresFromIntent(Activity act, String genresKey) {
+
+        Intent intent = act.getIntent();
+        Parcelable[] parcelables = intent.getParcelableArrayExtra(genresKey);
+
+        return Arrays.copyOf(parcelables, parcelables.length, Genre[].class);
+    }
+
+    @Override
+    public void setGenreSpinnerAdapter(Context ctx, Genre[] genres) {
+
         GenreSpinnerAdapter adapter = new GenreSpinnerAdapter(this, genres);
         mGenreSpinner.setAdapter(adapter);
     }
