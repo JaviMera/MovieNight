@@ -1,8 +1,7 @@
 package movienight.javi.com.movienight.ui;
 
-import android.graphics.PorterDuff;
+import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ProgressBar;
@@ -28,7 +27,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class LoadingActivity extends AppCompatActivity {
+public class LoadingActivity extends AppCompatActivity implements AsyncTaskListener<Genre> {
 
     @BindView(R.id.loadingActivityProgressBar) ProgressBar mProgressBar;
 
@@ -40,19 +39,26 @@ public class LoadingActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         GenreUrl genresUrl = new GenreUrl();
-
-        new GenreAsyncTask(mProgressBar, mProgressBar.getMax())
+        new GenreAsyncTask(mProgressBar, mProgressBar.getMax(), this)
             .execute(genresUrl);
+    }
+
+    @Override
+    public void done(List<Genre> genres) {
+        Intent intent = new Intent(LoadingActivity.this, SearchActivity.class);
+        startActivity(intent);
     }
 
     private class GenreAsyncTask extends AsyncTask<AbstractUrl, Integer, List<Genre>> {
 
         private ProgressBar mBar;
         private int mProgressBarMax;
+        private AsyncTaskListener mListener;
 
-        public GenreAsyncTask(ProgressBar bar, int max) {
+        public GenreAsyncTask(ProgressBar bar, int max, AsyncTaskListener delegate) {
             mBar = bar;
             mProgressBarMax = max;
+            mListener = delegate;
         }
 
         @Override
@@ -116,6 +122,11 @@ public class LoadingActivity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(Integer... values) {
             mBar.setProgress(values[0]);
+        }
+
+        @Override
+        protected void onPostExecute(List<Genre> genres) {
+            mListener.done(genres);
         }
     }
 }
