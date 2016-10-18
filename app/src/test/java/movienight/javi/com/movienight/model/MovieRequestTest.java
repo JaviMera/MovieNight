@@ -1,0 +1,77 @@
+package movienight.javi.com.movienight.model;
+
+import junit.framework.Assert;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+/**
+ * Created by Javi on 10/18/2016.
+ */
+
+public class MovieRequestTest {
+
+    private MovieRequest mMovieRequest;
+
+    @Before
+    public void SetUp () throws Exception {
+
+        mMovieRequest = new MovieRequest();
+    }
+
+    @Test
+    public void setMovieRequestGenre() throws Exception {
+
+        // Arrange
+        Genre expectedGenre = new Genre(1235, "Lol");
+
+        // Act
+        mMovieRequest.setGenre(expectedGenre);
+
+        // Assert
+        Assert.assertEquals(expectedGenre, mMovieRequest.getGenreSelected());
+    }
+
+    @Test
+    public void setMovieRequestRating() throws Exception {
+
+        // Arrange
+        double expectedRating = 6.5;
+
+        // Act
+        mMovieRequest.setRating(expectedRating);
+
+        // Assert
+        Assert.assertEquals(expectedRating, mMovieRequest.getRatingSelected());
+    }
+
+    @Test
+    public void setMovieRequestVoteCount() throws Exception {
+
+        // Arrange
+        int expectedVoteCount = 3245;
+
+        // Act
+        mMovieRequest.setVoteCount(expectedVoteCount);
+
+        // Assert
+        Assert.assertEquals(expectedVoteCount, mMovieRequest.getVoteCountSelected());
+    }
+
+    @Test
+    public void setMovieRequestReleaseDate() throws Exception {
+
+        // Arrange
+        String expectedDate = "10/18/2016";
+
+        // Act
+        mMovieRequest.setReleaseDate(expectedDate);
+
+        // Assert
+        Assert.assertEquals(expectedDate, mMovieRequest.getDateReleaseSelected());
+    }
+}
