@@ -44,12 +44,13 @@ public class LoadingActivity extends AppCompatActivity implements AsyncTaskListe
     }
 
     @Override
-    public void done(List<Genre> genres) {
+    public void done(Genre[] genres) {
         Intent intent = new Intent(LoadingActivity.this, SearchActivity.class);
+        intent.putExtra(ActivityExtras.GENRE_ARRAY_KEY, genres);
         startActivity(intent);
     }
 
-    private class GenreAsyncTask extends AsyncTask<AbstractUrl, Integer, List<Genre>> {
+    private class GenreAsyncTask extends AsyncTask<AbstractUrl, Integer, Genre[]> {
 
         private ProgressBar mBar;
         private int mProgressBarMax;
@@ -62,9 +63,7 @@ public class LoadingActivity extends AppCompatActivity implements AsyncTaskListe
         }
 
         @Override
-        protected List<Genre> doInBackground(AbstractUrl... abstractUrls) {
-
-            List<Genre> genresResult = new ArrayList<>();
+        protected Genre[] doInBackground(AbstractUrl... abstractUrls) {
 
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
@@ -104,7 +103,7 @@ public class LoadingActivity extends AppCompatActivity implements AsyncTaskListe
                     Thread.sleep(50);
                 }
 
-                genresResult = Arrays.asList(genres);
+                return genres;
             }
             catch (IOException e)
             {
@@ -116,7 +115,7 @@ public class LoadingActivity extends AppCompatActivity implements AsyncTaskListe
             {
             }
 
-            return genresResult;
+            return null;
         }
 
         @Override
@@ -125,7 +124,7 @@ public class LoadingActivity extends AppCompatActivity implements AsyncTaskListe
         }
 
         @Override
-        protected void onPostExecute(List<Genre> genres) {
+        protected void onPostExecute(Genre[] genres) {
             mListener.done(genres);
         }
     }
