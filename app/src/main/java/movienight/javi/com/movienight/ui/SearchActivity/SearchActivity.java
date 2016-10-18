@@ -1,4 +1,4 @@
-package movienight.javi.com.movienight.ui;
+package movienight.javi.com.movienight.ui.SearchActivity;
 
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.adapters.GenreSpinnerAdapter;
 import movienight.javi.com.movienight.model.Genre;
+import movienight.javi.com.movienight.ui.ActivityExtras;
 
 public class SearchActivity extends AppCompatActivity {
 

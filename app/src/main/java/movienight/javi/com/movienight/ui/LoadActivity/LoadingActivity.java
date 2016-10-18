@@ -1,4 +1,4 @@
-package movienight.javi.com.movienight.ui;
+package movienight.javi.com.movienight.ui.LoadActivity;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -11,15 +11,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.model.jsonvalues.JSONGenre;
+import movienight.javi.com.movienight.ui.ActivityExtras;
+import movienight.javi.com.movienight.ui.AsyncTaskListener;
+import movienight.javi.com.movienight.ui.SearchActivity.SearchActivity;
 import movienight.javi.com.movienight.urls.AbstractUrl;
 import movienight.javi.com.movienight.urls.GenreUrl;
 import okhttp3.Call;
