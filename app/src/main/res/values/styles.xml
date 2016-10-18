@@ -34,7 +34,7 @@
         <item name="android:layout_marginTop">@dimen/loading_text_margin_top</item>
     </style>
 
-    <style name="ProgressBarContainer" parent="ViewBase">
+    <style name="containerLayout" parent="ViewBase">
         <item name="android:padding">@dimen/container_padding</item>
         <item name="android:orientation">vertical</item>
         <item name="android:layout_alignParentBottom">true</item>
@@ -46,6 +46,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:src">@drawable/play_store</item>
         <item name="android:layout_centerInParent">true</item>
+        <item name="android:scaleType">fitCenter</item>
         <item name="android:maxHeight">@dimen/logo_max_height</item>
         <item name="android:maxWidth">@dimen/logo_max_width</item>
         <item name="android:adjustViewBounds">true</item>

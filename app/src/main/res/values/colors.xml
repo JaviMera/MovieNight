@@ -4,4 +4,7 @@
     <color name="loading_text_color">#4B3F7A</color>
     <color name="movie_title_text_color">#7D66BA</color>
     <color name="activity_background_color">#F6F3FF</color>
+    <color name="button_not_pressed_background_color">#A384E3</color>
+    <color name="white">@android:color/white</color>
+    <color name="button_pressed_background_color">#C5B0F2</color>
 </resources>
