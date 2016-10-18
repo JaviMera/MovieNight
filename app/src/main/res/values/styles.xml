@@ -68,19 +68,24 @@
 
     <style name="SearchActRowColTwo">
         <item name="android:layout_column">1</item>
+        <item name="android:textStyle">bold|italic</item>
         <item name="android:layout_marginLeft">@dimen/col_two_view_margin_left</item>
         <item name="android:layout_marginRight">@dimen/col_two_view_margin_right</item>
     </style>
 
+    <style name="EditTextViewBase" parent="SearchActRowColTwo">
+        <item name="android:gravity">center</item>
+        <item name="android:textColorHint">@color/movie_light_purple</item>
+        <item name="android:textSize">@dimen/col_two_view_text_size</item>
+        <item name="android:textColor">@color/movie_dark_purple</item>
+    </style>
     <style name="ReleaseDateTextView" parent="SearchActRowColOne">
         <item name="android:text">@string/release_date</item>
     </style>
 
-    <style name="ReleaseDateButtonView" parent="SearchActRowColTwo">
-        <item name="android:text">@string/empty_date_picker_text</item>
-        <item name="android:textStyle">italic</item>
-        <item name="android:textColor">@color/activity_background_color</item>
-        <item name="android:background">@drawable/date_picker_button_background</item>
+    <style name="ReleaseDateEditTextView" parent="EditTextViewBase">
+        <item name="android:inputType">date</item>
+        <item name="android:hint">@string/empty_date_picker_text</item>
     </style>
 
     <style name="RatingTextView" parent="SearchActRowColOne">
@@ -98,14 +103,9 @@
         <item name="android:text">@string/vote_count_text</item>
     </style>
 
-    <style name="VoteCountEditTextView" parent="SearchActRowColTwo">
+    <style name="VoteCountEditTextView" parent="EditTextViewBase">
         <item name="android:inputType">number</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/movie_normal_purple</item>
-        <item name="android:textSize">@dimen/vote_count_edit_text_size</item>
-        <item name="android:textStyle">italic</item>
         <item name="android:hint">@string/vote_count_hint_text</item>
-        <item name="android:textColorHint">@color/movie_light_purple</item>
     </style>
 
     <style name="GenreTextView" parent="SearchActRowColOne">
@@ -114,5 +114,17 @@
 
     <style name="GenreSpinnerView" parent="SearchActRowColTwo">
         <item name="android:background">@drawable/spinner_background</item>
+    </style>
+
+    <style name="FindMoviesButtonView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:background">@drawable/movie_button_background</item>
+        <item name="android:text">@string/find_movies_button_text</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/movie_dark_purple</item>
+        <item name="android:layout_margin">@dimen/movie_button_margin</item>
+        <item name="android:textSize">@dimen/movie_button_text_size</item>
     </style>
 </resources>

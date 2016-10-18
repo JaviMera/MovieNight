@@ -10,10 +10,12 @@
 <dimen name="logo_max_width">80dp</dimen>
 <dimen name="container_padding">15dp</dimen>
 <dimen name="container_margin_bottom">20dp</dimen>
-<dimen name="search_criteria_text_size">15sp</dimen>
+<dimen name="search_criteria_text_size">13sp</dimen>
 <dimen name="search_criteria_text_pad_right">10dp</dimen>
 <dimen name="search_act_row_margin">15dp</dimen>
-<dimen name="vote_count_edit_text_size">12sp</dimen>
+<dimen name="col_two_view_text_size">16sp</dimen>
 <dimen name="col_two_view_margin_left">10dp</dimen>
 <dimen name="col_two_view_margin_right">10dp</dimen>
+    <dimen name="movie_button_margin">15dp</dimen>
+    <dimen name="movie_button_text_size">16dp</dimen>
 </resources>

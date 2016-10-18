@@ -42,22 +42,12 @@
         android:layout_marginRight="15dp" />
 
     <TableLayout
+        android:id="@+id/searchCriteriaLayout"
         android:layout_below="@+id/lineSeparatorView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:padding="10dp">
-
-        <TableRow>
-
-            <TextView
-                style="@style/ReleaseDateTextView"/>
-
-            <Button
-                android:id="@+id/datePickerButtonView"
-                style="@style/ReleaseDateButtonView"/>
-
-        </TableRow>
 
         <TableRow
             android:layout_marginTop="@dimen/search_act_row_margin">
@@ -93,6 +83,20 @@
                 style="@style/VoteCountEditTextView"/>
         </TableRow>
 
+        <TableRow>
+
+            <TextView
+                style="@style/ReleaseDateTextView"/>
+
+            <EditText
+                android:id="@+id/datePickerEditTextView"
+                style="@style/ReleaseDateEditTextView"/>
+
+        </TableRow>
+
     </TableLayout>
 
+    <Button
+        android:id="@+id/findMoviesButtonView"
+        style="@style/FindMoviesButtonView"/>
 </RelativeLayout>

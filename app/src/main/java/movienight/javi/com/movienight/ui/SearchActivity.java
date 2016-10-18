@@ -22,6 +22,8 @@ public class SearchActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        ((LayerDrawable)mRatingBar.getProgressDrawable()).getDrawable(2).setColorFilter(ContextCompat.getColor(this, R.color.movie_dark_purple), PorterDuff.Mode.SRC_ATOP);
+        ((LayerDrawable)mRatingBar.getProgressDrawable())
+            .getDrawable(2)
+            .setColorFilter(ContextCompat.getColor(this, R.color.movie_dark_purple), PorterDuff.Mode.SRC_ATOP);
     }
 }
