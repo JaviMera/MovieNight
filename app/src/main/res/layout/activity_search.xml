@@ -24,10 +24,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/logoLayout"
-        android:text="Search for movies!"
+        android:text="@string/search_movies_text"
         android:textStyle="italic|bold"
         android:textSize="20sp"
-        android:textColor="@color/movie_title_text_color"
+        android:textColor="@color/movie_dark_purple"
         android:gravity="center"
         android:layout_marginTop="25dp"/>
 
@@ -36,7 +36,7 @@
         android:layout_below="@+id/searchTitleTextView"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@color/movie_title_text_color"
+        android:background="@color/movie_dark_purple"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp" />
@@ -49,103 +49,50 @@
         android:padding="10dp">
 
         <TableRow>
+
             <TextView
-                android:layout_column="0"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:text="Release date:"
-                android:gravity="right"
-                android:paddingRight="10dp"
-                android:textSize="15sp"
-                android:textColor="@color/movie_title_text_color"
-                android:textStyle="bold"/>
+                style="@style/ReleaseDateTextView"/>
 
             <Button
                 android:id="@+id/datePickerButtonView"
-                android:layout_column="1"
-                android:text="mm/dd/yyy"
-                android:textStyle="italic"
-                android:textColor="@color/white"
-                android:background="@drawable/date_picker_button_background"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"/>
+                style="@style/ReleaseDateButtonView"/>
 
         </TableRow>
 
         <TableRow
-            android:layout_marginTop="15dp"
-            android:layout_gravity="center"
-            android:gravity="center">
+            android:layout_marginTop="@dimen/search_act_row_margin">
 
             <TextView
-                android:layout_column="0"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:paddingRight="10dp"
-                android:text="Rating:"
-                android:textSize="15sp"
-                android:gravity="right"
-                android:textColor="@color/movie_title_text_color"
-                android:textStyle="bold"/>
-
-            <RatingBar
-                android:id="@+id/ratingBarView"
-                android:layout_column="1"
-                android:scaleX="0.9"
-                android:numStars="5"
-                android:rating="0"/>
-        </TableRow>
-
-        <TableRow
-            android:layout_marginTop="15dp"
-            android:layout_gravity="center"
-            android:gravity="center">
-
-            <TextView
-                android:layout_column="0"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:paddingRight="10dp"
-                android:text="People's votes:"
-                android:textSize="15sp"
-                android:gravity="right"
-                android:textColor="@color/movie_title_text_color"
-                android:textStyle="bold"/>
-
-            <EditText
-                android:id="@+id/voteCountEditTextView"
-                android:layout_column="1"
-                android:inputType="number"
-                android:hint="Example: 12345"
-                android:textColorHint="@color/button_pressed_background_color"
-                android:textSize="15sp"
-                android:textColor="@color/movie_title_text_color"
-                android:gravity="left|center"
-                android:textStyle="italic"
-                android:layout_marginLeft="10dp"/>
-        </TableRow>
-
-        <TableRow
-            android:layout_marginTop="15dp"
-            android:layout_gravity="center"
-            android:gravity="center">
-
-            <TextView
-                android:layout_column="0"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:paddingRight="10dp"
-                android:text="Genre:"
-                android:textSize="15sp"
-                android:gravity="right"
-                android:textColor="@color/movie_title_text_color"
-                android:textStyle="bold"/>
+                style="@style/GenreTextView"/>
 
             <Spinner
                 android:id="@+id/genreSpinnerView"
-                android:background="@drawable/spinner_background"
-                android:layout_marginLeft="10dp"/>
+                style="@style/GenreSpinnerView"/>
         </TableRow>
+
+        <TableRow
+            android:layout_marginTop="@dimen/search_act_row_margin" >
+
+            <TextView
+                style="@style/RatingTextView"/>
+
+            <RatingBar
+                android:id="@+id/ratingBarView"
+                style="@style/RatingBarView"/>
+        </TableRow>
+
+
+        <TableRow
+            android:layout_marginTop="@dimen/search_act_row_margin">
+
+            <TextView
+                style="@style/VoteCountTextView" />
+
+            <EditText
+                android:id="@+id/voteCountEditTextView"
+                style="@style/VoteCountEditTextView"/>
+        </TableRow>
+
     </TableLayout>
 
 </RelativeLayout>

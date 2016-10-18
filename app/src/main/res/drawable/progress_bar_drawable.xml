@@ -16,11 +16,11 @@
             <shape>
                 <corners android:radius="30dp" />
 
-                <solid android:color="@color/movie_title_text_color" />
+                <solid android:color="@color/movie_dark_purple" />
             </shape>
         </clip>
 
-        <color android:color="@color/movie_title_text_color" />
+        <color android:color="@color/movie_dark_purple" />
     </item>
 
 </layer-list>
