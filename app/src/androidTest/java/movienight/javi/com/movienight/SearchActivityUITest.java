@@ -82,7 +82,7 @@ public class SearchActivityUITest {
 
         // Arrange
         // let the default date be the current date when the date picker is opened
-        String expectedDate = "10/19/2016";
+        String expectedDate = "10-19-2016";
 
         // Act
         activityRule.launchActivity(mIntent);
