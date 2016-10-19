@@ -53,63 +53,115 @@
             android:layout_marginTop="@dimen/search_act_row_margin">
 
             <TextView
-                style="@style/GenreTextView"/>
+                android:layout_column="0"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/genre_text"
+                android:textColor="@color/movie_dark_purple"
+                android:layout_gravity="center"
+                android:gravity="right|center"/>
 
             <Spinner
                 android:id="@+id/genreSpinnerView"
-                style="@style/GenreSpinnerView"/>
+                android:layout_column="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:background="@drawable/spinner_background"
+                android:layout_marginLeft="10dp">
+
+            </Spinner>
+
         </TableRow>
 
         <TableRow
             android:layout_marginTop="@dimen/search_act_row_margin">
 
             <TextView
-                style="@style/ReleaseDateTextView"/>
-
-            <EditText
-                android:id="@+id/datePickerEditTextView"
+                android:layout_column="0"
                 android:layout_width="0dp"
-                android:layout_weight="2"
-                style="@style/ReleaseDateEditTextView"/>
-
-            <ImageView
-                android:id="@+id/datepickerImageView"
-                android:layout_width="0dp"
-                android:layout_weight="0.4"
-                android:layout_column="2"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/release_date"
+                android:textColor="@color/movie_dark_purple"
                 android:layout_gravity="center"
-                android:layout_marginRight="5dp"
-                android:src="@mipmap/ic_date"/>
+                android:gravity="right|center"/>
 
+            <Button
+                android:id="@+id/datePickerButtonView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:layout_marginLeft="10dp"
+                android:hint="@string/empty_date_picker_text"
+                android:textColorHint="@color/movie_light_purple"
+                android:textColor="@color/movie_dark_purple"
+                android:textSize="13sp"
+                android:textStyle="italic"
+                android:gravity="left|center"
+                android:paddingLeft="10dp"
+                android:scaleType="fitEnd"
+                android:background="@drawable/release_date_button_drawable"/>
         </TableRow>
 
         <TableRow
             android:layout_marginTop="@dimen/search_act_row_margin">
 
             <TextView
-                style="@style/ReleaseDateTextView"/>
+                android:layout_column="0"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/vote_count_text"
+                android:textColor="@color/movie_dark_purple"
+                android:layout_gravity="center"
+                android:gravity="right|center"/>
 
             <EditText
-                android:id="@+id/voteCountEditTextView"
+                android:layout_column="1"
                 android:layout_width="0dp"
-                android:layout_weight="2"
-                style="@style/VoteCountEditTextView"/>
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:hint="@string/vote_count_hint_text"
+                android:textColorHint="@color/movie_light_purple"
+                android:textSize="15sp"
+                android:textStyle="italic"
+                android:inputType="number"
+                android:layout_marginLeft="10dp"
+                android:paddingLeft="10dp">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="0.4"
-                android:layout_column="2"/>
+            </EditText>
         </TableRow>
 
         <TableRow
-            android:layout_marginTop="@dimen/search_act_row_margin" >
+            android:layout_marginTop="@dimen/search_act_row_margin">
 
             <TextView
-                style="@style/RatingTextView"/>
+                android:layout_column="0"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/rating_text"
+                android:textColor="@color/movie_dark_purple"
+                android:layout_gravity="center"
+                android:gravity="right|center"/>
 
-            <RatingBar
-                android:id="@+id/ratingBarView"
-                style="@style/RatingBarView"/>
+            <SeekBar
+                android:id="@+id/seekBarView"
+                android:layout_column="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.8"/>
+
+            <TextView
+                android:layout_column="2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                tools:text="10"
+                android:gravity="center|right"
+                android:textColor="@color/movie_dark_purple"/>
         </TableRow>
 
     </TableLayout>
