@@ -61,6 +61,47 @@
         </TableRow>
 
         <TableRow
+            android:layout_marginTop="@dimen/search_act_row_margin">
+
+            <TextView
+                style="@style/ReleaseDateTextView"/>
+
+            <EditText
+                android:id="@+id/datePickerEditTextView"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                style="@style/ReleaseDateEditTextView"/>
+
+            <ImageView
+                android:id="@+id/datepickerImageView"
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+                android:layout_column="2"
+                android:layout_gravity="center"
+                android:layout_marginRight="5dp"
+                android:src="@mipmap/ic_date"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="@dimen/search_act_row_margin">
+
+            <TextView
+                style="@style/ReleaseDateTextView"/>
+
+            <EditText
+                android:id="@+id/voteCountEditTextView"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                style="@style/VoteCountEditTextView"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+                android:layout_column="2"/>
+        </TableRow>
+
+        <TableRow
             android:layout_marginTop="@dimen/search_act_row_margin" >
 
             <TextView
@@ -69,29 +110,6 @@
             <RatingBar
                 android:id="@+id/ratingBarView"
                 style="@style/RatingBarView"/>
-        </TableRow>
-
-
-        <TableRow
-            android:layout_marginTop="@dimen/search_act_row_margin">
-
-            <TextView
-                style="@style/VoteCountTextView" />
-
-            <EditText
-                android:id="@+id/voteCountEditTextView"
-                style="@style/VoteCountEditTextView"/>
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                style="@style/ReleaseDateTextView"/>
-
-            <EditText
-                android:id="@+id/datePickerEditTextView"
-                style="@style/ReleaseDateEditTextView"/>
-
         </TableRow>
 
     </TableLayout>

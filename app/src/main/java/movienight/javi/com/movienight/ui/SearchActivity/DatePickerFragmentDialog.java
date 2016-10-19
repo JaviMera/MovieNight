@@ -10,30 +10,55 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import movienight.javi.com.movienight.R;
 
-/**
- * Created by Javi on 10/18/2016.
- */
-
 public class DatePickerFragmentDialog extends DialogFragment {
 
-    @BindView(R.id.releaseDatePickerView) DatePicker mReleaseDatePicker;
-    @BindView(R.id.doneDatepickerButtonView) AppCompatButton mDoneDatePickerButtonView;
+    private OnDoneListener mListener;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        mListener = (OnDoneListener)context;
+    }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+        ButterKnife.bind(getActivity());
         Context context = getActivity();
         View datePickerLayout = LayoutInflater.from(context).inflate(R.layout.date_picker_layout, null);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
         dialogBuilder.setView(datePickerLayout);
+        final DatePicker mReleaseDatePicker = (DatePicker) datePickerLayout.findViewById(R.id.releaseDatePickerView);
+        final Button doneButton = (Button) datePickerLayout.findViewById(R.id.doneDatepickerButtonView);
+        doneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int day = mReleaseDatePicker.getDayOfMonth();
+                int month = mReleaseDatePicker.getMonth() + 1;
+                int year = mReleaseDatePicker.getYear();
+
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.YEAR, year);
+                cal.set(Calendar.DAY_OF_MONTH, day);
+                cal.set(Calendar.MONTH, month);
+                String formatedDate = new SimpleDateFormat("M/dd/yyyy").format(cal.getTime());
+                mListener.OnDone(formatedDate);
+            }
+        });
 
         return dialogBuilder.create();
     }

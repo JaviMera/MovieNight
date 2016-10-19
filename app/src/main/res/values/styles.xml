@@ -86,6 +86,9 @@
     <style name="ReleaseDateEditTextView" parent="EditTextViewBase">
         <item name="android:inputType">date</item>
         <item name="android:hint">@string/empty_date_picker_text</item>
+        <item name="android:gravity">left|center</item>
+        <item name="android:layout_gravity">center</item>
+
     </style>
 
     <style name="RatingTextView" parent="SearchActRowColOne">
@@ -106,6 +109,8 @@
     <style name="VoteCountEditTextView" parent="EditTextViewBase">
         <item name="android:inputType">number</item>
         <item name="android:hint">@string/vote_count_hint_text</item>
+        <item name="android:gravity">left|center</item>
+        <item name="android:layout_gravity">center</item>
     </style>
 
     <style name="GenreTextView" parent="SearchActRowColOne">
