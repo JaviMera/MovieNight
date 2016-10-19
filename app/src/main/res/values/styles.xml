@@ -53,72 +53,97 @@
         <item name="android:layout_alignParentTop">true</item>
     </style>
 
-    <!-- ***** Search Activity Views ***** -->
-    <style name="SearchActRowColOne">
+    <!-- Search Movie Title -->
+    <style name="SearchTitleTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">@string/search_title_text</item>
+        <item name="android:textStyle">italic|bold</item>
+        <item name="android:textSize">@dimen/search_title_text_size</item>
+        <item name="android:textColor">@color/movie_dark_purple</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">@dimen/search_title_top_margin</item>
+    </style>
+
+    <!-- Search Movie Table Layout -->
+    <style name="TableLayoutView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/table_layout_top_margin</item>
+        <item name="android:padding">@dimen/table_layout_padding</item>
+    </style>
+
+    <style name="TableRowTextView">
         <item name="android:layout_column">0</item>
         <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:gravity">right</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:textSize">@dimen/search_criteria_text_size</item>
-        <item name="android:textColor">@color/movie_dark_purple</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:paddingRight">@dimen/search_criteria_text_pad_right</item>
-    </style>
-
-    <style name="SearchActRowColTwo">
-        <item name="android:layout_column">1</item>
-        <item name="android:textStyle">bold|italic</item>
-        <item name="android:layout_marginLeft">@dimen/col_two_view_margin_left</item>
-        <item name="android:layout_marginRight">@dimen/col_two_view_margin_right</item>
-    </style>
-
-    <style name="EditTextViewBase" parent="SearchActRowColTwo">
-        <item name="android:gravity">center</item>
-        <item name="android:textColorHint">@color/movie_light_purple</item>
-        <item name="android:textSize">@dimen/col_two_view_text_size</item>
+        <item name="android:gravity">right|center</item>
         <item name="android:textColor">@color/movie_dark_purple</item>
     </style>
-    <style name="ReleaseDateTextView" parent="SearchActRowColOne">
-        <item name="android:text">@string/release_date</item>
-    </style>
 
-    <style name="ReleaseDateEditTextView" parent="EditTextViewBase">
-        <item name="android:inputType">date</item>
-        <item name="android:hint">@string/empty_date_picker_text</item>
-        <item name="android:gravity">left|center</item>
-        <item name="android:layout_gravity">center</item>
-
-    </style>
-
-    <style name="RatingTextView" parent="SearchActRowColOne">
-        <item name="android:text">@string/rating_text</item>
-    </style>
-
-    <style name="RatingBarView" parent="SearchActRowColTwo">
-        <item name="android:scaleX">0.8</item>
-        <item name="android:scaleY">0.8</item>
-        <item name="android:numStars">5</item>
-        <item name="android:rating">0</item>
-    </style>
-
-    <style name="VoteCountTextView" parent="SearchActRowColOne">
-        <item name="android:text">@string/vote_count_text</item>
-    </style>
-
-    <style name="VoteCountEditTextView" parent="EditTextViewBase">
-        <item name="android:inputType">number</item>
-        <item name="android:hint">@string/vote_count_hint_text</item>
-        <item name="android:gravity">left|center</item>
-        <item name="android:layout_gravity">center</item>
-    </style>
-
-    <style name="GenreTextView" parent="SearchActRowColOne">
+    <style name="GenreTextView" parent="TableRowTextView">
         <item name="android:text">@string/genre_text</item>
     </style>
 
-    <style name="GenreSpinnerView" parent="SearchActRowColTwo">
+    <style name="ReleaseDateTextView" parent="TableRowTextView">
+        <item name="android:text">@string/release_date</item>
+    </style>
+
+    <style name="VotesCountTextView" parent="TableRowTextView">
+        <item name="android:text">@string/vote_count_text</item>
+    </style>
+
+    <style name="RatingTextView" parent="TableRowTextView">
+        <item name="android:text">@string/rating_text</item>
+    </style>
+
+    <style name="TableRowInputView">
+        <item name="android:layout_column">0</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">3</item>
+        <item name="android:layout_marginLeft">@dimen/input_view_left_margin</item>
+    </style>
+
+    <style name="InputViewWithText" parent="TableRowInputView">
+        <item name="android:paddingLeft">@dimen/input_view_text_left_pad</item>
+        <item name="android:textColor">@color/movie_dark_purple</item>
+        <item name="android:textSize">@dimen/input_view_text_size</item>
+        <item name="android:textColorHint">@color/movie_light_purple</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+    <style name="GenreSpinnerView" parent="TableRowInputView">
         <item name="android:background">@drawable/spinner_background</item>
+    </style>
+
+    <style name="DatePickerButtonView" parent="InputViewWithText">
+        <item name="android:hint">@string/empty_date_picker_text</item>
+        <item name="android:gravity">left|center</item>
+        <item name="android:scaleType">fitEnd</item>
+        <item name="android:background">@drawable/release_date_button_drawable</item>
+    </style>
+
+    <style name="VoteCountEditTextView" parent="InputViewWithText">
+        <item name="android:hint">@string/vote_count_hint_text</item>
+        <item name="android:inputType">number</item>
+    </style>
+
+    <style name="RatingSeekBarView" parent="TableRowInputView">
+        <item name="android:layout_weight">2.8</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginLeft">@dimen/no_margin</item>
+    </style>
+
+    <style name="SeekBarResultTextView">
+        <item name="android:layout_column">2</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">0.2</item>
+        <item name="android:gravity">center|left</item>
+        <item name="android:textColor">@color/movie_dark_purple</item>
     </style>
 
     <style name="FindMoviesButtonView">
@@ -131,5 +156,15 @@
         <item name="android:textColor">@color/movie_dark_purple</item>
         <item name="android:layout_margin">@dimen/movie_button_margin</item>
         <item name="android:textSize">@dimen/movie_button_text_size</item>
+    </style>
+
+    <!-- Underline View -->
+    <style name="UnderlineView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/underline_view_height</item>
+        <item name="android:background">@color/movie_dark_purple</item>
+        <item name="android:layout_marginLeft">@dimen/underline_view_left_margin</item>
+        <item name="android:layout_marginRight">@dimen/underline_view_right_margin</item>
+        <item name="android:layout_marginTop">@dimen/underline_view_top_margin</item>
     </style>
 </resources>

@@ -4,8 +4,8 @@
     android:id="@+id/genreDescriptionTextView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="left|center"
-    android:paddingLeft="10dp"
+    android:gravity="start"
+    android:paddingLeft="@dimen/input_view_text_left_pad"
     android:textColor="@color/movie_dark_purple"
-    android:textSize="@dimen/col_two_view_text_size">
+    android:textSize="@dimen/input_view_text_size">
 </TextView>
