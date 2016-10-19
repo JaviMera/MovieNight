@@ -21,4 +21,9 @@ public class SearchActivityPresenter {
 
         mView.setGenreSpinnerAdapter(ctx, genres);
     }
+
+    public void updateSeekBarProgressTextView(int progress) {
+
+        mView.setSeekBarProgressTextView(progress);
+    }
 }

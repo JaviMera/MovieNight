@@ -44,4 +44,17 @@ public class SearchActivityPresenterTest {
         // Assert
         Mockito.verify(mView).setGenreSpinnerAdapter(ctx, someGenres);
     }
+
+    @Test
+    public void updateSeekBarProgressTextView() throws Exception {
+
+        // Arrange
+        int someProgress = 30;
+
+        // Act
+        mPresenter.updateSeekBarProgressTextView(someProgress);
+
+        // Assert
+        Mockito.verify(mView).setSeekBarProgressTextView(someProgress);
+    }
 }

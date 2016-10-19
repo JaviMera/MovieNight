@@ -27,9 +27,11 @@ import movienight.javi.com.movienight.ui.ActivityExtras;
 
 public class SearchActivity extends AppCompatActivity implements SearchActivityView, OnDoneListener{
 
+    private final double mProgressDivider = 10.0;
+
     private SearchActivityPresenter mPresenter;
     private DatePickerFragmentDialog mDialog;
-    
+
     @BindView(R.id.seekBarView) SeekBar mSeekBarView;
     @BindView(R.id.seekbarResultTextView) TextView mSeekBarResultTextView;
     @BindView(R.id.genreSpinnerView) Spinner mGenreSpinner;
@@ -52,9 +54,7 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-                DecimalFormat df = new DecimalFormat("#.#");
-                String progressValue = df.format(progress / 10.0);
-                mSeekBarResultTextView.setText(progressValue);
+                mPresenter.updateSeekBarProgressTextView(progress);
             }
 
             @Override
@@ -84,12 +84,19 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
         mGenreSpinner.setAdapter(adapter);
     }
 
+    @Override
+    public void setSeekBarProgressTextView(int progress) {
+
+        DecimalFormat df = new DecimalFormat("#.#");
+        String progressValue = df.format(progress / mProgressDivider);
+        mSeekBarResultTextView.setText(progressValue);
+    }
+
     @OnClick(R.id.datePickerButtonView)
     public void onDatepickerImageClick(View view) {
 
         mDialog.show(getSupportFragmentManager(), "dialog_tag");
     }
-
 
     @Override
     public void OnDatePickerDone(String date) {
