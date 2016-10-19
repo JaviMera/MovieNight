@@ -2,20 +2,28 @@ package movienight.javi.com.movienight;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -108,6 +116,35 @@ public class SearchActivityUITest {
         onView(withId(R.id.seekbarResultTextView)).check(matches(withText(expectedSeekBarValue)));
     }
 
+    @Test
+    public void arrowImageViewClickChangesArrowImage() throws Exception {
+
+        // Expected
+        int expectedImageId = R.drawable.arrow_down;
+
+        // Act
+        activityRule.launchActivity(mIntent);
+        onView(withId(R.id.arrowReleaseDateImageView)).perform(click());
+
+        // Assert
+        onView(withId(R.id.arrowReleaseDateImageView)).check(matches(new ImageViewMatcher(expectedImageId)));
+    }
+
+    @Test
+    public void arrowImageDisplaysEitherUpDownImagesOnClick() throws Exception {
+
+        // Expected
+        int expectedImageId = R.drawable.arrow_up;
+
+        // Act
+        activityRule.launchActivity(mIntent);
+        onView(withId(R.id.arrowReleaseDateImageView)).perform(click());
+        onView(withId(R.id.arrowReleaseDateImageView)).perform(click());
+
+        // Assert
+        onView(withId(R.id.arrowReleaseDateImageView)).check(matches(new ImageViewMatcher(expectedImageId)));
+    }
+
     private ViewAction SetProgress(int progress) {
 
         final int p = progress;
@@ -154,6 +191,35 @@ public class SearchActivityUITest {
         public void describeTo(Description description) {
 
             description.appendText(mActualText + " does not equal " + mExpectedText);
+        }
+    }
+
+    private class ImageViewMatcher extends TypeSafeMatcher<View> {
+
+        private int mExpectedId;
+
+        public ImageViewMatcher(int id) {
+
+            mExpectedId = id;
+        }
+
+        @Override
+        protected boolean matchesSafely(View item) {
+            ImageView image = (ImageView)item;
+
+            Drawable drawable = ContextCompat.getDrawable(image.getContext(), mExpectedId);
+
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) image.getDrawable();
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+            BitmapDrawable expectedBitmapDrawable = (BitmapDrawable) drawable;
+            Bitmap expectedBitmap = expectedBitmapDrawable.getBitmap();
+
+            return expectedBitmap.sameAs(bitmap);
+        }
+
+        @Override
+        public void describeTo(Description description) {
+
         }
     }
 }

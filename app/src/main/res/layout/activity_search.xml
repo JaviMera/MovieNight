@@ -50,11 +50,22 @@
             android:layout_marginTop="@dimen/search_act_row_margin">
 
             <TextView
+                android:layout_weight="1.15"
                 style="@style/ReleaseDateTextView"/>
 
             <Button
                 android:id="@+id/datePickerButtonView"
                 style="@style/DatePickerButtonView"/>
+
+            <ImageView
+                android:id="@+id/arrowReleaseDateImageView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:src="@drawable/arrow_up"
+                android:layout_gravity="center"
+                android:padding="4dp"
+                android:scaleType="fitCenter"/>
 
         </TableRow>
 
@@ -62,11 +73,22 @@
             android:layout_marginTop="@dimen/search_act_row_margin">
 
             <TextView
+                android:layout_weight="1.15"
                 style="@style/VotesCountTextView"/>
 
             <EditText
                 android:id="@+id/votesCountEditTextView"
                 style="@style/VoteCountEditTextView" />
+
+            <ImageView
+                android:id="@+id/arrowVoteCountImageView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:src="@drawable/arrow_up"
+                android:layout_gravity="center"
+                android:padding="4dp"
+                android:scaleType="fitCenter"/>
 
         </TableRow>
 

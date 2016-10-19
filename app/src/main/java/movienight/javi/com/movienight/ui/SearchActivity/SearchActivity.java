@@ -3,12 +3,17 @@ package movienight.javi.com.movienight.ui.SearchActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -28,6 +33,8 @@ import movienight.javi.com.movienight.ui.ActivityExtras;
 public class SearchActivity extends AppCompatActivity implements SearchActivityView, OnDoneListener{
 
     private final double mProgressDivider = 10.0;
+    private Drawable mArrowUpDrawable;
+    private Drawable mArrowDownDrawable;
 
     private SearchActivityPresenter mPresenter;
     private DatePickerFragmentDialog mDialog;
@@ -36,12 +43,16 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
     @BindView(R.id.seekbarResultTextView) TextView mSeekBarResultTextView;
     @BindView(R.id.genreSpinnerView) Spinner mGenreSpinner;
     @BindView(R.id.datePickerButtonView) AppCompatButton mReleaseDateEditTextView;
+    @BindView(R.id.arrowReleaseDateImageView) ImageView mArrowReleaseDateImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
+
+        mArrowUpDrawable = ContextCompat.getDrawable(this, R.drawable.arrow_up);
+        mArrowDownDrawable = ContextCompat.getDrawable(this, R.drawable.arrow_down);
 
         mDialog = new DatePickerFragmentDialog();
         mPresenter = new SearchActivityPresenter(this);
@@ -98,10 +109,35 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
         mDialog.show(getSupportFragmentManager(), "dialog_tag");
     }
 
+    @OnClick(R.id.arrowReleaseDateImageView)
+    public void onImageViewClick(View view) {
+
+        Bitmap currentBitmap = getBitmapFromDrawable(mArrowReleaseDateImageView.getDrawable());
+        Bitmap arrowUpBitmap = getBitmapFromDrawable(mArrowUpDrawable);
+        Bitmap arrowDownBitmap = getBitmapFromDrawable(mArrowDownDrawable);
+
+        if(currentBitmap.sameAs(arrowUpBitmap)){
+
+            mArrowReleaseDateImageView.setImageDrawable(mArrowDownDrawable);
+        }
+        else if (currentBitmap.sameAs(arrowDownBitmap)){
+
+            mArrowReleaseDateImageView.setImageDrawable(mArrowUpDrawable);
+        }
+    }
+
     @Override
     public void OnDatePickerDone(String date) {
 
         mReleaseDateEditTextView.setText(date);
         mDialog.dismiss();
+    }
+
+    private Bitmap getBitmapFromDrawable(Drawable drawable) {
+
+        BitmapDrawable bitmapDrawable = (BitmapDrawable)drawable;
+        Bitmap bitmap = bitmapDrawable.getBitmap();
+
+        return bitmap;
     }
 }
