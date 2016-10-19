@@ -5,5 +5,5 @@ package movienight.javi.com.movienight.ui.SearchActivity;
  */
 public interface OnDoneListener {
 
-    public abstract void OnDone(String date);
+    public abstract void OnDatePickerDone(String date);
 }

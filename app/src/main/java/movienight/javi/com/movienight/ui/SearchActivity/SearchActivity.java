@@ -12,7 +12,9 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
 
 import butterknife.BindView;
@@ -27,23 +29,44 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
 
     private SearchActivityPresenter mPresenter;
     private DatePickerFragmentDialog mDialog;
-
+    
     @BindView(R.id.seekBarView) SeekBar mSeekBarView;
+    @BindView(R.id.seekbarResultTextView) TextView mSeekBarResultTextView;
     @BindView(R.id.genreSpinnerView) Spinner mGenreSpinner;
-    @BindView(R.id.datePickerButtonView)
-    AppCompatButton mReleaseDateEditTextView;
+    @BindView(R.id.datePickerButtonView) AppCompatButton mReleaseDateEditTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
-        mDialog = new DatePickerFragmentDialog();
 
+        mDialog = new DatePickerFragmentDialog();
         mPresenter = new SearchActivityPresenter(this);
 
         Genre[] genres = getGenresFromIntent(this, ActivityExtras.GENRE_ARRAY_KEY);
         mPresenter.setGenreSpinnerAdapter(this, genres);
+
+        mSeekBarView.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                DecimalFormat df = new DecimalFormat("#.#");
+                String progressValue = df.format(progress / 10.0);
+                mSeekBarResultTextView.setText(progressValue);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
     private Genre[] getGenresFromIntent(Activity act, String genresKey) {
@@ -67,8 +90,9 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
         mDialog.show(getSupportFragmentManager(), "dialog_tag");
     }
 
+
     @Override
-    public void OnDone(String date) {
+    public void OnDatePickerDone(String date) {
 
         mReleaseDateEditTextView.setText(date);
         mDialog.dismiss();

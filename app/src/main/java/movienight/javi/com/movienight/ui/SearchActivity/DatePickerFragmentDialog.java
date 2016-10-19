@@ -1,25 +1,20 @@
 package movienight.javi.com.movienight.ui.SearchActivity;
 
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import movienight.javi.com.movienight.R;
 
 public class DatePickerFragmentDialog extends DialogFragment {
@@ -48,7 +43,7 @@ public class DatePickerFragmentDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 int day = mReleaseDatePicker.getDayOfMonth();
-                int month = mReleaseDatePicker.getMonth() + 1;
+                int month = mReleaseDatePicker.getMonth();
                 int year = mReleaseDatePicker.getYear();
 
                 Calendar cal = Calendar.getInstance();
@@ -56,7 +51,7 @@ public class DatePickerFragmentDialog extends DialogFragment {
                 cal.set(Calendar.DAY_OF_MONTH, day);
                 cal.set(Calendar.MONTH, month);
                 String formatedDate = new SimpleDateFormat("M/dd/yyyy").format(cal.getTime());
-                mListener.OnDone(formatedDate);
+                mListener.OnDatePickerDone(formatedDate);
             }
         });
 
