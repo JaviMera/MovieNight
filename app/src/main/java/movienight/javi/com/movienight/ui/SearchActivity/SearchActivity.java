@@ -44,7 +44,7 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
     @BindView(R.id.genreSpinnerView) Spinner mGenreSpinner;
     @BindView(R.id.datePickerButtonView) AppCompatButton mReleaseDateEditTextView;
     @BindView(R.id.arrowReleaseDateImageView) ImageView mArrowReleaseDateImageView;
-
+    @BindView(R.id.arrowVoteCountImageView) ImageView mArrowVoteCountImageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,17 +112,28 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
     @OnClick(R.id.arrowReleaseDateImageView)
     public void onImageViewClick(View view) {
 
-        Bitmap currentBitmap = getBitmapFromDrawable(mArrowReleaseDateImageView.getDrawable());
+        setImage(mArrowReleaseDateImageView);
+    }
+
+    @OnClick(R.id.arrowVoteCountImageView)
+    public void onVoteCountArrowClick(View view ) {
+
+        setImage(mArrowVoteCountImageView);
+    }
+
+    private void setImage(ImageView view) {
+
+        Bitmap currentBitmap = getBitmapFromDrawable(view.getDrawable());
         Bitmap arrowUpBitmap = getBitmapFromDrawable(mArrowUpDrawable);
         Bitmap arrowDownBitmap = getBitmapFromDrawable(mArrowDownDrawable);
 
         if(currentBitmap.sameAs(arrowUpBitmap)){
 
-            mArrowReleaseDateImageView.setImageDrawable(mArrowDownDrawable);
+            view.setImageDrawable(mArrowDownDrawable);
         }
         else if (currentBitmap.sameAs(arrowDownBitmap)){
 
-            mArrowReleaseDateImageView.setImageDrawable(mArrowUpDrawable);
+            view.setImageDrawable(mArrowUpDrawable);
         }
     }
 
