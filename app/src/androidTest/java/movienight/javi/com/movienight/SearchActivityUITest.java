@@ -78,10 +78,10 @@ public class SearchActivityUITest {
 
         // Act
         activityRule.launchActivity(mIntent);
-        onView(withId(R.id.datePickerButtonView)).perform(click());
+        onView(withId(R.id.startReleaseDateButtonView)).perform(click());
 
         // Assert
-        onView(withId(R.id.releaseDatePickerView)).check(matches(isDisplayed()));
+        onView(withId(R.id.startReleaseDateButtonView)).check(matches(isDisplayed()));
         onView(withId(R.id.doneDatepickerButtonView)).check(matches(isDisplayed()));
     }
 
@@ -94,11 +94,11 @@ public class SearchActivityUITest {
 
         // Act
         activityRule.launchActivity(mIntent);
-        onView(withId(R.id.datePickerButtonView)).perform(click());
+        onView(withId(R.id.startReleaseDateButtonView)).perform(click());
         onView(withId(R.id.doneDatepickerButtonView)).perform(click());
 
         // Assert
-        onView(withId(R.id.datePickerButtonView)).check(matches(new ButtonTextMatcher(expectedDate)));
+        onView(withId(R.id.startReleaseDateButtonView)).check(matches(new ButtonTextMatcher(expectedDate)));
     }
 
     @Test
@@ -117,34 +117,6 @@ public class SearchActivityUITest {
     }
 
     @Test
-    public void arrowImageViewClickChangesArrowImage() throws Exception {
-
-        // Expected
-        int expectedImageId = R.drawable.arrow_down;
-
-        // Act
-        activityRule.launchActivity(mIntent);
-        onView(withId(R.id.arrowReleaseDateImageView)).perform(click());
-
-        // Assert
-        onView(withId(R.id.arrowReleaseDateImageView)).check(matches(new ImageViewMatcher(expectedImageId)));
-    }
-
-    @Test
-    public void arrowImageDisplaysEitherUpDownImagesOnClick() throws Exception {
-
-        // Expected
-        int expectedImageId = R.drawable.arrow_up;
-
-        // Act
-        activityRule.launchActivity(mIntent);
-        onView(withId(R.id.arrowReleaseDateImageView)).perform(click());
-        onView(withId(R.id.arrowReleaseDateImageView)).perform(click());
-
-        // Assert
-        onView(withId(R.id.arrowReleaseDateImageView)).check(matches(new ImageViewMatcher(expectedImageId)));
-    }
-
     private ViewAction SetProgress(int progress) {
 
         final int p = progress;
@@ -191,35 +163,6 @@ public class SearchActivityUITest {
         public void describeTo(Description description) {
 
             description.appendText(mActualText + " does not equal " + mExpectedText);
-        }
-    }
-
-    private class ImageViewMatcher extends TypeSafeMatcher<View> {
-
-        private int mExpectedId;
-
-        public ImageViewMatcher(int id) {
-
-            mExpectedId = id;
-        }
-
-        @Override
-        protected boolean matchesSafely(View item) {
-            ImageView image = (ImageView)item;
-
-            Drawable drawable = ContextCompat.getDrawable(image.getContext(), mExpectedId);
-
-            BitmapDrawable bitmapDrawable = (BitmapDrawable) image.getDrawable();
-            Bitmap bitmap = bitmapDrawable.getBitmap();
-            BitmapDrawable expectedBitmapDrawable = (BitmapDrawable) drawable;
-            Bitmap expectedBitmap = expectedBitmapDrawable.getBitmap();
-
-            return expectedBitmap.sameAs(bitmap);
-        }
-
-        @Override
-        public void describeTo(Description description) {
-
         }
     }
 }

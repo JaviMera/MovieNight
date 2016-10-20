@@ -7,21 +7,9 @@
     android:layout_height="match_parent"
     android:background="@color/activity_background_color">
 
-    <RelativeLayout
-        android:id="@+id/logoLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="20dp" >
-
-        <include
-            layout="@layout/logo_layout" />
-
-    </RelativeLayout>
-
     <TextView
         android:id="@+id/searchTitleTextView"
-        android:layout_below="@+id/logoLayout"
+        android:layout_alignParentTop="true"
         style="@style/SearchTitleTextView" />
 
     <View
@@ -29,86 +17,124 @@
         android:layout_below="@+id/searchTitleTextView"
         style="@style/UnderlineView" />
 
-    <TableLayout
-        android:id="@+id/searchCriteriaLayout"
+    <LinearLayout
+        android:id="@+id/genreLayout"
         android:layout_below="@+id/lineSeparatorView"
+        android:orientation="vertical"
         style="@style/TableLayoutView">
 
-        <TableRow
-            android:layout_marginTop="@dimen/search_act_row_margin">
+        <TextView
+            style="@style/GenreTextView"/>
+
+        <Spinner
+            android:id="@+id/genreSpinnerView"
+            style="@style/GenreSpinnerView" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/releaseDateLayout"
+        android:layout_below="@+id/genreLayout"
+        android:orientation="horizontal"
+        style="@style/TableLayoutView">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="5dp"
+            android:orientation="vertical">
 
             <TextView
-                style="@style/GenreTextView"/>
-
-            <Spinner
-                android:id="@+id/genreSpinnerView"
-                style="@style/GenreSpinnerView" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_marginTop="@dimen/search_act_row_margin">
-
-            <TextView
-                android:layout_weight="1.15"
-                style="@style/ReleaseDateTextView"/>
+                style="@style/StartReleaseDate"/>
 
             <Button
-                android:id="@+id/datePickerButtonView"
+                android:id="@+id/startReleaseDateButtonView"
                 style="@style/DatePickerButtonView"/>
+        </LinearLayout>
 
-            <ImageView
-                android:id="@+id/arrowReleaseDateImageView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.4"
-                android:src="@drawable/arrow_up"
-                android:layout_gravity="center"
-                android:padding="4dp"
-                android:scaleType="fitCenter"/>
-
-        </TableRow>
-
-        <TableRow
-            android:layout_marginTop="@dimen/search_act_row_margin">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="5dp"
+            android:orientation="vertical">
 
             <TextView
-                android:layout_weight="1.15"
-                style="@style/VotesCountTextView"/>
+                style="@style/EndReleaseDate"/>
 
-            <EditText
-                android:id="@+id/votesCountEditTextView"
-                style="@style/VoteCountEditTextView" />
+            <Button
+                android:id="@+id/endReleaseDateButtonView"
+                style="@style/DatePickerButtonView"/>
+        </LinearLayout>
+    </LinearLayout>
 
-            <ImageView
-                android:id="@+id/arrowVoteCountImageView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.4"
-                android:src="@drawable/arrow_up"
-                android:layout_gravity="center"
-                android:padding="4dp"
-                android:scaleType="fitCenter"/>
+    <LinearLayout
+        android:id="@+id/votesCountLayout"
+        android:orientation="vertical"
+        android:layout_below="@+id/releaseDateLayout"
+        style="@style/TableLayoutView">
 
-        </TableRow>
+        <TextView
+        android:layout_weight="1"
+        style="@style/VotesCountTextView"/>
 
-        <TableRow
-            android:layout_marginTop="@dimen/search_act_row_margin">
+        <EditText
+        android:id="@+id/votesCountEditTextView"
+        style="@style/VoteCountEditTextView" />
+    </LinearLayout>
 
-            <TextView
-                style="@style/RatingTextView"/>
+    <LinearLayout
+        android:layout_below="@+id/votesCountLayout"
+        android:orientation="vertical"
+        style="@style/TableLayoutView">
+
+        <TextView
+            style="@style/RatingTextView"
+            android:paddingLeft="10dp"
+            android:layout_gravity="center"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <SeekBar
                 android:id="@+id/seekBarView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:layout_marginTop="5dp"
                 style="@style/RatingSeekBarView"/>
 
             <TextView
                 android:id="@+id/seekbarResultTextView"
                 android:text="0"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
                 style="@style/SeekBarResultTextView" />
-        </TableRow>
 
-    </TableLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <!--<TableLayout-->
+        <!--android:id="@+id/searchCriteriaLayout"-->
+        <!--android:layout_below="@+id/lineSeparatorView"-->
+        <!--style="@style/TableLayoutView">-->
+
+        <!--<TableRow-->
+            <!--android:layout_marginTop="@dimen/search_act_row_margin">-->
+
+
+
+        <!--</TableRow>-->
+
+        <!--<TableRow-->
+            <!--android:layout_marginTop="@dimen/search_act_row_margin">-->
+
+
+        <!--</TableRow>-->
+
+    <!--</TableLayout>-->
 
     <Button
         android:id="@+id/findMoviesButtonView"

@@ -2,7 +2,8 @@
     <string name="app_name">Movie Night</string>
     <string name="movie_night_title">Movie Night</string>
     <string name="loading_text">Loading...</string>
-    <string name="release_date">Release date:</string>
+    <string name="start_release_date_text">Start Release Date:</string>
+    <string name="end_release_date_text">End Release Date</string>
     <string name="empty_date_picker_text">mm-dd-yyyy</string>
     <string name="rating_text">Rating:</string>
     <string name="vote_count_text">People\'s votes:</string>

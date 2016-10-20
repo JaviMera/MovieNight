@@ -6,8 +6,8 @@
 <dimen name="movie_title_padding">20dp</dimen>
 <dimen name="loading_text_size">15sp</dimen>
 <dimen name="loading_text_margin_top">15dp</dimen>
-<dimen name="logo_max_height">120dp</dimen>
-<dimen name="logo_max_width">80dp</dimen>
+<dimen name="logo_max_height">100dp</dimen>
+<dimen name="logo_max_width">70dp</dimen>
 <dimen name="container_padding">15dp</dimen>
 <dimen name="container_margin_bottom">20dp</dimen>
 <dimen name="search_criteria_text_size">13sp</dimen>
@@ -23,7 +23,7 @@
 <dimen name="search_title_text_size">20sp</dimen>
 <dimen name="search_title_top_margin">25dp</dimen>
 <dimen name="table_layout_top_margin">10dp</dimen>
-<dimen name="table_layout_padding">10dp</dimen>
+<dimen name="table_layout_padding">5dp</dimen>
     <dimen name="underline_view_height">2dp</dimen>
     <dimen name="underline_view_left_margin">15dp</dimen>
     <dimen name="underline_view_right_margin">15dp</dimen>
