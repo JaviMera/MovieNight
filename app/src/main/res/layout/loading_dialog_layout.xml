@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#271F3B">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Loading data from the strange world of internet..."
+        android:textSize="14sp"
+        android:textColor="@color/movie_dark_purple"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_margin="10dp"/>
+
+    <ProgressBar
+        android:id="@+id/loadingActivityProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateDrawable="@drawable/progress_bar_drawable"/>
+
+</LinearLayout>

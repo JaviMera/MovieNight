@@ -7,19 +7,29 @@
     android:layout_height="match_parent"
     android:background="@color/activity_background_color">
 
-    <TextView
-        android:id="@+id/searchTitleTextView"
-        android:layout_alignParentTop="true"
-        style="@style/SearchTitleTextView" />
+    <RelativeLayout
+        android:id="@+id/titleLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
 
-    <View
-        android:id="@+id/lineSeparatorView"
-        android:layout_below="@+id/searchTitleTextView"
-        style="@style/UnderlineView" />
+        <include
+            layout="@layout/logo_layout" />
+
+        <TextView
+            android:layout_above="@+id/lineSeparatorView"
+            style="@style/SearchTitleTextView" />
+
+        <View
+            android:id="@+id/lineSeparatorView"
+            android:layout_below="@+id/logoImageView"
+            style="@style/UnderlineView" />
+    </RelativeLayout>
+
 
     <LinearLayout
         android:id="@+id/genreLayout"
-        android:layout_below="@+id/lineSeparatorView"
+        android:layout_below="@+id/titleLayout"
         android:orientation="vertical"
         style="@style/TableLayoutView">
 
@@ -110,31 +120,12 @@
             <TextView
                 android:id="@+id/seekbarResultTextView"
                 android:text="0"
-                android:gravity="center"
+                android:gravity="center|right"
                 android:layout_marginTop="5dp"
                 style="@style/SeekBarResultTextView" />
 
         </LinearLayout>
     </LinearLayout>
-    <!--<TableLayout-->
-        <!--android:id="@+id/searchCriteriaLayout"-->
-        <!--android:layout_below="@+id/lineSeparatorView"-->
-        <!--style="@style/TableLayoutView">-->
-
-        <!--<TableRow-->
-            <!--android:layout_marginTop="@dimen/search_act_row_margin">-->
-
-
-
-        <!--</TableRow>-->
-
-        <!--<TableRow-->
-            <!--android:layout_marginTop="@dimen/search_act_row_margin">-->
-
-
-        <!--</TableRow>-->
-
-    <!--</TableLayout>-->
 
     <Button
         android:id="@+id/findMoviesButtonView"

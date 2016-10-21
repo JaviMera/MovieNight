@@ -45,24 +45,26 @@
     <style name="ImageViewBase" parent="LoadActViewBase">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:src">@drawable/play_store</item>
-        <item name="android:layout_centerInParent">true</item>
-        <item name="android:scaleType">fitCenter</item>
+        <item name="android:scaleType">fitStart</item>
         <item name="android:maxHeight">@dimen/logo_max_height</item>
         <item name="android:maxWidth">@dimen/logo_max_width</item>
         <item name="android:adjustViewBounds">true</item>
-        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingTop">10dp</item>
     </style>
 
     <!-- Search Movie Title -->
     <style name="SearchTitleTextView">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+
         <item name="android:text">@string/search_title_text</item>
         <item name="android:textStyle">italic|bold</item>
         <item name="android:textSize">@dimen/search_title_text_size</item>
         <item name="android:textColor">@color/movie_dark_purple</item>
-        <item name="android:gravity">center</item>
-        <item name="android:layout_marginTop">@dimen/search_title_top_margin</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:paddingLeft">@dimen/search_title_padding</item>
+
     </style>
 
     <!-- Search Movie Table Layout -->

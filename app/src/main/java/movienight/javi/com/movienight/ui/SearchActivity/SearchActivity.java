@@ -4,15 +4,22 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 
@@ -22,14 +29,18 @@ import butterknife.OnClick;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.adapters.GenreSpinnerAdapter;
 import movienight.javi.com.movienight.model.Genre;
-import movienight.javi.com.movienight.ui.ActivityExtras;
+import movienight.javi.com.movienight.model.jsonvalues.JSONGenre;
+import movienight.javi.com.movienight.ui.AsyncTaskListener;
+import movienight.javi.com.movienight.urls.AbstractUrl;
+import movienight.javi.com.movienight.urls.GenreUrl;
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
-public class SearchActivity extends AppCompatActivity implements SearchActivityView, OnDoneListener{
+public class SearchActivity extends AppCompatActivity implements SearchActivityView, OnDoneListener, AsyncTaskListener<Genre>{
 
     private final double mProgressDivider = 10.0;
-    private Drawable mArrowUpDrawable;
-    private Drawable mArrowDownDrawable;
-
     private SearchActivityPresenter mPresenter;
     private DatePickerFragmentDialog mDialog;
     private AppCompatButton mDateButtonClicked;
@@ -49,9 +60,6 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
         mDialog = new DatePickerFragmentDialog();
         mPresenter = new SearchActivityPresenter(this);
 
-        Genre[] genres = getGenresFromIntent(this, ActivityExtras.GENRE_ARRAY_KEY);
-        mPresenter.setGenreSpinnerAdapter(this, genres);
-
         mSeekBarView.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -61,23 +69,15 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
-    }
 
-    private Genre[] getGenresFromIntent(Activity act, String genresKey) {
-
-        Intent intent = act.getIntent();
-        Parcelable[] parcelables = intent.getParcelableArrayExtra(genresKey);
-
-        return Arrays.copyOf(parcelables, parcelables.length, Genre[].class);
+        GenreUrl genresUrl = new GenreUrl();
+        new GenreAsyncTask(getSupportFragmentManager(), this)
+                .execute(genresUrl);
     }
 
     @Override
@@ -116,4 +116,9 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
         mDialog.dismiss();
     }
 
+    @Override
+    public void onTaskCompleted(Genre[] genres) {
+
+        mPresenter.setGenreSpinnerAdapter(this, genres);
+    }
 }
