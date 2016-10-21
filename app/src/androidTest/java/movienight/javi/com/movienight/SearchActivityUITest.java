@@ -57,27 +57,14 @@ import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 public class SearchActivityUITest {
 
-    private Intent mIntent;
-
     @Rule
     public ActivityTestRule<SearchActivity> activityRule =
-            new ActivityTestRule<SearchActivity>(SearchActivity.class, true, false);
-
-    @Before
-    public void SetUp () throws Exception {
-
-        Genre[] someGenres = new Genre[1];
-        someGenres[0] = new Genre(1, "Say my name");
-
-        mIntent = new Intent();
-        mIntent.putExtra(ActivityExtras.GENRE_ARRAY_KEY, someGenres);
-    }
+            new ActivityTestRule<SearchActivity>(SearchActivity.class);
 
     @Test
     public void datePickerButtonPressShowsDatePickerDialog() throws Exception {
 
         // Act
-        activityRule.launchActivity(mIntent);
         onView(withId(R.id.startReleaseDateButtonView)).perform(click());
 
         // Assert
@@ -93,7 +80,6 @@ public class SearchActivityUITest {
         String expectedDate = "10-19-2016";
 
         // Act
-        activityRule.launchActivity(mIntent);
         onView(withId(R.id.startReleaseDateButtonView)).perform(click());
         onView(withId(R.id.doneDatepickerButtonView)).perform(click());
 
@@ -109,7 +95,6 @@ public class SearchActivityUITest {
         String expectedSeekBarValue = "2.5";
 
         // Act
-        activityRule.launchActivity(mIntent);
         onView(withId(R.id.seekBarView)).perform(SetProgress(progress));
 
         // Assert

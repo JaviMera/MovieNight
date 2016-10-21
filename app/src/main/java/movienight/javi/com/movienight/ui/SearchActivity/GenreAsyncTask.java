@@ -67,7 +67,6 @@ public class GenreAsyncTask extends AsyncTask<AbstractUrl, Integer, Genre[]> {
                 genres[i] = new Genre(genreId, genreDesc);
             }
 
-            Thread.sleep(5000);
             return genres;
         }
         catch (IOException e)
@@ -75,8 +74,6 @@ public class GenreAsyncTask extends AsyncTask<AbstractUrl, Integer, Genre[]> {
         }
         catch (JSONException e)
         {
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
 
         return null;
