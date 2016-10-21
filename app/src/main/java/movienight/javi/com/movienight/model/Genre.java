@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by Javi on 10/16/2016.
  */
-public class Genre implements Parcelable, Comparable<Genre>{
+public class Genre implements Parcelable{
 
     private Integer mId;
     private String mDescription;
@@ -54,18 +54,4 @@ public class Genre implements Parcelable, Comparable<Genre>{
             return new Genre[size];
         }
     };
-
-    @Override
-    public int compareTo(Genre o) {
-
-        if(mId > o.getId()) {
-
-            return 1;
-        }
-        else if(mId < o.getId()) {
-            return -1;
-        }
-
-        return 0;
-    }
 }

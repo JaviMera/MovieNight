@@ -1,6 +1,7 @@
 package movienight.javi.com.movienight.ui.SearchActivity;
 
 import android.app.Activity;
+import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -9,7 +10,10 @@ import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.ScrollingTabContainerView;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -26,11 +30,15 @@ import java.util.Arrays;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnItemClick;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.adapters.GenreSpinnerAdapter;
 import movienight.javi.com.movienight.model.Genre;
+import movienight.javi.com.movienight.model.MovieRequest;
 import movienight.javi.com.movienight.model.jsonvalues.JSONGenre;
+import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.ui.AsyncTaskListener;
+import movienight.javi.com.movienight.ui.MoviesActivity.MoviesActivity;
 import movienight.javi.com.movienight.urls.AbstractUrl;
 import movienight.javi.com.movienight.urls.GenreUrl;
 import okhttp3.Call;
@@ -41,15 +49,18 @@ import okhttp3.Response;
 public class SearchActivity extends AppCompatActivity implements SearchActivityView, OnDoneListener, AsyncTaskListener<Genre>{
 
     private final double mProgressDivider = 10.0;
+
+    private Genre mGenreSelected;
     private SearchActivityPresenter mPresenter;
     private DatePickerFragmentDialog mDialog;
     private AppCompatButton mDateButtonClicked;
 
     @BindView(R.id.seekBarView) SeekBar mSeekBarView;
-    @BindView(R.id.seekbarResultTextView) TextView mSeekBarResultTextView;
     @BindView(R.id.genreSpinnerView) Spinner mGenreSpinner;
     @BindView(R.id.startReleaseDateButtonView) AppCompatButton mStartReleaseDateButtonView;
     @BindView(R.id.endReleaseDateButtonView) AppCompatButton mEndReleaseDateButtonView;
+    @BindView(R.id.votesCountEditTextView) EditText mVoteCountEditText;
+    @BindView(R.id.seekbarResultTextView) TextView mRatingValueTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +70,20 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
 
         mDialog = new DatePickerFragmentDialog();
         mPresenter = new SearchActivityPresenter(this);
+        mGenreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                GenreSpinnerAdapter adapter = (GenreSpinnerAdapter)parent.getAdapter();
+                mGenreSelected = adapter.getItem(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         mSeekBarView.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -92,7 +117,7 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
 
         DecimalFormat df = new DecimalFormat("#.#");
         String progressValue = df.format(progress / mProgressDivider);
-        mSeekBarResultTextView.setText(progressValue);
+        mRatingValueTextView.setText(progressValue);
     }
 
     @OnClick(R.id.startReleaseDateButtonView)
@@ -107,6 +132,21 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
 
         mDateButtonClicked = mEndReleaseDateButtonView;
         mDialog.show(getSupportFragmentManager(), "end_dialog");
+    }
+
+    @OnClick(R.id.findMoviesButtonView)
+    public void onFindMoviesButtonClick(View view) {
+
+        MovieRequest movieRequest = new MovieRequest();
+        movieRequest.setGenre(mGenreSelected);
+        movieRequest.setStartDateRelease(mStartReleaseDateButtonView.getText().toString());
+        movieRequest.setEndDateReleaseSelected(mEndReleaseDateButtonView.getText().toString());
+        movieRequest.setVoteCount(Integer.parseInt(mVoteCountEditText.getText().toString()));
+        movieRequest.setRating(Double.parseDouble(mRatingValueTextView.getText().toString()));
+
+        Intent intent = new Intent(SearchActivity.this, MoviesActivity.class);
+        intent.putExtra(ActivityExtras.MOVIE_REQUEST_KEY, movieRequest);
+        startActivity(intent);
     }
 
     @Override

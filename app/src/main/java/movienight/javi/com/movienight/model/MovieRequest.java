@@ -1,20 +1,44 @@
 package movienight.javi.com.movienight.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Javi on 10/18/2016.
  */
 
-public class MovieRequest {
+public class MovieRequest implements Parcelable{
 
     private Genre mGenreSelected;
-    private double mRatingSelected;
-    private String mDateReleaseSelected;
-    private int mVoteCountSelected;
+    private String mStartDateReleaseSelected;
+    private String mEndDateReleaseSelected;
+    private Integer mVoteCountSelected;
+    private Double mRatingSelected;
 
     public MovieRequest() {}
 
-    public String getDateReleaseSelected() {
-        return mDateReleaseSelected;
+    protected MovieRequest(Parcel in) {
+        mGenreSelected = in.readParcelable(Genre.class.getClassLoader());
+        mStartDateReleaseSelected = in.readString();
+        mEndDateReleaseSelected = in.readString();
+        mVoteCountSelected = in.readInt();
+        mRatingSelected = in.readDouble();
+    }
+
+    public static final Creator<MovieRequest> CREATOR = new Creator<MovieRequest>() {
+        @Override
+        public MovieRequest createFromParcel(Parcel in) {
+            return new MovieRequest(in);
+        }
+
+        @Override
+        public MovieRequest[] newArray(int size) {
+            return new MovieRequest[size];
+        }
+    };
+
+    public String getStartDateReleaseSelected() {
+        return mStartDateReleaseSelected;
     }
 
     public Genre getGenreSelected() {
@@ -29,23 +53,46 @@ public class MovieRequest {
         return mVoteCountSelected;
     }
 
+    public String getEndDateReleaseSelected() {
+        return mEndDateReleaseSelected;
+    }
+
     public void setGenre(Genre genre) {
 
         mGenreSelected = genre;
     }
 
-    public void setRating(double rating) {
+    public void setRating(Double rating) {
 
         mRatingSelected = rating;
     }
 
-    public void setVoteCount(int voteCount) {
+    public void setVoteCount(Integer voteCount) {
 
         mVoteCountSelected = voteCount;
     }
 
-    public void setReleaseDate(String releaseDate) {
+    public void setStartDateRelease(String releaseDate) {
 
-        mDateReleaseSelected = releaseDate;
+        mStartDateReleaseSelected = releaseDate;
+    }
+
+    public void setEndDateReleaseSelected(String endDateReleaseSelected) {
+        mEndDateReleaseSelected = endDateReleaseSelected;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+        dest.writeParcelable(mGenreSelected, flags);
+        dest.writeString(mStartDateReleaseSelected);
+        dest.writeString(mEndDateReleaseSelected);
+        dest.writeInt(mVoteCountSelected);
+        dest.writeDouble(mRatingSelected);
     }
 }

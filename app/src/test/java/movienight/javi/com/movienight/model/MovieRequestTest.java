@@ -5,10 +5,6 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
 /**
  * Created by Javi on 10/18/2016.
  */
@@ -69,9 +65,9 @@ public class MovieRequestTest {
         String expectedDate = "10/18/2016";
 
         // Act
-        mMovieRequest.setReleaseDate(expectedDate);
+        mMovieRequest.setStartDateRelease(expectedDate);
 
         // Assert
-        Assert.assertEquals(expectedDate, mMovieRequest.getDateReleaseSelected());
+        Assert.assertEquals(expectedDate, mMovieRequest.getStartDateReleaseSelected());
     }
 }
