@@ -16,6 +16,9 @@ import java.util.List;
 import movienight.javi.com.movienight.Listeners.MoviesAsyncTaskListener;
 import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.model.Page;
+import movienight.javi.com.movienight.model.ReleaseDate;
+import movienight.javi.com.movienight.model.jsonvalues.JSONMovie;
+import movienight.javi.com.movienight.model.jsonvalues.JSONMovieDiscover;
 import movienight.javi.com.movienight.urls.AbstractUrl;
 import movienight.javi.com.movienight.urls.MovieUrl;
 import okhttp3.Call;
@@ -51,37 +54,37 @@ public class MovieAsyncTask extends AsyncTask<AbstractUrl, Void, Page> {
 
         try
         {
-            Date startDateRquest = new SimpleDateFormat("yyyy-M-dd").parse(url.getStartDate());
-            Date endDateRequest = new SimpleDateFormat("yyyy-M-dd").parse(url.getEndDate());
+            Date startDateRquest = new SimpleDateFormat(ReleaseDate.FORMAT).parse(url.getStartDate());
+            Date endDateRequest = new SimpleDateFormat(ReleaseDate.FORMAT).parse(url.getEndDate());
 
             Response response = call.execute();
             String jsonString = response.body().string();
             JSONObject jsonObject = new JSONObject(jsonString);
-            mTotalPages = jsonObject.getInt("total_pages");
+            mTotalPages = jsonObject.getInt(JSONMovieDiscover.TOTAL_PAGES_KEY);
 
-            JSONArray resultsArray = jsonObject.getJSONArray("results");
+            JSONArray resultsArray = jsonObject.getJSONArray(JSONMovieDiscover.RESULTS_KEY);
             List<Movie> movies = new LinkedList<>();
 
             for(int result = 0 ; result < resultsArray.length(); result++) {
 
                 JSONObject currentJSONObject = resultsArray.getJSONObject(result);
 
-                String release_date = currentJSONObject.getString("release_date");
+                String release_date = currentJSONObject.getString(JSONMovie.RELEASE_DATE_KEY);
 
-                Date releaseDate = new SimpleDateFormat("yyyy-M-dd").parse(release_date);
+                Date releaseDate = new SimpleDateFormat(ReleaseDate.FORMAT).parse(release_date);
 
                 if((releaseDate.compareTo(startDateRquest) == 0 || releaseDate.compareTo(endDateRequest) == 0)
                     || (releaseDate.compareTo(startDateRquest) == 1 && releaseDate.compareTo(endDateRequest) == -1)){
 
-                    int movieId = currentJSONObject.getInt("id");
-                    String movieOverview = currentJSONObject.getString("overview");
-                    String movieOriginalTitle = currentJSONObject.getString("original_title");
-                    String movieTitle = currentJSONObject.getString("title");
-                    double moviePopularity = currentJSONObject.getDouble("popularity");
-                    int movieVotes = currentJSONObject.getInt("vote_count");
-                    double movieRating = currentJSONObject.getDouble("vote_average");
+                    int movieId = currentJSONObject.getInt(JSONMovie.ID_KEY);
+                    String movieOverview = currentJSONObject.getString(JSONMovie.OVERVIEW_KEY);
+                    String movieOriginalTitle = currentJSONObject.getString(JSONMovie.ORIGINAL_TITLE_KEY);
+                    String movieTitle = currentJSONObject.getString(JSONMovie.TITLE_KEY);
+                    double moviePopularity = currentJSONObject.getDouble(JSONMovie.POPULARITY_KEY);
+                    int movieVotes = currentJSONObject.getInt(JSONMovie.VOTE_COUNT_KEY);
+                    double movieRating = currentJSONObject.getDouble(JSONMovie.VOTE_AVERAGE_KEY);
 
-                    JSONArray genreIdsArray = currentJSONObject.getJSONArray("genre_ids");
+                    JSONArray genreIdsArray = currentJSONObject.getJSONArray(JSONMovie.GENRE_IDS_KEY);
                     int[] genreIds = new int[genreIdsArray.length()];
 
                     for(int g = 0 ; g < genreIdsArray.length() ; g++) {
