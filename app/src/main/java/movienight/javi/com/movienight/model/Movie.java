@@ -9,20 +9,20 @@ public class Movie {
     private String mOverview;
     private String mOriginalTitle;
     private String mTitle;
-    private Double mPopularity;
-    private Integer mVoteCount;
+    private double mPopularity;
+    private int mVoteCount;
     private Double mRating;
-    private Integer[] mGenreIds;
+    private int[] mGenreIds;
 
     public Movie(
-        Integer id,
+        int id,
         String overview,
         String originalTitle,
         String title,
-        Double popularity,
-        Integer voteCount,
-        Double rating,
-        Integer[] genreIds)
+        double popularity,
+        int voteCount,
+        double rating,
+        int[] genreIds)
     {
         mId = id;
         mOverview = overview;
@@ -54,7 +54,7 @@ public class Movie {
         return mPopularity;
     }
 
-    public Integer getVoteCount() {
+    public int getVoteCount() {
         return mVoteCount;
     }
 
@@ -62,7 +62,7 @@ public class Movie {
         return mRating;
     }
 
-    public Integer[] getGenreIds() {
+    public int[] getGenreIds() {
 
         return mGenreIds;
     }

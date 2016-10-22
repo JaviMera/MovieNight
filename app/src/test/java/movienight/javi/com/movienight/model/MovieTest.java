@@ -12,14 +12,14 @@ import org.junit.Test;
 public class MovieTest {
 
     private Movie mMovie;
-    private Integer mExpectedId = 246655;
+    private int mExpectedId = 246655;
     private String mExpectedOverview = "After the re-emergence of the world's first mutant, world-destroyer Apocalypse, the X-Men must unite to defeat his extinction level plan.";
     private String mExpectedOriginalTitle = "X-Men: Apocalypse";
     private String mExpectedTitle = "X-Men: Apocalypse";
-    private Double mExpectedPopularity = 13.733509;
-    private Integer mExpectedVoteCount = 2067;
+    private double mExpectedPopularity = 13.733509;
+    private int mExpectedVoteCount = 2067;
     private Double mExpectedRating = 6.12;
-    private Integer[] mExpectedGenreIds = new Integer[]{28,12,14,878};
+    private int[] mExpectedGenreIds = new int[]{28,12,14,878};
 
     @Before
     public void SetUp() throws Exception {
@@ -40,7 +40,7 @@ public class MovieTest {
     public void getMovieId() throws Exception {
 
         // Act
-        Integer actualId = mMovie.getId();
+        int actualId = mMovie.getId();
 
         // Assert
         Assert.assertEquals(mExpectedId, actualId);
@@ -90,7 +90,7 @@ public class MovieTest {
     public void getMovieVoteCount() throws Exception {
 
         // Act
-        Integer actualVoteCount = mMovie.getVoteCount();
+        int actualVoteCount = mMovie.getVoteCount();
 
         // Assert
         Assert.assertEquals(mExpectedVoteCount, actualVoteCount);
@@ -110,7 +110,7 @@ public class MovieTest {
     public void getMovieGenreIds() throws Exception {
 
         // Act
-        Integer[] actualIds = mMovie.getGenreIds();
+        int[] actualIds = mMovie.getGenreIds();
 
         // Assert
         Assert.assertEquals(mExpectedGenreIds, actualIds);

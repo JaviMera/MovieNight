@@ -42,7 +42,7 @@ public class PageTest {
             9000.0,
             9999999,
             10.0,
-            new Integer[]{12,14});
+            new int[]{12,14});
     }
 
     private Movie createSecondMovie() {
@@ -55,6 +55,6 @@ public class PageTest {
                 0.000,
                 0,
                 0.0,
-                new Integer[]{878});
+                new int[]{878});
     }
 }

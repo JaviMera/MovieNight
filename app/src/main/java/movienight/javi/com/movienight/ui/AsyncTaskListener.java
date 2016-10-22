@@ -10,5 +10,5 @@ import movienight.javi.com.movienight.model.Genre;
 
 public interface AsyncTaskListener<T> {
 
-    void onTaskCompleted(T[] genres);
+    void onTaskCompleted(T[] result);
 }
