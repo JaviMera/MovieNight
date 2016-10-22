@@ -50,7 +50,7 @@ public class DatePickerFragmentDialog extends DialogFragment {
                 cal.set(Calendar.YEAR, year);
                 cal.set(Calendar.DAY_OF_MONTH, day);
                 cal.set(Calendar.MONTH, month);
-                String formatedDate = new SimpleDateFormat("MM-dd-yyyy").format(cal.getTime());
+                String formatedDate = new SimpleDateFormat("yyyy-M-dd").format(cal.getTime());
                 mListener.OnDatePickerDone(formatedDate);
             }
         });

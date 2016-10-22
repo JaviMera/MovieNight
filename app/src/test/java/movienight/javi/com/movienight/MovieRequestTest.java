@@ -1,9 +1,12 @@
-package movienight.javi.com.movienight.model;
+package movienight.javi.com.movienight;
 
 import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import movienight.javi.com.movienight.model.Genre;
+import movienight.javi.com.movienight.model.MovieRequest;
 
 /**
  * Created by Javi on 10/18/2016.
