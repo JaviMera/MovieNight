@@ -35,9 +35,6 @@ public class MoviesActivity extends AppCompatActivity implements MoviePageAsyncT
 
         ButterKnife.bind(this);
 
-        MovieRecyclerViewAdapter movieAdapter = new MovieRecyclerViewAdapter(this, new LinkedList<Movie>(){}, this);
-        mMovieRecyclerView.setAdapter(movieAdapter);
-
         final RecyclerView.LayoutManager manager = new LinearLayoutManager(this);
         mMovieRecyclerView.setLayoutManager(manager);
 
@@ -57,14 +54,15 @@ public class MoviesActivity extends AppCompatActivity implements MoviePageAsyncT
                         builder
                                 .withPageNumber(String.valueOf(mCurrentPageNumber))
                                 .withGenres("12")
-                                .withStartReleaseDate("2000-10-1")
+                                .withStartReleaseDate("2015-10-1")
                                 .withEndReleaseDate("2016-10-1")
                                 .withVoteCount("1000")
                                 .withRating("5.0");
 
                         MovieUrl url = builder.createMovieUrl();
                         new MovieAsyncTask((MoviesActivity)recyclerView.getContext()).execute(url);
-                    }else {
+                    }
+                    else {
 
                         Toast.makeText(recyclerView.getContext(), "No more data to request", Toast.LENGTH_SHORT).show();
                     }
@@ -79,7 +77,7 @@ public class MoviesActivity extends AppCompatActivity implements MoviePageAsyncT
         builder
                 .withPageNumber(String.valueOf(mCurrentPageNumber))
                 .withGenres("12")
-                .withStartReleaseDate("2000-10-1")
+                .withStartReleaseDate("2015-10-1")
                 .withEndReleaseDate("2016-10-1")
                 .withVoteCount("1000")
                 .withRating("5.0");
@@ -91,16 +89,19 @@ public class MoviesActivity extends AppCompatActivity implements MoviePageAsyncT
     @Override
     public void onCompleted(Integer totalPages, Page page) {
 
+        List<Movie> movies = new LinkedList<>(Arrays.asList(page.getMovies()));
         if(null == mTotalPages) {
 
             mTotalPages = totalPages;
+
+            MovieRecyclerViewAdapter movieAdapter = new MovieRecyclerViewAdapter(this, movies, this);
+            mMovieRecyclerView.setAdapter(movieAdapter);
         }
+        else {
 
-        List<Movie> movies;
-
-        MovieRecyclerViewAdapter movieAdapter = (MovieRecyclerViewAdapter)mMovieRecyclerView.getAdapter();
-        movies = new LinkedList<>(Arrays.asList(page.getMovies()));
-        movieAdapter.updateData(movies);
+            MovieRecyclerViewAdapter movieAdapter = (MovieRecyclerViewAdapter)mMovieRecyclerView.getAdapter();
+            movieAdapter.updateData(movies);
+        }
     }
 
     @Override

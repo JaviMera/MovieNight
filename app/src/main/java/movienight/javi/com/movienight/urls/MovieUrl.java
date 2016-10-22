@@ -2,6 +2,8 @@ package movienight.javi.com.movienight.urls;
 
 import android.view.LayoutInflater;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,6 +59,16 @@ public class MovieUrl extends AbstractUrl {
         mEndDate = endDate;
         mVoteCount = voteCount;
         mRating = rating;
+    }
+
+    public String getStartDate() {
+
+        return mStartDate;
+    }
+
+    public String getEndDate() {
+
+        return mEndDate;
     }
 
     @Override

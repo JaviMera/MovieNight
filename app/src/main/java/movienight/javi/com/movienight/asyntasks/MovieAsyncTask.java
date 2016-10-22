@@ -7,10 +7,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.model.Page;
 import movienight.javi.com.movienight.urls.AbstractUrl;
+import movienight.javi.com.movienight.urls.MovieUrl;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -34,64 +43,78 @@ public class MovieAsyncTask extends AsyncTask<AbstractUrl, Void, Page> {
     @Override
     protected Page doInBackground(AbstractUrl... params) {
 
+        MovieUrl url = (MovieUrl)params[0];
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
-                .url(params[0].toString())
+                .url(url.toString())
                 .build();
 
         Call call = client.newCall(request);
 
         try
         {
+            Date startDateRquest = new SimpleDateFormat("yyyy-M-dd").parse(url.getStartDate());
+            Date endDateRequest = new SimpleDateFormat("yyyy-M-dd").parse(url.getEndDate());
+
             Response response = call.execute();
             String jsonString = response.body().string();
             JSONObject jsonObject = new JSONObject(jsonString);
             mTotalPages = jsonObject.getInt("total_pages");
 
             JSONArray resultsArray = jsonObject.getJSONArray("results");
-            Movie[] movies = new Movie[resultsArray.length()];
+            List<Movie> movies = new LinkedList<>();
 
             for(int result = 0 ; result < resultsArray.length(); result++) {
 
                 JSONObject currentJSONObject = resultsArray.getJSONObject(result);
 
-                int movieId = currentJSONObject.getInt("id");
-                String movieOverview = currentJSONObject.getString("overview");
-                String movieOriginalTitle = currentJSONObject.getString("original_title");
-                String movieTitle = currentJSONObject.getString("title");
-                double moviePopularity = currentJSONObject.getDouble("popularity");
-                int movieVotes = currentJSONObject.getInt("vote_count");
-                double movieRating = currentJSONObject.getDouble("vote_average");
+                String release_date = currentJSONObject.getString("release_date");
 
-                JSONArray genreIdsArray = currentJSONObject.getJSONArray("genre_ids");
-                int[] genreIds = new int[genreIdsArray.length()];
+                Date releaseDate = new SimpleDateFormat("yyyy-M-dd").parse(release_date);
 
-                for(int g = 0 ; g < genreIdsArray.length() ; g++) {
+                if((releaseDate.compareTo(startDateRquest) == 0 || releaseDate.compareTo(endDateRequest) == 0)
+                    || (releaseDate.compareTo(startDateRquest) == 1 && releaseDate.compareTo(endDateRequest) == -1)){
 
-                    genreIds[g] = genreIdsArray.getInt(g);
+                    int movieId = currentJSONObject.getInt("id");
+                    String movieOverview = currentJSONObject.getString("overview");
+                    String movieOriginalTitle = currentJSONObject.getString("original_title");
+                    String movieTitle = currentJSONObject.getString("title");
+                    double moviePopularity = currentJSONObject.getDouble("popularity");
+                    int movieVotes = currentJSONObject.getInt("vote_count");
+                    double movieRating = currentJSONObject.getDouble("vote_average");
+
+                    JSONArray genreIdsArray = currentJSONObject.getJSONArray("genre_ids");
+                    int[] genreIds = new int[genreIdsArray.length()];
+
+                    for(int g = 0 ; g < genreIdsArray.length() ; g++) {
+
+                        genreIds[g] = genreIdsArray.getInt(g);
+                    }
+
+                    Movie newMovie = new Movie(
+                            movieId,
+                            movieOverview,
+                            movieOriginalTitle,
+                            movieTitle,
+                            moviePopularity,
+                            movieVotes,
+                            movieRating,
+                            genreIds
+                    );
+
+                    movies.add(newMovie);
                 }
-
-                Movie newMovie = new Movie(
-                        movieId,
-                        movieOverview,
-                        movieOriginalTitle,
-                        movieTitle,
-                        moviePopularity,
-                        movieVotes,
-                        movieRating,
-                        genreIds
-                );
-
-                movies[result] = newMovie;
             }
 
             int pageNumber = jsonObject.getInt("page");
 
-            return new Page(pageNumber, movies);
+            return new Page(pageNumber, movies.toArray(new Movie[movies.size()]));
         }
         catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
 

@@ -70,13 +70,15 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
 
         public void bindMovie(final Movie movie, final MovieSelectedListener listener) {
 
-            mMovieTitleTextView.setText(movie.getOriginalTitle());
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onMovieSelectedListener(movie);
-                }
-            });
+            if(null != movie){
+                mMovieTitleTextView.setText(movie.getOriginalTitle());
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onMovieSelectedListener(movie);
+                    }
+                });
+            }
         }
     }
 }

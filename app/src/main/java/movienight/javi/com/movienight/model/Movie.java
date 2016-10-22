@@ -3,7 +3,7 @@ package movienight.javi.com.movienight.model;
 /**
  * Created by Javi on 10/21/2016.
  */
-public class Movie {
+public class Movie{
 
     private int mId;
     private String mOverview;
