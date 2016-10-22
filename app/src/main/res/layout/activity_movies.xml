@@ -10,8 +10,7 @@
     <RelativeLayout
         android:id="@+id/titleLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
+        android:layout_height="wrap_content">
 
         <include
             layout="@layout/logo_layout" />
@@ -24,13 +23,26 @@
             android:id="@+id/lineSeparatorView"
             android:layout_below="@+id/logoImageView"
             style="@style/UnderlineView" />
+
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/movieRecyclerListView"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="6"
         android:layout_margin="10dp">
-    </android.support.v7.widget.RecyclerView>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/movieRecyclerListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <ProgressBar
+            android:id="@+id/updateRecyclerViewProgressBar"
+            android:visibility="invisible"
+            android:indeterminateDrawable="@drawable/progress_bar_drawable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+    </FrameLayout>
 </LinearLayout>

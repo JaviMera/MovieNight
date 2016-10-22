@@ -11,6 +11,5 @@ import movienight.javi.com.movienight.model.Genre;
 public interface SearchActivityView {
 
     void setGenreSpinnerAdapter(Context ctx, Genre[] someGenres);
-
     void setSeekBarProgressTextView(int progress);
 }

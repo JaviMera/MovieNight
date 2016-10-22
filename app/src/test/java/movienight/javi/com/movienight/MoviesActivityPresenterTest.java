@@ -75,4 +75,16 @@ public class MoviesActivityPresenterTest {
         Mockito.verify(mView).setRecyclerViewManager(manager);
     }
 
+    @Test
+    public void setRecyclerViewProgressBarVisibility() throws Exception {
+
+        // Arrange
+        int someVisibility = 1;
+
+        // Act
+        mPresenter.setProgressBarVisibility(someVisibility);
+
+        // // Assert
+        Mockito.verify(mView).setProgressBarVisibility(someVisibility);
+    }
 }

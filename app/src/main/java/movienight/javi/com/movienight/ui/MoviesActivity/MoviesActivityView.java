@@ -16,4 +16,5 @@ public interface MoviesActivityView {
     void setRecyclerViewManager(RecyclerView.LayoutManager manager);
     void setRecyclerViewAdapter(Context context, Movie[] movies, MovieSelectedListener listener);
     void updateRecyclerAdapter(Movie[] movies);
+    void setProgressBarVisibility(int someVisibility);
 }

@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.Arrays;
@@ -34,6 +36,7 @@ public class MoviesActivity extends AppCompatActivity implements MoviesActivityV
     private RecyclerView.LayoutManager mRecyclerViewManager;
 
     @BindView(R.id.movieRecyclerListView) RecyclerView mMovieRecyclerView;
+    @BindView(R.id.updateRecyclerViewProgressBar) ProgressBar mMoviesProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,8 @@ public class MoviesActivity extends AppCompatActivity implements MoviesActivityV
                     if(mCurrentPageNumber < mTotalPages) {
 
                         mCurrentPageNumber++;
+                        mPresenter.setProgressBarVisibility(View.VISIBLE);
+                        
                         MovieUrl url = createMovieUrl(mCurrentPageNumber, mMovieRequest);
 
                         new MovieAsyncTask((MoviesActivity)recyclerView.getContext()).execute(url);
@@ -76,6 +81,7 @@ public class MoviesActivity extends AppCompatActivity implements MoviesActivityV
         mMovieRecyclerView.setHasFixedSize(true);
 
         mCurrentPageNumber = 1;
+        mPresenter.setProgressBarVisibility(View.VISIBLE);
         MovieUrl url = createMovieUrl(mCurrentPageNumber, mMovieRequest);
 
         new MovieAsyncTask(this).execute(url);
@@ -93,6 +99,8 @@ public class MoviesActivity extends AppCompatActivity implements MoviesActivityV
 
             mPresenter.updateRecyclerViewAdapter(page.getMovies());
         }
+
+        mPresenter.setProgressBarVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -123,6 +131,12 @@ public class MoviesActivity extends AppCompatActivity implements MoviesActivityV
 
         MovieRecyclerViewAdapter movieAdapter = (MovieRecyclerViewAdapter)mMovieRecyclerView.getAdapter();
         movieAdapter.updateData(new LinkedList<>(Arrays.asList(movies)));
+    }
+
+    @Override
+    public void setProgressBarVisibility(int visibility) {
+
+        mMoviesProgressBar.setVisibility(visibility);
     }
 
     private MovieUrl createMovieUrl(Integer pageNumber, MovieRequest request) {

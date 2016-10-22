@@ -32,4 +32,9 @@ public class MoviesActivityPresenter {
 
         mView.setRecyclerViewAdapter(context, movies, listener);
     }
+
+    public void setProgressBarVisibility(int progressBarVisibility) {
+
+        mView.setProgressBarVisibility(progressBarVisibility);
+    }
 }
