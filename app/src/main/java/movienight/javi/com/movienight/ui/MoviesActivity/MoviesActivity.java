@@ -4,10 +4,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.ScrollingTabContainerView;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -38,6 +44,44 @@ public class MoviesActivity extends AppCompatActivity implements MoviePageAsyncT
         ButterKnife.bind(this);
         mMapPages = new LinkedHashMap<>();
 
+        mPageSpinnerView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                int pageNumber = position + 1;
+
+                Page pageSelected = mMapPages.get(pageNumber);
+
+                if(null == pageSelected) {
+
+                    MovieUrlBuilder builder = new MovieUrlBuilder();
+                    builder
+                            .withPageNumber(pageNumber + "")
+                            .withGenres("12")
+                            .withStartReleaseDate("2000-10-1")
+                            .withEndReleaseDate("2016-10-1")
+                            .withVoteCount("1000")
+                            .withRating("5.0");
+
+                    MovieUrl url = builder.createMovieUrl();
+                    MoviesActivity activity = (MoviesActivity)parent.getContext();
+                    new MovieAsyncTask(activity).execute(url);
+                }
+                else {
+
+                    MovieRecyclerViewAdapter movieAdapter = (MovieRecyclerViewAdapter)mMovieRecyclerView.getAdapter();
+
+                    LinkedList<Movie> movies = new LinkedList<>(Arrays.asList(pageSelected.getMovies()));
+                    movieAdapter.updateData(movies);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         MovieUrlBuilder builder = new MovieUrlBuilder();
         builder
                 .withPageNumber("1")
@@ -54,7 +98,10 @@ public class MoviesActivity extends AppCompatActivity implements MoviePageAsyncT
     @Override
     public void onCompleted(Integer totalPages, Page page) {
 
-        if(null == mTotalPages){
+        MovieRecyclerViewAdapter movieAdapter;
+        List<Movie> movies;
+
+        if(mMapPages.isEmpty()){
 
             mTotalPages = totalPages;
             String[] spinnerItems = new String[mTotalPages];
@@ -64,19 +111,27 @@ public class MoviesActivity extends AppCompatActivity implements MoviePageAsyncT
                 spinnerItems[p] = "Page " + (p + 1);
             }
 
+            movieAdapter = new MovieRecyclerViewAdapter(this, new LinkedList<Movie>(){}, this);
+            mMovieRecyclerView.setAdapter(movieAdapter);
+
             PageSpinnerAdapter adapter = new PageSpinnerAdapter(this, spinnerItems);
             mPageSpinnerView.setAdapter(adapter);
 
-            MovieRecyclerViewAdapter movieAdapter = new MovieRecyclerViewAdapter(this, page.getMovies(), this);
-            mMovieRecyclerView.setAdapter(movieAdapter);
+        }
+        else {
 
-            RecyclerView.LayoutManager manager = new LinearLayoutManager(this);
-            mMovieRecyclerView.setLayoutManager(manager);
-
-            mMovieRecyclerView.setHasFixedSize(true);
+            movieAdapter = (MovieRecyclerViewAdapter)mMovieRecyclerView.getAdapter();
         }
 
         mMapPages.put(page.getNumber(), page);
+
+        movies = new LinkedList<>(Arrays.asList(page.getMovies()));
+        movieAdapter.updateData(movies);
+
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(this);
+        mMovieRecyclerView.setLayoutManager(manager);
+
+        mMovieRecyclerView.setHasFixedSize(true);
     }
 
     @Override

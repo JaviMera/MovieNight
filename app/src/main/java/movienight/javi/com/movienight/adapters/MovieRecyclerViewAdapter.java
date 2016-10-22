@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.List;
+
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.ui.MoviesActivity.MovieSelectedListener;
@@ -18,14 +20,21 @@ import movienight.javi.com.movienight.ui.MoviesActivity.MovieSelectedListener;
 public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecyclerViewAdapter.MovieViewHolder>{
 
     private Context mContext;
-    private Movie[] mMovies;
+    private List<Movie> mMovies;
     private MovieSelectedListener mListener;
 
-    public MovieRecyclerViewAdapter(Context context, Movie[] movies, MovieSelectedListener listener) {
+    public MovieRecyclerViewAdapter(Context context, List<Movie> movies, MovieSelectedListener listener) {
 
         mContext = context;
         mMovies = movies;
         mListener = listener;
+    }
+
+    public void updateData(List<Movie> movies) {
+
+        mMovies.clear();
+        mMovies.addAll(movies);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -41,12 +50,12 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
 
-        holder.bindMovie(mMovies[position], mListener);
+        holder.bindMovie(mMovies.get(position), mListener);
     }
 
     @Override
     public int getItemCount() {
-        return mMovies.length;
+        return mMovies.size();
     }
 
     public class MovieViewHolder extends RecyclerView.ViewHolder {
