@@ -1,4 +1,4 @@
-package movienight.javi.com.movienight.ui.SearchActivity;
+package movienight.javi.com.movienight.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -15,17 +15,18 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import butterknife.ButterKnife;
+import movienight.javi.com.movienight.Listeners.DatePickerListener;
 import movienight.javi.com.movienight.R;
 
 public class DatePickerFragmentDialog extends DialogFragment {
 
-    private OnDoneListener mListener;
+    private DatePickerListener mListener;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        mListener = (OnDoneListener)context;
+        mListener = (DatePickerListener)context;
     }
 
     @NonNull

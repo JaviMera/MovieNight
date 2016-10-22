@@ -1,4 +1,4 @@
-package movienight.javi.com.movienight.ui.SearchActivity;
+package movienight.javi.com.movienight.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;

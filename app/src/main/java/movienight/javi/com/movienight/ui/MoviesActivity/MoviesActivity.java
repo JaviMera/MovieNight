@@ -15,10 +15,11 @@ import java.util.LinkedList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import movienight.javi.com.movienight.Listeners.MovieSelectedListener;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.adapters.MovieRecyclerViewAdapter;
 import movienight.javi.com.movienight.asyntasks.MovieAsyncTask;
-import movienight.javi.com.movienight.asyntasks.MoviePageAsyncTaskListener;
+import movienight.javi.com.movienight.Listeners.MoviesAsyncTaskListener;
 import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.model.MovieRequest;
 import movienight.javi.com.movienight.model.Page;
@@ -26,7 +27,7 @@ import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.urls.MovieUrl;
 import movienight.javi.com.movienight.urls.MovieUrlBuilder;
 
-public class MoviesActivity extends AppCompatActivity implements MoviesActivityView, MoviePageAsyncTaskListener, MovieSelectedListener {
+public class MoviesActivity extends AppCompatActivity implements MoviesActivityView, MoviesAsyncTaskListener, MovieSelectedListener {
 
     private Integer mTotalPages;
     private int mCurrentPageNumber;
@@ -65,7 +66,7 @@ public class MoviesActivity extends AppCompatActivity implements MoviesActivityV
 
                         mCurrentPageNumber++;
                         mPresenter.setProgressBarVisibility(View.VISIBLE);
-                        
+
                         MovieUrl url = createMovieUrl(mCurrentPageNumber, mMovieRequest);
 
                         new MovieAsyncTask((MoviesActivity)recyclerView.getContext()).execute(url);

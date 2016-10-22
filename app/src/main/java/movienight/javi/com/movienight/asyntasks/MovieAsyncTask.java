@@ -7,15 +7,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import movienight.javi.com.movienight.Listeners.MoviesAsyncTaskListener;
 import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.model.Page;
 import movienight.javi.com.movienight.urls.AbstractUrl;
@@ -32,10 +30,10 @@ import okhttp3.Response;
 
 public class MovieAsyncTask extends AsyncTask<AbstractUrl, Void, Page> {
 
-    private MoviePageAsyncTaskListener mListener;
+    private MoviesAsyncTaskListener mListener;
     private Integer mTotalPages;
 
-    public MovieAsyncTask(MoviePageAsyncTaskListener listener) {
+    public MovieAsyncTask(MoviesAsyncTaskListener listener) {
 
         mListener = listener;
     }

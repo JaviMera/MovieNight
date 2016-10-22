@@ -1,4 +1,4 @@
-package movienight.javi.com.movienight.ui.SearchActivity;
+package movienight.javi.com.movienight.asyntasks;
 
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
@@ -12,6 +12,7 @@ import java.io.IOException;
 import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.model.jsonvalues.JSONGenre;
 import movienight.javi.com.movienight.ui.AsyncTaskListener;
+import movienight.javi.com.movienight.dialogs.LoadingFragmentDialog;
 import movienight.javi.com.movienight.urls.AbstractUrl;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;

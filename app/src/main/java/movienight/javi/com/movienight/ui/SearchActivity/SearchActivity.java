@@ -1,52 +1,35 @@
 package movienight.javi.com.movienight.ui.SearchActivity;
 
-import android.app.Activity;
-import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.ScrollingTabContainerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnItemClick;
+import movienight.javi.com.movienight.Listeners.DatePickerListener;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.adapters.GenreSpinnerAdapter;
+import movienight.javi.com.movienight.asyntasks.GenreAsyncTask;
+import movienight.javi.com.movienight.dialogs.DatePickerFragmentDialog;
 import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.model.MovieRequest;
-import movienight.javi.com.movienight.model.jsonvalues.JSONGenre;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.ui.AsyncTaskListener;
 import movienight.javi.com.movienight.ui.MoviesActivity.MoviesActivity;
-import movienight.javi.com.movienight.urls.AbstractUrl;
 import movienight.javi.com.movienight.urls.GenreUrl;
-import okhttp3.Call;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
-public class SearchActivity extends AppCompatActivity implements SearchActivityView, OnDoneListener, AsyncTaskListener<Genre>{
+public class SearchActivity extends AppCompatActivity implements SearchActivityView, DatePickerListener, AsyncTaskListener<Genre>{
 
     private final double mProgressDivider = 10.0;
 

@@ -11,7 +11,7 @@ import java.util.List;
 
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.model.Movie;
-import movienight.javi.com.movienight.ui.MoviesActivity.MovieSelectedListener;
+import movienight.javi.com.movienight.Listeners.MovieSelectedListener;
 
 /**
  * Created by Javi on 10/21/2016.

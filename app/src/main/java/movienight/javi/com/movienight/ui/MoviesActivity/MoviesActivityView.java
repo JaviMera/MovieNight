@@ -3,8 +3,7 @@ package movienight.javi.com.movienight.ui.MoviesActivity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 
-import java.util.List;
-
+import movienight.javi.com.movienight.Listeners.MovieSelectedListener;
 import movienight.javi.com.movienight.model.Movie;
 
 /**
