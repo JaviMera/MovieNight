@@ -14,7 +14,6 @@ import android.widget.DatePicker;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import butterknife.ButterKnife;
 import movienight.javi.com.movienight.Listeners.DatePickerListener;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.model.ReleaseDate;
@@ -34,13 +33,15 @@ public class DatePickerFragmentDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        ButterKnife.bind(getActivity());
         Context context = getActivity();
+
         View datePickerLayout = LayoutInflater.from(context).inflate(R.layout.date_picker_layout, null);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
         dialogBuilder.setView(datePickerLayout);
+
         final DatePicker mReleaseDatePicker = (DatePicker) datePickerLayout.findViewById(R.id.releaseDatePickerView);
         final Button doneButton = (Button) datePickerLayout.findViewById(R.id.doneDatepickerButtonView);
+
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,15 +49,22 @@ public class DatePickerFragmentDialog extends DialogFragment {
                 int month = mReleaseDatePicker.getMonth();
                 int year = mReleaseDatePicker.getYear();
 
-                Calendar cal = Calendar.getInstance();
-                cal.set(Calendar.YEAR, year);
-                cal.set(Calendar.DAY_OF_MONTH, day);
-                cal.set(Calendar.MONTH, month);
+                Calendar cal = createCalendar(year, month, day);
                 String formatedDate = new SimpleDateFormat(ReleaseDate.FORMAT).format(cal.getTime());
                 mListener.OnDatePickerDone(formatedDate);
             }
         });
 
         return dialogBuilder.create();
+    }
+
+    private Calendar createCalendar(int year, int month, int day) {
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.DAY_OF_MONTH, day);
+        cal.set(Calendar.MONTH, month);
+
+        return cal;
     }
 }
