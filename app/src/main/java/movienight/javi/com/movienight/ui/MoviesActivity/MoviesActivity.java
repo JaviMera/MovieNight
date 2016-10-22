@@ -2,30 +2,33 @@ package movienight.javi.com.movienight.ui.MoviesActivity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import movienight.javi.com.movienight.R;
+import movienight.javi.com.movienight.adapters.MovieRecyclerViewAdapter;
 import movienight.javi.com.movienight.adapters.PageSpinnerAdapter;
 import movienight.javi.com.movienight.asyntasks.MovieAsyncTask;
-import movienight.javi.com.movienight.asyntasks.MoviePagesAsyncTaskListener;
+import movienight.javi.com.movienight.asyntasks.MoviePageAsyncTaskListener;
+import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.model.Page;
 import movienight.javi.com.movienight.urls.MovieUrl;
 import movienight.javi.com.movienight.urls.MovieUrlBuilder;
 
-public class MoviesActivity extends AppCompatActivity implements MoviePagesAsyncTaskListener{
+public class MoviesActivity extends AppCompatActivity implements MoviePageAsyncTaskListener, MovieSelectedListener {
 
     private Map<Integer, Page> mMapPages;
     private Integer mTotalPages;
 
     @BindView(R.id.pageSpinnerView) Spinner mPageSpinnerView;
+    @BindView(R.id.movieRecyclerListView) RecyclerView mMovieRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +66,23 @@ public class MoviesActivity extends AppCompatActivity implements MoviePagesAsync
 
             PageSpinnerAdapter adapter = new PageSpinnerAdapter(this, spinnerItems);
             mPageSpinnerView.setAdapter(adapter);
+
+            MovieRecyclerViewAdapter movieAdapter = new MovieRecyclerViewAdapter(this, page.getMovies(), this);
+            mMovieRecyclerView.setAdapter(movieAdapter);
+
+            RecyclerView.LayoutManager manager = new LinearLayoutManager(this);
+            mMovieRecyclerView.setLayoutManager(manager);
+
+            mMovieRecyclerView.setHasFixedSize(true);
         }
 
         mMapPages.put(page.getNumber(), page);
+    }
+
+    @Override
+    public void onMovieSelectedListener(Movie movie) {
+
+        Toast.makeText(this, movie.getOverview(), Toast.LENGTH_SHORT).show();
     }
 }
 

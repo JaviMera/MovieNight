@@ -10,7 +10,6 @@ import java.io.IOException;
 
 import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.model.Page;
-import movienight.javi.com.movienight.ui.AsyncTaskListener;
 import movienight.javi.com.movienight.urls.AbstractUrl;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
@@ -24,10 +23,10 @@ import okhttp3.Response;
 
 public class MovieAsyncTask extends AsyncTask<AbstractUrl, Void, Page> {
 
-    private MoviePagesAsyncTaskListener mListener;
+    private MoviePageAsyncTaskListener mListener;
     private Integer mTotalPages;
 
-    public MovieAsyncTask(MoviePagesAsyncTaskListener listener) {
+    public MovieAsyncTask(MoviePageAsyncTaskListener listener) {
 
         mListener = listener;
     }
