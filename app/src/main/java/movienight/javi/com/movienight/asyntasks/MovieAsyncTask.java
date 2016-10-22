@@ -22,11 +22,12 @@ import okhttp3.Response;
  */
 
 
-public class MoviePageAsyncTask extends AsyncTask<AbstractUrl, Void, Page> {
+public class MovieAsyncTask extends AsyncTask<AbstractUrl, Void, Page> {
 
-    private AsyncTaskListener<Page> mListener;
+    private MoviePagesAsyncTaskListener mListener;
+    private Integer mTotalPages;
 
-    public MoviePageAsyncTask(AsyncTaskListener<Page> listener) {
+    public MovieAsyncTask(MoviePagesAsyncTaskListener listener) {
 
         mListener = listener;
     }
@@ -46,6 +47,7 @@ public class MoviePageAsyncTask extends AsyncTask<AbstractUrl, Void, Page> {
             Response response = call.execute();
             String jsonString = response.body().string();
             JSONObject jsonObject = new JSONObject(jsonString);
+            mTotalPages = jsonObject.getInt("total_pages");
 
             JSONArray resultsArray = jsonObject.getJSONArray("results");
             Movie[] movies = new Movie[resultsArray.length()];
@@ -100,6 +102,6 @@ public class MoviePageAsyncTask extends AsyncTask<AbstractUrl, Void, Page> {
     @Override
     protected void onPostExecute(Page page) {
 
-        mListener.onTaskCompleted(new Page[]{page});
+        mListener.onCompleted(mTotalPages, page);
     }
 }
