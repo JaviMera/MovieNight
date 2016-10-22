@@ -13,6 +13,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import movienight.javi.com.movienight.R;
+import movienight.javi.com.movienight.adapters.PageSpinnerAdapter;
 import movienight.javi.com.movienight.asyntasks.MovieAsyncTask;
 import movienight.javi.com.movienight.asyntasks.MoviePagesAsyncTaskListener;
 import movienight.javi.com.movienight.model.Page;
@@ -60,8 +61,7 @@ public class MoviesActivity extends AppCompatActivity implements MoviePagesAsync
                 spinnerItems[p] = "Page " + (p + 1);
             }
 
-            ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, spinnerItems);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            PageSpinnerAdapter adapter = new PageSpinnerAdapter(this, spinnerItems);
             mPageSpinnerView.setAdapter(adapter);
         }
 

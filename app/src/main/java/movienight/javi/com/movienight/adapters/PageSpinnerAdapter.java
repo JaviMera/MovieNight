@@ -8,41 +8,31 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import movienight.javi.com.movienight.R;
-import movienight.javi.com.movienight.model.Genre;
 
 /**
- * Created by Javi on 10/18/2016.
+ * Created by Javi on 10/21/2016.
  */
 
-public class GenreSpinnerAdapter extends ArrayAdapter<Genre> {
+public class PageSpinnerAdapter extends ArrayAdapter {
 
     private Context mContext;
-    private Genre[] mGenres;
+    private String[] mItems;
 
-    public GenreSpinnerAdapter(Context context, Genre[] genres) {
+    public PageSpinnerAdapter(Context context, String[] items) {
 
         super(context, 0);
-
         mContext = context;
-        mGenres = genres;
+        mItems = items;
     }
 
     @Override
     public int getCount() {
-
-        return mGenres.length;
+        return mItems.length;
     }
 
     @Override
-    public Genre getItem(int position) {
-
-        return mGenres[position];
-    }
-
-    @Override
-    public long getItemId(int position) {
-
-        return mGenres[position].getId();
+    public String getItem(int position) {
+        return mItems[position];
     }
 
     @Override
@@ -54,7 +44,7 @@ public class GenreSpinnerAdapter extends ArrayAdapter<Genre> {
 
             convertView = LayoutInflater.from(mContext).inflate(R.layout.spinner_item_layout, null);
             holder = new SpinnerItemViewHolder();
-            holder.mGenreDescriptionTextView = (TextView) convertView.findViewById(R.id.genreDescriptionTextView);
+            holder.mItemTextView = (TextView) convertView.findViewById(R.id.genreDescriptionTextView);
 
             convertView.setTag(holder);
         }
@@ -63,8 +53,8 @@ public class GenreSpinnerAdapter extends ArrayAdapter<Genre> {
             holder = (SpinnerItemViewHolder) convertView.getTag();
         }
 
-        Genre current = getItem(position);
-        holder.mGenreDescriptionTextView.setText(current.getDescription());
+        String current = getItem(position);
+        holder.mItemTextView.setText(current);
 
         return convertView;
     }
@@ -78,7 +68,7 @@ public class GenreSpinnerAdapter extends ArrayAdapter<Genre> {
 
             convertView = LayoutInflater.from(mContext).inflate(R.layout.spinner_item_dropdown_layout, null);
             holder = new SpinnerItemDropdownViewHolder();
-            holder.mGenreDescriptionDropdownTextView = (TextView) convertView.findViewById(R.id.genreDescriptionDropdownTextView);
+            holder.mDropdownItemTextView = (TextView) convertView.findViewById(R.id.genreDescriptionDropdownTextView);
 
             convertView.setTag(holder);
         }
@@ -87,19 +77,19 @@ public class GenreSpinnerAdapter extends ArrayAdapter<Genre> {
             holder = (SpinnerItemDropdownViewHolder) convertView.getTag();
         }
 
-        Genre current = getItem(position);
-        holder.mGenreDescriptionDropdownTextView.setText(current.getDescription());
+        String current = getItem(position);
+        holder.mDropdownItemTextView.setText(current);
 
         return convertView;
     }
 
     private static class SpinnerItemViewHolder {
 
-        TextView mGenreDescriptionTextView;
+        TextView mItemTextView;
     }
 
     private static class SpinnerItemDropdownViewHolder {
 
-        TextView mGenreDescriptionDropdownTextView;
+        TextView mDropdownItemTextView;
     }
 }
