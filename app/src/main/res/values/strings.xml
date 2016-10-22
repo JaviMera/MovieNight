@@ -11,4 +11,5 @@
     <string name="genre_text">Genre:</string>
     <string name="search_title_text">Search for movies!</string>
     <string name="find_movies_button_text">Go find movies!</string>
+    <string name="movies_result_text">Movies Result!</string>
 </resources>

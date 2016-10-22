@@ -57,14 +57,23 @@
     <style name="SearchTitleTextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-
         <item name="android:text">@string/search_title_text</item>
         <item name="android:textStyle">italic|bold</item>
         <item name="android:textSize">@dimen/search_title_text_size</item>
         <item name="android:textColor">@color/movie_dark_purple</item>
         <item name="android:layout_centerInParent">true</item>
         <item name="android:paddingLeft">@dimen/search_title_padding</item>
+    </style>
 
+    <style name="MoviesResultTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">@string/movies_result_text</item>
+        <item name="android:textStyle">italic|bold</item>
+        <item name="android:textSize">@dimen/search_title_text_size</item>
+        <item name="android:textColor">@color/movie_dark_purple</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:paddingLeft">@dimen/search_title_padding</item>
     </style>
 
     <!-- Search Movie Table Layout -->

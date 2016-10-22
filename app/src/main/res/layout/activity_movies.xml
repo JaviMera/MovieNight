@@ -7,12 +7,24 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Spinner
-        android:id="@+id/pageSpinnerView"
+    <RelativeLayout
+        android:id="@+id/titleLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@drawable/spinner_background" />
+        android:layout_alignParentTop="true">
+
+        <include
+            layout="@layout/logo_layout" />
+
+        <TextView
+            android:layout_above="@+id/lineSeparatorView"
+            style="@style/MoviesResultTextView" />
+
+        <View
+            android:id="@+id/lineSeparatorView"
+            android:layout_below="@+id/logoImageView"
+            style="@style/UnderlineView" />
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/movieRecyclerListView"

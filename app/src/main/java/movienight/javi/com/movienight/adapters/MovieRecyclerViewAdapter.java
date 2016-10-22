@@ -32,7 +32,6 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
 
     public void updateData(List<Movie> movies) {
 
-        mMovies.clear();
         mMovies.addAll(movies);
         notifyDataSetChanged();
     }
