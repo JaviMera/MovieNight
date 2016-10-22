@@ -6,7 +6,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,7 +21,7 @@ import movienight.javi.com.movienight.urls.MovieUrlBuilder;
 
 public class MoviesActivity extends AppCompatActivity implements MoviePagesAsyncTaskListener{
 
-    private List<Page> mMoviePages;
+    private Map<Integer, Page> mMapPages;
     private Integer mTotalPages;
 
     @BindView(R.id.pageSpinnerView) Spinner mPageSpinnerView;
@@ -30,8 +32,7 @@ public class MoviesActivity extends AppCompatActivity implements MoviePagesAsync
         setContentView(R.layout.activity_movies);
 
         ButterKnife.bind(this);
-
-        mMoviePages = new ArrayList<>();
+        mMapPages = new LinkedHashMap<>();
 
         MovieUrlBuilder builder = new MovieUrlBuilder();
         builder
@@ -43,7 +44,6 @@ public class MoviesActivity extends AppCompatActivity implements MoviePagesAsync
                 .withRating("5.0");
 
         MovieUrl url = builder.createMovieUrl();
-
         new MovieAsyncTask(this).execute(url);
     }
 
@@ -65,7 +65,7 @@ public class MoviesActivity extends AppCompatActivity implements MoviePagesAsync
             mPageSpinnerView.setAdapter(adapter);
         }
 
-        mMoviePages.add(page);
+        mMapPages.put(page.getNumber(), page);
     }
 }
 
