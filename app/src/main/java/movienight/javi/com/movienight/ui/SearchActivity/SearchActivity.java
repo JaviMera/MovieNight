@@ -18,7 +18,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import movienight.javi.com.movienight.Listeners.DatePickerListener;
+import movienight.javi.com.movienight.listeners.DatePickerListener;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.adapters.GenreSpinnerAdapter;
 import movienight.javi.com.movienight.asyntasks.GenreAsyncTask;
