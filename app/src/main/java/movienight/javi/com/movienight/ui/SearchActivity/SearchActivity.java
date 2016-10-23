@@ -107,18 +107,7 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
     public void onFindMoviesButtonClick(View view) {
 
         MovieRequest movieRequest = new MovieRequest();
-
-        List<Genre> selectedGenres = new LinkedList<>();
-
-        for(Genre genre : mGenres) {
-
-            if(genre.isChecked()) {
-
-                selectedGenres.add(genre);
-            }
-        }
-
-        movieRequest.setGenre(selectedGenres.toArray(new Genre[selectedGenres.size()]));
+        movieRequest.setGenre(getSelectedGenres(mGenres));
         movieRequest.setStartDateRelease(mStartReleaseDateButtonView.getText().toString());
         movieRequest.setEndDateReleaseSelected(mEndReleaseDateButtonView.getText().toString());
         movieRequest.setVoteCount(Integer.parseInt(mVoteCountEditText.getText().toString()));
@@ -163,5 +152,20 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
     public void onTaskCompleted(Genre[] result) {
 
         mGenres = result;
+    }
+
+    private Genre[] getSelectedGenres(Genre[] genres) {
+
+        List<Genre> selectedGenres = new LinkedList<>();
+
+        for(Genre genre : genres) {
+
+            if(genre.isChecked()) {
+
+                selectedGenres.add(genre);
+            }
+        }
+
+        return selectedGenres.toArray(new Genre[selectedGenres.size()]);
     }
 }

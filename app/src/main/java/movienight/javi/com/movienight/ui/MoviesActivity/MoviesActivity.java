@@ -147,8 +147,21 @@ public class MoviesActivity extends AppCompatActivity implements MoviesActivityV
         String endDate = request.getEndDateReleaseSelected();
         String voteCount = String.valueOf(request.getVoteCountSelected());
         String rating = String.valueOf(request.getRatingSelected());
+        String genresIds = parseGenresIds(request.getGenreSelected());
 
-        Genre[] genres = request.getGenreSelected();
+        MovieUrlBuilder builder = new MovieUrlBuilder();
+        builder
+            .withPageNumber(page)
+            .withStartReleaseDate(startDate)
+            .withEndReleaseDate(endDate)
+            .withVoteCount(voteCount)
+            .withRating(rating)
+            .withGenres(genresIds);
+
+        return builder.createMovieUrl();
+    }
+
+    private String parseGenresIds(Genre[] genres) {
 
         String genresIds = "";
         for(int i = 0 ; i < genres.length ; i++) {
@@ -164,16 +177,7 @@ public class MoviesActivity extends AppCompatActivity implements MoviesActivityV
             }
         }
 
-        MovieUrlBuilder builder = new MovieUrlBuilder();
-        builder
-            .withPageNumber(page)
-            .withStartReleaseDate(startDate)
-            .withEndReleaseDate(endDate)
-            .withVoteCount(voteCount)
-            .withRating(rating)
-            .withGenres(genresIds);
-
-        return builder.createMovieUrl();
+        return genresIds;
     }
 }
 
