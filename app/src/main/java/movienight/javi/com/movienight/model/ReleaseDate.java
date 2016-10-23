@@ -7,4 +7,5 @@ package movienight.javi.com.movienight.model;
 public class ReleaseDate {
 
     public static final String FORMAT = "yyyy-M-dd";
+    public static final String DATE_SELECTED = "date_selected";
 }

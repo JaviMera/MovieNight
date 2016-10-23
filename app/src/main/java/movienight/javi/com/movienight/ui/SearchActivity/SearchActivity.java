@@ -35,8 +35,6 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
 
     private Genre[] mGenres;
     private SearchActivityPresenter mPresenter;
-    private DatePickerFragmentDialog mDatepickerDialog;
-    private GenresFragmentDialog mGenresDialog;
     private AppCompatButton mDateButtonClicked;
 
     @BindView(R.id.seekBarView) SeekBar mSeekBarView;
@@ -52,7 +50,6 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
 
-        mDatepickerDialog = new DatePickerFragmentDialog();
         mPresenter = new SearchActivityPresenter(this);
 
         mSeekBarView.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -86,22 +83,24 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
     @OnClick(R.id.genreButtonView)
     public void onGenresButtonClick(View view) {
 
-        mGenresDialog = GenresFragmentDialog.newInstance(mGenres);
-        mGenresDialog.show(getSupportFragmentManager(), "genres_tag");
+        GenresFragmentDialog dialog = GenresFragmentDialog.newInstance(mGenres);
+        dialog.show(getSupportFragmentManager(), "genres_tag");
     }
 
     @OnClick(R.id.startReleaseDateButtonView)
     public void onDatepickerImageClick(View view) {
 
         mDateButtonClicked = mStartReleaseDateButtonView;
-        mDatepickerDialog.show(getSupportFragmentManager(), "start_tag");
+        DatePickerFragmentDialog dialog = DatePickerFragmentDialog.newInstance(mDateButtonClicked.getText().toString());
+        dialog.show(getSupportFragmentManager(), "start_tag");
     }
 
     @OnClick(R.id.endReleaseDateButtonView)
     public void onEndReleaseDateButtonClick(View view) {
 
         mDateButtonClicked = mEndReleaseDateButtonView;
-        mDatepickerDialog.show(getSupportFragmentManager(), "end_dialog");
+        DatePickerFragmentDialog dialog = DatePickerFragmentDialog.newInstance(mDateButtonClicked.getText().toString());
+        dialog.show(getSupportFragmentManager(), "start_tag");
     }
 
     @OnClick(R.id.findMoviesButtonView)
@@ -134,13 +133,11 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
     public void OnDatePickerDone(String date) {
 
         mDateButtonClicked.setText(date);
-        mDatepickerDialog.dismiss();
     }
 
     @Override
     public void onGenreSelectionCompleted(Genre[] genres) {
 
-        mGenresDialog.dismiss();
         String genresSelectedTexts = "";
 
         for(int i = 0 ; i < genres.length ; i++) {

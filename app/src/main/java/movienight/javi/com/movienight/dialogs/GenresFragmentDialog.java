@@ -91,6 +91,7 @@ public class GenresFragmentDialog extends DialogFragment{
 
                 Genre[] selectedGenres = adapter.getSelectedGenres();
                 mListener.onGenreSelectionCompleted(selectedGenres);
+                dismiss();
             }
         });
 
