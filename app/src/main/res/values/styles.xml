@@ -139,6 +139,13 @@
         <item name="android:background">@drawable/release_date_button_drawable</item>
     </style>
 
+    <style name="GenreButtonView" parent="InputViewWithText">
+        <item name="android:hint">@string/empty_genre_text</item>
+        <item name="android:gravity">left|center</item>
+        <item name="android:scaleType">fitEnd</item>
+        <item name="android:background">@drawable/genre_button_background</item>
+    </style>
+
     <style name="VoteCountEditTextView" parent="InputViewWithText">
         <item name="android:hint">@string/vote_count_hint_text</item>
         <item name="android:inputType">number</item>

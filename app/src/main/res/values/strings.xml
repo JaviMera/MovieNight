@@ -12,4 +12,6 @@
     <string name="search_title_text">Search for movies!</string>
     <string name="find_movies_button_text">Go find movies!</string>
     <string name="movies_result_text">Movies Result!</string>
+    <string name="empty_genre_text">no genres selected</string>
+    <string name="genres_button_text">done!</string>
 </resources>

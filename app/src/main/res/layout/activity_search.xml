@@ -36,9 +36,9 @@
         <TextView
             style="@style/GenreTextView"/>
 
-        <Spinner
-            android:id="@+id/genreSpinnerView"
-            style="@style/GenreSpinnerView" />
+        <Button
+            android:id="@+id/genreButtonView"
+            style="@style/GenreButtonView"/>
 
     </LinearLayout>
 

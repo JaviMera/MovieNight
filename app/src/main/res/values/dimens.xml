@@ -15,7 +15,7 @@
     <dimen name="search_act_row_margin">15dp</dimen>
     <dimen name="movie_button_margin">15dp</dimen>
     <dimen name="movie_button_text_size">16dp</dimen>
-    <dimen name="input_view_left_margin">10dp</dimen>
+    <dimen name="input_view_left_margin">15dp</dimen>
     <dimen name="input_view_text_size">15sp</dimen>
     <dimen name="input_view_text_left_pad">10dp</dimen>
     <dimen name="underline_view_padding">10dp</dimen>

@@ -32,20 +32,6 @@ public class SearchActivityPresenterTest {
     private SearchActivityView mView;
 
     @Test
-    public void setGenreSpinnerAdapter() throws Exception {
-
-        // Arrange
-        Context ctx = null;
-        Genre[] someGenres = new Genre[2];
-
-        // Act
-        mPresenter.setGenreSpinnerAdapter(ctx, someGenres);
-
-        // Assert
-        Mockito.verify(mView).setGenreSpinnerAdapter(ctx, someGenres);
-    }
-
-    @Test
     public void updateSeekBarProgressTextView() throws Exception {
 
         // Arrange

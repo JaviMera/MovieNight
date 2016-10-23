@@ -16,22 +16,16 @@ import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.SeekBar;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import movienight.javi.com.movienight.adapters.GenreSpinnerAdapter;
-import movienight.javi.com.movienight.model.Genre;
-import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.ui.SearchActivity.SearchActivity;
 
 import static android.support.test.espresso.Espresso.onData;

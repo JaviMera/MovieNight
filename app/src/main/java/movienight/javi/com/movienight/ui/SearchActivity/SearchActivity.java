@@ -18,11 +18,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import movienight.javi.com.movienight.dialogs.GenresFragmentDialog;
 import movienight.javi.com.movienight.listeners.DatePickerListener;
 import movienight.javi.com.movienight.R;
-import movienight.javi.com.movienight.adapters.GenreSpinnerAdapter;
 import movienight.javi.com.movienight.asyntasks.GenreAsyncTask;
 import movienight.javi.com.movienight.dialogs.DatePickerFragmentDialog;
+import movienight.javi.com.movienight.listeners.GenresSelectedListener;
 import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.model.MovieRequest;
 import movienight.javi.com.movienight.ui.ActivityExtras;
@@ -30,17 +31,17 @@ import movienight.javi.com.movienight.ui.AsyncTaskListener;
 import movienight.javi.com.movienight.ui.MoviesActivity.MoviesActivity;
 import movienight.javi.com.movienight.urls.GenreUrl;
 
-public class SearchActivity extends AppCompatActivity implements SearchActivityView, DatePickerListener, AsyncTaskListener<Genre>{
+public class SearchActivity extends AppCompatActivity implements SearchActivityView, DatePickerListener, AsyncTaskListener<Genre>, GenresSelectedListener{
 
     private final double mProgressDivider = 10.0;
 
-    private Genre mGenreSelected;
+    private Genre[] mGenres;
     private SearchActivityPresenter mPresenter;
     private DatePickerFragmentDialog mDialog;
     private AppCompatButton mDateButtonClicked;
 
     @BindView(R.id.seekBarView) SeekBar mSeekBarView;
-    @BindView(R.id.genreSpinnerView) Spinner mGenreSpinner;
+    @BindView(R.id.genreButtonView) AppCompatButton mGenresButtonView;
     @BindView(R.id.startReleaseDateButtonView) AppCompatButton mStartReleaseDateButtonView;
     @BindView(R.id.endReleaseDateButtonView) AppCompatButton mEndReleaseDateButtonView;
     @BindView(R.id.votesCountEditTextView) EditText mVoteCountEditText;
@@ -54,20 +55,6 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
 
         mDialog = new DatePickerFragmentDialog();
         mPresenter = new SearchActivityPresenter(this);
-        mGenreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                GenreSpinnerAdapter adapter = (GenreSpinnerAdapter)parent.getAdapter();
-                mGenreSelected = adapter.getItem(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         mSeekBarView.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -90,18 +77,18 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
     }
 
     @Override
-    public void setGenreSpinnerAdapter(Context ctx, Genre[] genres) {
-
-        GenreSpinnerAdapter adapter = new GenreSpinnerAdapter(this, genres);
-        mGenreSpinner.setAdapter(adapter);
-    }
-
-    @Override
     public void setSeekBarProgressTextView(int progress) {
 
         DecimalFormat df = new DecimalFormat("#.#");
         String progressValue = df.format(progress / mProgressDivider);
         mRatingValueTextView.setText(progressValue);
+    }
+
+    @OnClick(R.id.genreButtonView)
+    public void onGenresButtonClick(View view) {
+
+        GenresFragmentDialog dialog = GenresFragmentDialog.newInstance(mGenres);
+        dialog.show(getSupportFragmentManager(), "genres_tag");
     }
 
     @OnClick(R.id.startReleaseDateButtonView)
@@ -121,10 +108,7 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
     @OnClick(R.id.findMoviesButtonView)
     public void onFindMoviesButtonClick(View view) {
 
-        GenreSpinnerAdapter adapter = (GenreSpinnerAdapter)mGenreSpinner.getAdapter();
-        List<Genre> genres = adapter.getCheckedGenres();
         MovieRequest movieRequest = new MovieRequest();
-        movieRequest.setGenre(mGenreSelected);
         movieRequest.setStartDateRelease(mStartReleaseDateButtonView.getText().toString());
         movieRequest.setEndDateReleaseSelected(mEndReleaseDateButtonView.getText().toString());
         movieRequest.setVoteCount(Integer.parseInt(mVoteCountEditText.getText().toString()));
@@ -145,6 +129,11 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
     @Override
     public void onTaskCompleted(Genre[] genres) {
 
-        mPresenter.setGenreSpinnerAdapter(this, genres);
+        mGenres = genres;
+    }
+
+    @Override
+    public void onGenreSelectionCompleted(Genre[] genres) {
+
     }
 }
