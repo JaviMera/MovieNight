@@ -34,16 +34,21 @@ import movienight.javi.com.movienight.urls.GenreUrl;
  * Created by Javi on 10/22/2016.
  */
 
-public class GenresFragmentDialog extends DialogFragment implements AsyncTaskListener<Genre> {
+public class GenresFragmentDialog extends DialogFragment{
 
     private SearchActivity mParentActivity;
     private View mDialogLayoutView;
     private RecyclerView mGenresRecyclerView;
     private GenresSelectedListener mListener;
+    private Genre[] mGenres;
 
-    public static GenresFragmentDialog newInstance() {
+    public static GenresFragmentDialog newInstance(Genre[] genres) {
 
         GenresFragmentDialog dialogFragment = new GenresFragmentDialog();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArray(ActivityExtras.GENRE_ARRAY_KEY, genres);
+        dialogFragment.setArguments(bundle);
 
         return dialogFragment;
     }
@@ -60,9 +65,7 @@ public class GenresFragmentDialog extends DialogFragment implements AsyncTaskLis
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        GenreUrl genresUrl = new GenreUrl();
-        new GenreAsyncTask(mParentActivity.getSupportFragmentManager(),this)
-                .execute(genresUrl);
+        mGenres = (Genre[]) getArguments().getParcelableArray(ActivityExtras.GENRE_ARRAY_KEY);
     }
 
     @NonNull
@@ -74,15 +77,10 @@ public class GenresFragmentDialog extends DialogFragment implements AsyncTaskLis
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
         dialogBuilder.setView(mDialogLayoutView);
-        return dialogBuilder.create();
-    }
-
-    @Override
-    public void onTaskCompleted(Genre[] result) {
 
         mGenresRecyclerView = (RecyclerView) mDialogLayoutView.findViewById(R.id.genresRecyclerView);
 
-        final GenreRecyclerViewAdapter adapter = new GenreRecyclerViewAdapter(getContext(), new LinkedList<>(Arrays.asList(result)));
+        final GenreRecyclerViewAdapter adapter = new GenreRecyclerViewAdapter(getContext(), new LinkedList<>(Arrays.asList(mGenres)));
         mGenresRecyclerView.setAdapter(adapter);
 
         final Button genreButtonView = (Button) mDialogLayoutView.findViewById(R.id.genresButtonView);
@@ -100,5 +98,7 @@ public class GenresFragmentDialog extends DialogFragment implements AsyncTaskLis
         mGenresRecyclerView.setLayoutManager(manager);
 
         mGenresRecyclerView.setHasFixedSize(true);
+
+        return dialogBuilder.create();
     }
 }

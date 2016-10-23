@@ -14,6 +14,7 @@ import java.text.DecimalFormat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import movienight.javi.com.movienight.asyntasks.GenreAsyncTask;
 import movienight.javi.com.movienight.dialogs.GenresFragmentDialog;
 import movienight.javi.com.movienight.listeners.DatePickerListener;
 import movienight.javi.com.movienight.R;
@@ -22,9 +23,11 @@ import movienight.javi.com.movienight.listeners.GenresSelectedListener;
 import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.model.MovieRequest;
 import movienight.javi.com.movienight.ui.ActivityExtras;
+import movienight.javi.com.movienight.ui.AsyncTaskListener;
 import movienight.javi.com.movienight.ui.MoviesActivity.MoviesActivity;
+import movienight.javi.com.movienight.urls.GenreUrl;
 
-public class SearchActivity extends AppCompatActivity implements SearchActivityView, DatePickerListener, GenresSelectedListener{
+public class SearchActivity extends AppCompatActivity implements SearchActivityView, DatePickerListener, AsyncTaskListener<Genre>, GenresSelectedListener{
 
     private final double mProgressDivider = 10.0;
 
@@ -48,8 +51,6 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
         ButterKnife.bind(this);
 
         mDatepickerDialog = new DatePickerFragmentDialog();
-        mGenresDialog = GenresFragmentDialog.newInstance();
-
         mPresenter = new SearchActivityPresenter(this);
 
         mSeekBarView.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -66,6 +67,10 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
+
+        GenreUrl genresUrl = new GenreUrl();
+        new GenreAsyncTask(getSupportFragmentManager(),this)
+                .execute(genresUrl);
     }
 
     @Override
@@ -79,6 +84,7 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
     @OnClick(R.id.genreButtonView)
     public void onGenresButtonClick(View view) {
 
+        mGenresDialog = GenresFragmentDialog.newInstance(mGenres);
         mGenresDialog.show(getSupportFragmentManager(), "genres_tag");
     }
 
@@ -120,7 +126,12 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
     @Override
     public void onGenreSelectionCompleted(Genre[] genres) {
 
-        mGenres = genres;
         mGenresDialog.dismiss();
+    }
+
+    @Override
+    public void onTaskCompleted(Genre[] result) {
+
+        mGenres = result;
     }
 }
