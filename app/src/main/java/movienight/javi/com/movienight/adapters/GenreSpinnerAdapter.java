@@ -5,7 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+
+import java.security.spec.MGF1ParameterSpec;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.model.Genre;
@@ -70,7 +77,7 @@ public class GenreSpinnerAdapter extends ArrayAdapter<Genre> {
     }
 
     @Override
-    public View getDropDownView(int position, View convertView, ViewGroup parent) {
+    public View getDropDownView(final int position, View convertView, ViewGroup parent) {
 
         SpinnerItemDropdownViewHolder holder;
 
@@ -79,6 +86,7 @@ public class GenreSpinnerAdapter extends ArrayAdapter<Genre> {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.spinner_item_dropdown_layout, null);
             holder = new SpinnerItemDropdownViewHolder();
             holder.mGenreDescriptionDropdownTextView = (TextView) convertView.findViewById(R.id.genreDescriptionDropdownTextView);
+            holder.mGenreCheckBoxView = (CheckBox) convertView.findViewById(R.id.genreCheckBoxView);
 
             convertView.setTag(holder);
         }
@@ -88,9 +96,35 @@ public class GenreSpinnerAdapter extends ArrayAdapter<Genre> {
         }
 
         Genre current = getItem(position);
+
+        holder.mGenreCheckBoxView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                Genre genre = mGenres[position];
+                genre.setChecked(isChecked);
+            }
+        });
+
         holder.mGenreDescriptionDropdownTextView.setText(current.getDescription());
+        holder.mGenreCheckBoxView.setChecked(current.isChecked());
 
         return convertView;
+    }
+
+    public List<Genre> getCheckedGenres() {
+
+        List<Genre> genres = new LinkedList<>();
+
+        for(Genre genre : mGenres) {
+
+            if(genre.isChecked()) {
+
+                genres.add(genre);
+            }
+        }
+
+        return genres;
     }
 
     private static class SpinnerItemViewHolder {
@@ -101,5 +135,6 @@ public class GenreSpinnerAdapter extends ArrayAdapter<Genre> {
     private static class SpinnerItemDropdownViewHolder {
 
         TextView mGenreDescriptionDropdownTextView;
+        CheckBox mGenreCheckBoxView;
     }
 }

@@ -10,6 +10,7 @@ public class Genre implements Parcelable{
 
     private Integer mId;
     private String mDescription;
+    private boolean mChecked;
 
     public Genre(Integer id, String description) {
 
@@ -54,4 +55,13 @@ public class Genre implements Parcelable{
             return new Genre[size];
         }
     };
+
+    public boolean isChecked() {
+        return mChecked;
+    }
+
+    public void setChecked(boolean checked) {
+
+        mChecked = checked;
+    }
 }

@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -120,6 +121,8 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
     @OnClick(R.id.findMoviesButtonView)
     public void onFindMoviesButtonClick(View view) {
 
+        GenreSpinnerAdapter adapter = (GenreSpinnerAdapter)mGenreSpinner.getAdapter();
+        List<Genre> genres = adapter.getCheckedGenres();
         MovieRequest movieRequest = new MovieRequest();
         movieRequest.setGenre(mGenreSelected);
         movieRequest.setStartDateRelease(mStartReleaseDateButtonView.getText().toString());
