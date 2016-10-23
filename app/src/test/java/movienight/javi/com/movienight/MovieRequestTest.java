@@ -26,7 +26,7 @@ public class MovieRequestTest {
     public void setMovieRequestGenre() throws Exception {
 
         // Arrange
-        Genre expectedGenre = new Genre(1235, "Lol");
+        Genre[] expectedGenre = new Genre[]{new Genre(1235, "Lol")};
 
         // Act
         mMovieRequest.setGenre(expectedGenre);

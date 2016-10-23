@@ -16,7 +16,7 @@
     </android.support.v7.widget.RecyclerView>
 
     <Button
-        android:id="@+id/genresButtonView"
+        android:id="@+id/genresDoneButtonView"
         style="@style/DialogButtonView"/>
 
 </LinearLayout>

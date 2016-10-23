@@ -38,7 +38,7 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
     private AppCompatButton mDateButtonClicked;
 
     @BindView(R.id.seekBarView) SeekBar mSeekBarView;
-    @BindView(R.id.genreButtonView) AppCompatButton mGenresButtonView;
+    @BindView(R.id.genreButtonView) AppCompatButton mGenresPickerButtonView;
     @BindView(R.id.startReleaseDateButtonView) AppCompatButton mStartReleaseDateButtonView;
     @BindView(R.id.endReleaseDateButtonView) AppCompatButton mEndReleaseDateButtonView;
     @BindView(R.id.votesCountEditTextView) EditText mVoteCountEditText;
@@ -145,7 +145,7 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
             }
         }
 
-        mGenresButtonView.setText(genresSelectedTexts);
+        mGenresPickerButtonView.setText(genresSelectedTexts);
     }
 
     @Override
