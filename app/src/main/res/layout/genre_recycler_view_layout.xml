@@ -17,9 +17,6 @@
 
     <Button
         android:id="@+id/genresButtonView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/movie_button_background"
-        android:text="@string/genres_button_text"/>
+        style="@style/DialogButtonView"/>
 
 </LinearLayout>

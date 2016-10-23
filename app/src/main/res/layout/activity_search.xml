@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/activity_background_color">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/titleLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,34 +17,54 @@
             layout="@layout/logo_layout" />
 
         <TextView
-            android:layout_above="@+id/lineSeparatorView"
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_gravity="center|bottom"
             style="@style/SearchTitleTextView" />
 
-        <View
-            android:id="@+id/lineSeparatorView"
-            android:layout_below="@+id/logoImageView"
-            style="@style/UnderlineView" />
-    </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/lineSeparatorView"
+        android:layout_below="@id/titleLayout"
+        style="@style/UnderlineView" />
 
 
     <LinearLayout
-        android:id="@+id/genreLayout"
-        android:layout_below="@+id/titleLayout"
+        android:id="@+id/ratingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:orientation="vertical"
+        android:layout_below="@+id/lineSeparatorView"
         style="@style/TableLayoutView">
 
         <TextView
-            style="@style/GenreTextView"/>
+            android:layout_height="match_parent"
+            style="@style/RatingTextView" />
 
-        <Button
-            android:id="@+id/genreButtonView"
-            style="@style/GenreButtonView"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <SeekBar
+                android:id="@+id/seekBarView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                style="@style/RatingSeekBarView"/>
+
+            <TextView
+                android:id="@+id/seekbarResultTextView"
+                android:text="0"
+                android:gravity="center|right"
+                style="@style/SeekBarResultTextView" />
+        </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/releaseDateLayout"
-        android:layout_below="@+id/genreLayout"
+        android:layout_below="@+id/ratingLayout"
         android:orientation="horizontal"
         style="@style/TableLayoutView">
 
@@ -77,52 +97,42 @@
                 android:id="@+id/endReleaseDateButtonView"
                 style="@style/DatePickerButtonView"/>
         </LinearLayout>
-    </LinearLayout>
 
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/votesCountLayout"
-        android:orientation="vertical"
-        android:layout_below="@+id/releaseDateLayout"
-        style="@style/TableLayoutView">
-
-        <TextView
-        android:layout_weight="1"
-        style="@style/VotesCountTextView"/>
-
-        <EditText
-        android:id="@+id/votesCountEditTextView"
-        style="@style/VoteCountEditTextView" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_below="@+id/votesCountLayout"
-        android:orientation="vertical"
-        style="@style/TableLayoutView">
-
-        <TextView
-            style="@style/RatingTextView"
-            android:paddingLeft="10dp"
-            android:layout_gravity="center"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/releaseDateLayout">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <SeekBar
-                android:id="@+id/seekBarView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:layout_marginTop="5dp"
-                style="@style/RatingSeekBarView"/>
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            style="@style/TableLayoutView">
 
             <TextView
-                android:id="@+id/seekbarResultTextView"
-                android:text="0"
-                android:gravity="center|right"
+                android:layout_gravity="bottom"
+                style="@style/VotesCountTextView"/>
+
+            <EditText
+                android:id="@+id/votesCountEditTextView"
                 android:layout_marginTop="5dp"
-                style="@style/SeekBarResultTextView" />
+                style="@style/VoteCountEditTextView" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            style="@style/TableLayoutView">
+
+            <TextView
+                style="@style/GenreTextView"/>
+
+            <Button
+                android:id="@+id/genreButtonView"
+                style="@style/GenreButtonView"/>
 
         </LinearLayout>
     </LinearLayout>

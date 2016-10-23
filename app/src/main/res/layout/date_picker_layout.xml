@@ -7,19 +7,12 @@
 
     <DatePicker
         android:id="@+id/releaseDatePickerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:calendarViewShown="false"/>
+        android:datePickerMode="spinner"
+        style="@style/DatePickerView"/>
+
     <Button
         android:id="@+id/doneDatepickerButtonView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/movie_button_background"
         android:layout_below="@+id/releaseDatePickerView"
-        android:layout_margin="15dp"
-        android:text="done"
-        android:textSize="15sp"
-        android:textColor="@color/movie_dark_purple"
-        android:textStyle="bold"/>
+        style="@style/DialogButtonView" />
 </RelativeLayout>

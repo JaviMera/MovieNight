@@ -22,10 +22,12 @@
     <dimen name="no_margin">0dp</dimen>
     <dimen name="search_title_text_size">30sp</dimen>
     <dimen name="search_title_padding">15dp</dimen>
-    <dimen name="table_layout_top_margin">10dp</dimen>
+    <dimen name="table_layout_top_margin">5dp</dimen>
     <dimen name="table_layout_padding">5dp</dimen>
     <dimen name="underline_view_height">2dp</dimen>
     <dimen name="underline_view_left_margin">15dp</dimen>
     <dimen name="underline_view_right_margin">15dp</dimen>
     <dimen name="underline_view_top_margin">10dp</dimen>
+    <dimen name="dialog_button_margin">15dp</dimen>
+    <dimen name="dialog_button_text_size">15sp</dimen>
 </resources>

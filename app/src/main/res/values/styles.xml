@@ -85,14 +85,13 @@
     </style>
 
     <style name="TableRowTextView">
-        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:gravity">left|center</item>
         <item name="android:textColor">@color/movie_dark_purple</item>
         <item name="android:layout_marginBottom">5dp</item>
         <item name="android:paddingLeft">5dp</item>
-
     </style>
 
     <style name="GenreTextView" parent="TableRowTextView">
@@ -157,10 +156,8 @@
     </style>
 
     <style name="SeekBarResultTextView">
-        <item name="android:layout_column">2</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">0.4</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/movie_dark_purple</item>
     </style>
@@ -185,5 +182,21 @@
         <item name="android:layout_marginLeft">@dimen/underline_view_left_margin</item>
         <item name="android:layout_marginRight">@dimen/underline_view_right_margin</item>
         <item name="android:layout_marginTop">@dimen/underline_view_top_margin</item>
+    </style>
+
+    <style name="DatePickerView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:calendarViewShown">false</item>
+    </style>
+
+    <style name="DialogButtonView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/movie_button_background</item>
+        <item name="android:layout_margin">@dimen/dialog_button_margin</item>
+        <item name="android:text">@string/dialog_button_text</item>
+        <item name="android:textSize">@dimen/dialog_button_text_size</item>
+        <item name="android:textColor">@color/movie_dark_purple</item>
     </style>
 </resources>
