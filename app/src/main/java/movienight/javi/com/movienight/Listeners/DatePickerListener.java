@@ -1,9 +1,9 @@
-package movienight.javi.com.movienight.Listeners;
+package movienight.javi.com.movienight.listeners;
 
 /**
  * Created by Javi on 10/18/2016.
  */
 public interface DatePickerListener {
 
-    public abstract void OnDatePickerDone(String date);
+    void OnDatePickerDone(String date);
 }

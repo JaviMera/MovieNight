@@ -15,11 +15,11 @@ import java.util.LinkedList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import movienight.javi.com.movienight.Listeners.MovieSelectedListener;
+import movienight.javi.com.movienight.listeners.MovieSelectedListener;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.adapters.MovieRecyclerViewAdapter;
 import movienight.javi.com.movienight.asyntasks.MovieAsyncTask;
-import movienight.javi.com.movienight.Listeners.MoviesAsyncTaskListener;
+import movienight.javi.com.movienight.listeners.MoviesAsyncTaskListener;
 import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.model.MovieRequest;
 import movienight.javi.com.movienight.model.Page;

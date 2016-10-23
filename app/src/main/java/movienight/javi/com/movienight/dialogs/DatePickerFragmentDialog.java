@@ -14,7 +14,7 @@ import android.widget.DatePicker;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import movienight.javi.com.movienight.Listeners.DatePickerListener;
+import movienight.javi.com.movienight.listeners.DatePickerListener;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.model.ReleaseDate;
 

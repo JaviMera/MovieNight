@@ -1,4 +1,4 @@
-package movienight.javi.com.movienight.Listeners;
+package movienight.javi.com.movienight.listeners;
 
 import movienight.javi.com.movienight.model.Movie;
 

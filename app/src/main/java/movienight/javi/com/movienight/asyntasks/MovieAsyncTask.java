@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import movienight.javi.com.movienight.Listeners.MoviesAsyncTaskListener;
+import movienight.javi.com.movienight.listeners.MoviesAsyncTaskListener;
 import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.model.Page;
 import movienight.javi.com.movienight.model.ReleaseDate;
