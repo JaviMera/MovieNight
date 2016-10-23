@@ -9,9 +9,8 @@
         android:id="@+id/releaseDatePickerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
-    </DatePicker>
-
+        android:layout_alignParentTop="true"
+        android:calendarViewShown="false"/>
     <Button
         android:id="@+id/doneDatepickerButtonView"
         android:layout_width="match_parent"
