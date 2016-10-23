@@ -20,6 +20,7 @@ import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.adapters.MovieRecyclerViewAdapter;
 import movienight.javi.com.movienight.asyntasks.MovieAsyncTask;
 import movienight.javi.com.movienight.listeners.MoviesAsyncTaskListener;
+import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.model.MovieRequest;
 import movienight.javi.com.movienight.model.Page;
@@ -68,7 +69,6 @@ public class MoviesActivity extends AppCompatActivity implements MoviesActivityV
                         mPresenter.setProgressBarVisibility(View.VISIBLE);
 
                         MovieUrl url = createMovieUrl(mCurrentPageNumber, mMovieRequest);
-
                         new MovieAsyncTask((MoviesActivity)recyclerView.getContext()).execute(url);
                     }
                     else {
@@ -83,8 +83,8 @@ public class MoviesActivity extends AppCompatActivity implements MoviesActivityV
 
         mCurrentPageNumber = 1;
         mPresenter.setProgressBarVisibility(View.VISIBLE);
-        MovieUrl url = createMovieUrl(mCurrentPageNumber, mMovieRequest);
 
+        MovieUrl url = createMovieUrl(mCurrentPageNumber, mMovieRequest);
         new MovieAsyncTask(this).execute(url);
     }
 
@@ -147,7 +147,22 @@ public class MoviesActivity extends AppCompatActivity implements MoviesActivityV
         String endDate = request.getEndDateReleaseSelected();
         String voteCount = String.valueOf(request.getVoteCountSelected());
         String rating = String.valueOf(request.getRatingSelected());
-        String genres = String.valueOf(request.getGenreSelected().getId());
+
+        Genre[] genres = request.getGenreSelected();
+
+        String genresIds = "";
+        for(int i = 0 ; i < genres.length ; i++) {
+
+            Genre currentGenre = genres[i];
+            if(i == genres.length - 1) {
+
+                genresIds += String.valueOf(currentGenre.getId());
+            }
+            else {
+
+                genresIds += String.valueOf(currentGenre.getId()) + ",";
+            }
+        }
 
         MovieUrlBuilder builder = new MovieUrlBuilder();
         builder
@@ -156,7 +171,7 @@ public class MoviesActivity extends AppCompatActivity implements MoviesActivityV
             .withEndReleaseDate(endDate)
             .withVoteCount(voteCount)
             .withRating(rating)
-            .withGenres(genres);
+            .withGenres(genresIds);
 
         return builder.createMovieUrl();
     }

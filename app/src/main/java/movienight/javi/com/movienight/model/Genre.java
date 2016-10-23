@@ -22,6 +22,7 @@ public class Genre implements Parcelable{
 
         mId = in.readInt();
         mDescription = in.readString();
+        mChecked = in.readByte() != 0;
     }
 
     public String getDescription() {
@@ -42,6 +43,7 @@ public class Genre implements Parcelable{
 
         dest.writeInt(mId);
         dest.writeString(mDescription);
+        dest.writeByte((byte)(mChecked ? 1 : 0));
     }
 
     public static final Creator<Genre> CREATOR = new Creator<Genre>() {

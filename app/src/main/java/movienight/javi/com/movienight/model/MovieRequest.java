@@ -9,7 +9,7 @@ import android.os.Parcelable;
 
 public class MovieRequest implements Parcelable{
 
-    private Genre mGenreSelected;
+    private Genre[] mGenreSelected;
     private String mStartDateReleaseSelected;
     private String mEndDateReleaseSelected;
     private Integer mVoteCountSelected;
@@ -18,7 +18,7 @@ public class MovieRequest implements Parcelable{
     public MovieRequest() {}
 
     protected MovieRequest(Parcel in) {
-        mGenreSelected = in.readParcelable(Genre.class.getClassLoader());
+        mGenreSelected = in.createTypedArray(Genre.CREATOR);
         mStartDateReleaseSelected = in.readString();
         mEndDateReleaseSelected = in.readString();
         mVoteCountSelected = in.readInt();
@@ -41,7 +41,7 @@ public class MovieRequest implements Parcelable{
         return mStartDateReleaseSelected;
     }
 
-    public Genre getGenreSelected() {
+    public Genre[] getGenreSelected() {
         return mGenreSelected;
     }
 
@@ -57,7 +57,7 @@ public class MovieRequest implements Parcelable{
         return mEndDateReleaseSelected;
     }
 
-    public void setGenre(Genre genre) {
+    public void setGenre(Genre[] genre) {
 
         mGenreSelected = genre;
     }
@@ -89,7 +89,7 @@ public class MovieRequest implements Parcelable{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
 
-        dest.writeParcelable(mGenreSelected, flags);
+        dest.writeTypedArray(mGenreSelected, 0);
         dest.writeString(mStartDateReleaseSelected);
         dest.writeString(mEndDateReleaseSelected);
         dest.writeInt(mVoteCountSelected);

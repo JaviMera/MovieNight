@@ -10,6 +10,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
+import java.util.LinkedList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -106,6 +108,18 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
     public void onFindMoviesButtonClick(View view) {
 
         MovieRequest movieRequest = new MovieRequest();
+
+        List<Genre> selectedGenres = new LinkedList<>();
+
+        for(Genre genre : mGenres) {
+
+            if(genre.isChecked()) {
+
+                selectedGenres.add(genre);
+            }
+        }
+
+        movieRequest.setGenre(selectedGenres.toArray(new Genre[selectedGenres.size()]));
         movieRequest.setStartDateRelease(mStartReleaseDateButtonView.getText().toString());
         movieRequest.setEndDateReleaseSelected(mEndReleaseDateButtonView.getText().toString());
         movieRequest.setVoteCount(Integer.parseInt(mVoteCountEditText.getText().toString()));
@@ -127,6 +141,25 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
     public void onGenreSelectionCompleted(Genre[] genres) {
 
         mGenresDialog.dismiss();
+        String genresSelectedTexts = "";
+
+        for(int i = 0 ; i < genres.length ; i++) {
+
+            Genre currentGenre = genres[i];
+            if(currentGenre.isChecked()) {
+
+                if(i == genres.length - 1) {
+
+                    genresSelectedTexts += currentGenre.getDescription();
+                }
+                else {
+
+                    genresSelectedTexts += currentGenre.getDescription() + ", ";
+                }
+            }
+        }
+
+        mGenresButtonView.setText(genresSelectedTexts);
     }
 
     @Override
