@@ -141,7 +141,7 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
     }
 
     @Override
-    public void onRateDone(Double rate) {
+    public void onRateDone(float rate) {
 
         mFilterMovieSpinner.setSelection(0);
 

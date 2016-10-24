@@ -6,5 +6,5 @@ package movienight.javi.com.movienight.listeners;
 
 public interface RateSelectedListener {
 
-    void onRateDone(Double rate);
+    void onRateDone(float rate);
 }

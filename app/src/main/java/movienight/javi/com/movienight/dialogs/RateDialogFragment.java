@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
+import android.media.Rating;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
+import android.widget.TextView;
 
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.listeners.RateSelectedListener;
@@ -48,9 +50,21 @@ public class RateDialogFragment extends DialogFragment {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
         dialogBuilder.setView(view);
 
-        final RatingBar rateBar = (RatingBar) view.findViewById(R.id.rateBarView);
-        LayerDrawable lDrawable = (LayerDrawable)rateBar.getProgressDrawable();
+        final TextView ratingBarTextView = (TextView) view.findViewById(R.id.ratingScoreTextView);
+
+        final RatingBar ratingBar = (RatingBar) view.findViewById(R.id.rateBarView);
+        LayerDrawable lDrawable = (LayerDrawable)ratingBar.getProgressDrawable();
         lDrawable.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
+
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+
+                String rateFormatted = String.format("%.1f", rating);
+                ratingBarTextView.setText(rateFormatted);
+            }
+        });
 
         final Button button = (Button) view.findViewById(R.id.rateDoneButtonView);
 
@@ -58,7 +72,8 @@ public class RateDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
 
-                mListener.onRateDone(0.0);
+                float rate = ratingBar.getRating();
+                mListener.onRateDone(rate);
                 dismiss();
             }
         });

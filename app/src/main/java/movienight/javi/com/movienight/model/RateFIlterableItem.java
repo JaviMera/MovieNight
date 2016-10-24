@@ -6,9 +6,9 @@ package movienight.javi.com.movienight.model;
 
 public class RateFIlterableItem implements FilterableItem {
 
-    private Double mRate;
+    private float mRate;
 
-    public RateFIlterableItem(Double rate) {
+    public RateFIlterableItem(float rate) {
 
         mRate = rate;
     }
