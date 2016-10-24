@@ -51,8 +51,30 @@ public class FilterRecyclerViewAdapter extends RecyclerView.Adapter<FilterRecycl
 
     public void addFilterItem(FilterableItem item) {
 
+        FilterableItem existingItem = isItemClassInList(item);
+
+        if(existingItem != null) {
+
+            mItems.remove(existingItem);
+        }
+
         mItems.add(item);
         notifyDataSetChanged();;
+    }
+
+    private FilterableItem isItemClassInList(FilterableItem item) {
+
+        int position = -1;
+        for(int i = 0 ; i < mItems.size() ; i++) {
+
+            FilterableItem fi = mItems.get(i);
+            if(fi.getClass().equals(item.getClass())) {
+
+                return fi;
+            }
+        }
+
+        return null;
     }
 
     public class FilterViewHolder extends RecyclerView.ViewHolder {
