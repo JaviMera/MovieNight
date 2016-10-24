@@ -4,11 +4,11 @@ package movienight.javi.com.movienight.model;
  * Created by Javi on 10/24/2016.
  */
 
-public class GenreFilterableItemItem implements FilterableItem {
+public class GenreFilterableItem implements FilterableItem {
 
     private Genre[] mSelectedGenres;
 
-    public GenreFilterableItemItem(Genre[] genres) {
+    public GenreFilterableItem(Genre[] genres) {
 
         mSelectedGenres = genres;
     }

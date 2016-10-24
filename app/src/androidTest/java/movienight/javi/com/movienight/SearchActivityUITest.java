@@ -1,26 +1,8 @@
 package movienight.javi.com.movienight;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.UiController;
-import android.support.test.espresso.ViewAction;
-import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatButton;
-import android.view.View;
-import android.widget.SeekBar;
 
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,17 +13,14 @@ import movienight.javi.com.movienight.ui.SearchActivity.SearchActivity;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static okhttp3.internal.Internal.instance;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.AllOf.allOf;
-import static org.junit.Assert.*;
 
 /**
  * Instrumentation test, which will execute on an Android device.
@@ -78,7 +57,7 @@ public class SearchActivityUITest {
     }
 
     @Test
-    public void filterItem1ClickDisplaysGenreDialog() throws Exception {
+    public void genreSpinnerItemClickDisplaysGenreDialog() throws Exception {
 
         // Arrange
         String expectedItem = mFilterItems[1];
@@ -93,6 +72,25 @@ public class SearchActivityUITest {
 
         // Assert that the spinner goes back to showing filter by item
         onView(withId(R.id.genresDoneButtonView)).perform(click()); // close the genre dialog
+        onView(withId(R.id.filterMoviesSpinnerView)).check(matches(withSpinnerText(mFilterItems[0])));
+    }
+
+    @Test
+    public void dateRangeSpinnerItemClickDisplaysDateRangeDialog() throws Exception {
+
+        // Arrange
+        String expectedItem = mFilterItems[2];
+
+        // Act
+        onView(withId(R.id.filterMoviesSpinnerView)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is(expectedItem))).perform(click());
+
+        // Assert
+        onView(withId(R.id.startDateRangePickerView)).check(matches(isDisplayed()));
+        onView(withId(R.id.endDateRangePickerView)).check(matches(isDisplayed()));
+
+        // Assert that the spinner goes back to showing filter by item
+        onView(withId(R.id.dateRangeDoneButtonView)).perform(click()); // close the genre dialog
         onView(withId(R.id.filterMoviesSpinnerView)).check(matches(withSpinnerText(mFilterItems[0])));
     }
 

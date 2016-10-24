@@ -1,8 +1,8 @@
 package movienight.javi.com.movienight.ui.SearchActivity;
 
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -18,20 +18,25 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import movienight.javi.com.movienight.adapters.FilterRecyclerViewAdapter;
 import movienight.javi.com.movienight.adapters.FilterSpinnerAdapter;
+import movienight.javi.com.movienight.dialogs.DaterangeDialogFragment;
 import movienight.javi.com.movienight.dialogs.GenresFragmentDialog;
 import movienight.javi.com.movienight.R;
+import movienight.javi.com.movienight.listeners.DateRangePickerListener;
 import movienight.javi.com.movienight.listeners.GenresSelectedListener;
+import movienight.javi.com.movienight.model.DateRangeFilterableItem;
 import movienight.javi.com.movienight.model.FilterableItem;
 import movienight.javi.com.movienight.model.Genre;
-import movienight.javi.com.movienight.model.GenreFilterableItemItem;
+import movienight.javi.com.movienight.model.GenreFilterableItem;
 
-public class SearchActivity extends AppCompatActivity implements SearchActivityView, GenresSelectedListener{
+public class SearchActivity extends AppCompatActivity implements SearchActivityView, GenresSelectedListener, DateRangePickerListener{
 
     private final double mProgressDivider = 10.0;
 
     private List<Genre> mSelectedGenres;
+    private String mStartDate;
+    private String mEndDate;
+
     private SearchActivityPresenter mPresenter;
-    private AppCompatButton mDateButtonClicked;
 
     @BindView(R.id.filterMoviesSpinnerView)
     Spinner mFilterMovieSpinner;
@@ -63,12 +68,18 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
+                DialogFragment dialog;
+
                 switch(position) {
 
                     case 1:
-                        GenresFragmentDialog dialog = GenresFragmentDialog.newInstance(mSelectedGenres);
+                        dialog = GenresFragmentDialog.newInstance(mSelectedGenres);
                         dialog.show(getSupportFragmentManager(), "genre_dialog");
                         break;
+
+                    case 2:
+                        dialog = DaterangeDialogFragment.newInstance();
+                        dialog.show(getSupportFragmentManager(), "daterange_dialog");
                 }
             }
 
@@ -116,7 +127,19 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
         mSelectedGenres.clear();
         mSelectedGenres = genres;
 
-        FilterableItem item = new GenreFilterableItemItem(mSelectedGenres.toArray(new Genre[mSelectedGenres.size()]));
+        FilterableItem item = new GenreFilterableItem(mSelectedGenres.toArray(new Genre[mSelectedGenres.size()]));
+        FilterRecyclerViewAdapter adapter = (FilterRecyclerViewAdapter)mFilterRecyclerView.getAdapter();
+        adapter.addFilterItem(item);
+    }
+
+    @Override
+    public void onDateRangePickerDone(String startDate, String endDate) {
+
+        mFilterMovieSpinner.setSelection(0);
+        mStartDate = startDate;
+        mEndDate = endDate;
+
+        FilterableItem item = new DateRangeFilterableItem(mStartDate, mEndDate);
         FilterRecyclerViewAdapter adapter = (FilterRecyclerViewAdapter)mFilterRecyclerView.getAdapter();
         adapter.addFilterItem(item);
     }

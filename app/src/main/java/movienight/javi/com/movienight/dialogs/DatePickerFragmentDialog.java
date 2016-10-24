@@ -15,13 +15,11 @@ import android.widget.DatePicker;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import movienight.javi.com.movienight.listeners.DatePickerListener;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.model.ReleaseDate;
 
 public class DatePickerFragmentDialog extends DialogFragment {
 
-    private DatePickerListener mListener;
     private String mDateSelected;
 
     public static DatePickerFragmentDialog newInstance(String date) {
@@ -38,7 +36,6 @@ public class DatePickerFragmentDialog extends DialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        mListener = (DatePickerListener)context;
     }
 
     @Override
@@ -81,7 +78,6 @@ public class DatePickerFragmentDialog extends DialogFragment {
 
                 Calendar cal = createCalendar(year, month, day);
                 String formatedDate = new SimpleDateFormat(ReleaseDate.FORMAT).format(cal.getTime());
-                mListener.OnDatePickerDone(formatedDate);
                 dismiss();
             }
         });
