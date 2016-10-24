@@ -64,7 +64,6 @@ public class FilterRecyclerViewAdapter extends RecyclerView.Adapter<FilterRecycl
 
     private FilterableItem isItemClassInList(FilterableItem item) {
 
-        int position = -1;
         for(int i = 0 ; i < mItems.size() ; i++) {
 
             FilterableItem fi = mItems.get(i);

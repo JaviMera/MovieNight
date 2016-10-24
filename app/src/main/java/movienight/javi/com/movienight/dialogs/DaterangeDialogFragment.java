@@ -61,11 +61,8 @@ public class DaterangeDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
 
-                Calendar startDate = createCalendar(startDatePicker);
-                Calendar endDate = createCalendar(endDatePicker);
-
-                String startDateFormat = new SimpleDateFormat(ReleaseDate.FORMAT).format(startDate.getTime());
-                String endDateFormat = new SimpleDateFormat(ReleaseDate.FORMAT).format(endDate.getTime());
+                String startDateFormat = getFormattedDate(startDatePicker);
+                String endDateFormat = getFormattedDate(endDatePicker);
 
                 mListener.onDateRangePickerDone(startDateFormat, endDateFormat);
                 dismiss();
@@ -75,13 +72,8 @@ public class DaterangeDialogFragment extends DialogFragment {
         return dialogBuilder.create();
     }
 
-    private Calendar createCalendar(DatePicker picker) {
+    private String getFormattedDate(DatePicker view) {
 
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, picker.getYear());
-        cal.set(Calendar.DAY_OF_MONTH, picker.getMonth());
-        cal.set(Calendar.MONTH, picker.getDayOfMonth());
-
-        return cal;
+        return view.getYear() + "-" + (view.getMonth() + 1) + "-" + view.getDayOfMonth();
     }
 }
