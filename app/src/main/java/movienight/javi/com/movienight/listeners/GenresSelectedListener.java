@@ -1,5 +1,7 @@
 package movienight.javi.com.movienight.listeners;
 
+import java.util.List;
+
 import movienight.javi.com.movienight.model.Genre;
 
 /**
@@ -8,5 +10,5 @@ import movienight.javi.com.movienight.model.Genre;
 
 public interface GenresSelectedListener {
 
-    void onGenreSelectionCompleted(Genre[] genres);
+    void onGenreSelectionCompleted(List<Genre> genres);
 }

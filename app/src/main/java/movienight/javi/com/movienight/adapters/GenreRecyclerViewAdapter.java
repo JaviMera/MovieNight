@@ -52,18 +52,18 @@ public class GenreRecyclerViewAdapter extends RecyclerView.Adapter<GenreRecycler
         return mGenres.size();
     }
 
-    public Genre[] getSelectedGenres() {
+    public Integer[] getSelectedGenres() {
 
-        List<Genre> selectedGenres = new LinkedList<>();
-        for(Genre genre : mGenres) {
+        List<Integer> selectedGenres = new LinkedList<>();
+        for(int i = 0 ; i < mGenres.size() ; i++) {
 
-            if(genre.isChecked()) {
+            if(mGenres.get(i).isChecked()) {
 
-                selectedGenres.add(genre);
+                selectedGenres.add(i);
             }
         }
 
-        return selectedGenres.toArray(new Genre[selectedGenres.size()]);
+        return selectedGenres.toArray(new Integer[selectedGenres.size()]);
     }
 
     public class GenreViewHolder extends RecyclerView.ViewHolder {

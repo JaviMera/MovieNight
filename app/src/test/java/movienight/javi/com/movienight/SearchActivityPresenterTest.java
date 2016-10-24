@@ -32,15 +32,15 @@ public class SearchActivityPresenterTest {
     private SearchActivityView mView;
 
     @Test
-    public void updateSeekBarProgressTextView() throws Exception {
+    public void setFilterSpinnerAdapter() throws Exception {
 
         // Arrange
-        int someProgress = 30;
+        String[] someItems = new String[]{"this","monday","is","awesome"};
 
         // Act
-        mPresenter.updateSeekBarProgressTextView(someProgress);
+        mPresenter.setFilterSpinnerAdapter(someItems);
 
         // Assert
-        Mockito.verify(mView).setSeekBarProgressTextView(someProgress);
+        Mockito.verify(mView).setFilterSpinnerAdapter(someItems);
     }
 }

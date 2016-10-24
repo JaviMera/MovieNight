@@ -17,8 +17,9 @@ public class SearchActivityPresenter {
         mView = view;
     }
 
-    public void updateSeekBarProgressTextView(int progress) {
 
-        mView.setSeekBarProgressTextView(progress);
+    public void setFilterSpinnerAdapter(String[] items) {
+
+        mView.setFilterSpinnerAdapter(items);
     }
 }

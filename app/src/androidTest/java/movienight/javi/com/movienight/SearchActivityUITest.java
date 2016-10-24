@@ -51,97 +51,98 @@ import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 public class SearchActivityUITest {
 
+    private String[] mFilterItems;
+
     @Rule
     public ActivityTestRule<SearchActivity> activityRule =
             new ActivityTestRule<SearchActivity>(SearchActivity.class);
 
-    @Test
-    public void datePickerButtonPressShowsDatePickerDialog() throws Exception {
+    @Before
+    public void SetUp () throws Exception {
 
-        // Act
-        onView(withId(R.id.startReleaseDateButtonView)).perform(click());
-
-        // Assert
-        onView(withId(R.id.startReleaseDateButtonView)).check(matches(isDisplayed()));
-        onView(withId(R.id.doneDatepickerButtonView)).check(matches(isDisplayed()));
+        mFilterItems = activityRule.getActivity().getResources().getStringArray(R.array.filter_options_array);
     }
 
     @Test
-    public void datePickerDoneButtonSetsDateEditTextView() throws Exception {
+    public void filterSpinnerInit() throws Exception {
 
         // Arrange
-        // let the default date be the current date when the date picker is opened
-        String expectedDate = "10-19-2016";
+        String expectedItem = mFilterItems[2];
 
         // Act
-        onView(withId(R.id.startReleaseDateButtonView)).perform(click());
-        onView(withId(R.id.doneDatepickerButtonView)).perform(click());
+        onView(withId(R.id.filterMoviesSpinnerView)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is(expectedItem))).perform(click());
 
         // Assert
-        onView(withId(R.id.startReleaseDateButtonView)).check(matches(new ButtonTextMatcher(expectedDate)));
+        onView(withId(R.id.filterMoviesSpinnerView)).check(matches(withSpinnerText(expectedItem)));
     }
 
     @Test
-    public void seekBarSwipeUpdatesValueTextView() throws Exception {
+    public void filterItem1ClickDisplaysGenreDialog() throws Exception {
 
         // Arrange
-        int progress = 25;
-        String expectedSeekBarValue = "2.5";
+        String expectedItem = mFilterItems[1];
 
         // Act
-        onView(withId(R.id.seekBarView)).perform(SetProgress(progress));
+        onView(withId(R.id.filterMoviesSpinnerView)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is(expectedItem))).perform(click());
 
         // Assert
-        onView(withId(R.id.seekbarResultTextView)).check(matches(withText(expectedSeekBarValue)));
+        onView(withId(R.id.genresRecyclerView)).check(matches(isDisplayed()));
+        onView(withId(R.id.genresDoneButtonView)).check(matches(isDisplayed()));
+
+        // Assert that the spinner goes back to showing filter by item
+        onView(withId(R.id.genresDoneButtonView)).perform(click()); // close the genre dialog
+        onView(withId(R.id.filterMoviesSpinnerView)).check(matches(withSpinnerText(mFilterItems[0])));
     }
 
-    @Test
-    private ViewAction SetProgress(int progress) {
-
-        final int p = progress;
-        return new ViewAction() {
-
-            @Override
-            public Matcher<View> getConstraints() {
-                return ViewMatchers.isAssignableFrom(SeekBar.class);
-            }
-
-            @Override
-            public String getDescription() {
-                return "Set a custom progress on Seek Bar";
-            }
-
-            @Override
-            public void perform(UiController uiController, View view) {
-
-                SeekBar bar = (SeekBar)view;
-                bar.setProgress(p);
-            }
-        };
-    }
-
-    private class ButtonTextMatcher extends BaseMatcher {
-
-        private String mExpectedText;
-        private String mActualText;
-
-        public ButtonTextMatcher(String text) {
-
-            mExpectedText = text;
-        }
-
-        @Override
-        public boolean matches(Object item) {
-            AppCompatButton button = (AppCompatButton)item;
-            mActualText = button.getText().toString();
-
-            return mActualText.equals(mExpectedText);
-        }
-
-        @Override
-        public void describeTo(Description description) {
-
-            description.appendText(mActualText + " does not equal " + mExpectedText);
-        }
-    }
+    //    @Test
+//    private ViewAction SetProgress(int progress) {
+//
+//        final int p = progress;
+//        return new ViewAction() {
+//
+//            @Override
+//            public Matcher<View> getConstraints() {
+//                return ViewMatchers.isAssignableFrom(SeekBar.class);
+//            }
+//
+//            @Override
+//            public String getDescription() {
+//                return "Set a custom progress on Seek Bar";
+//            }
+//
+//            @Override
+//            public void perform(UiController uiController, View view) {
+//
+//                SeekBar bar = (SeekBar)view;
+//                bar.setProgress(p);
+//            }
+//        };
+//    }
+//
+//    private class ButtonTextMatcher extends BaseMatcher {
+//
+//        private String mExpectedText;
+//        private String mActualText;
+//
+//        public ButtonTextMatcher(String text) {
+//
+//            mExpectedText = text;
+//        }
+//
+//        @Override
+//        public boolean matches(Object item) {
+//            AppCompatButton button = (AppCompatButton)item;
+//            mActualText = button.getText().toString();
+//
+//            return mActualText.equals(mExpectedText);
+//        }
+//
+//        @Override
+//        public void describeTo(Description description) {
+//
+//            description.appendText(mActualText + " does not equal " + mExpectedText);
+//        }
+//    }
 }

@@ -29,7 +29,24 @@
         android:layout_below="@id/titleLayout"
         style="@style/UnderlineView" />
 
+    <Spinner
+        android:id="@+id/filterMoviesSpinnerView"
+        android:layout_below="@+id/lineSeparatorView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/spinner_background"
+        android:layout_margin="15dp" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/filterItemsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/filterMoviesSpinnerView"
+        android:layout_above="@+id/findMoviesButtonView"
+        android:layout_margin="15dp">
+
+    </android.support.v7.widget.RecyclerView>
+    <!--
     <LinearLayout
         android:id="@+id/ratingLayout"
         android:layout_width="match_parent"
@@ -137,6 +154,7 @@
         </LinearLayout>
     </LinearLayout>
 
+    -->
     <Button
         android:id="@+id/findMoviesButtonView"
         style="@style/FindMoviesButtonView"/>

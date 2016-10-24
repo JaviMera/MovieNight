@@ -12,35 +12,42 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.adapters.GenreRecyclerViewAdapter;
+import movienight.javi.com.movienight.asyntasks.GenreAsyncTask;
 import movienight.javi.com.movienight.listeners.GenresSelectedListener;
 import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.ui.ActivityExtras;
+import movienight.javi.com.movienight.ui.AsyncTaskListener;
 import movienight.javi.com.movienight.ui.SearchActivity.SearchActivity;
+import movienight.javi.com.movienight.urls.GenreUrl;
 
 /**
  * Created by Javi on 10/22/2016.
  */
 
-public class GenresFragmentDialog extends DialogFragment{
+public class GenresFragmentDialog extends DialogFragment implements AsyncTaskListener<Genre>{
 
     private SearchActivity mParentActivity;
     private View mDialogLayoutView;
     private RecyclerView mGenresRecyclerView;
     private GenresSelectedListener mListener;
-    private Genre[] mGenres;
+    private List<Genre> mGenres;
+    private List<Genre> mSelectedGenres;
 
-    public static GenresFragmentDialog newInstance(Genre[] genres) {
+    public static GenresFragmentDialog newInstance(List<Genre> selectedGenres) {
 
         GenresFragmentDialog dialogFragment = new GenresFragmentDialog();
 
         Bundle bundle = new Bundle();
-        bundle.putParcelableArray(ActivityExtras.GENRE_ARRAY_KEY, genres);
+        bundle.putParcelableArrayList(ActivityExtras.SELECTED_GENRES_KEY, (ArrayList)selectedGenres);
         dialogFragment.setArguments(bundle);
 
         return dialogFragment;
@@ -55,10 +62,21 @@ public class GenresFragmentDialog extends DialogFragment{
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        SearchActivity activity = (SearchActivity)getContext();
+
+        GenreUrl genresUrl = new GenreUrl();
+        new GenreAsyncTask(activity.getSupportFragmentManager(),this)
+                .execute(genresUrl);
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mGenres = (Genre[]) getArguments().getParcelableArray(ActivityExtras.GENRE_ARRAY_KEY);
+        mSelectedGenres = getArguments().getParcelableArrayList(ActivityExtras.SELECTED_GENRES_KEY);
     }
 
     @NonNull
@@ -71,9 +89,28 @@ public class GenresFragmentDialog extends DialogFragment{
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
         dialogBuilder.setView(mDialogLayoutView);
 
+        return dialogBuilder.create();
+    }
+
+    @Override
+    public void onTaskCompleted(Genre[] result) {
+
+        mGenres = new LinkedList<>(Arrays.asList(result));
+
+        for(Genre genre: mSelectedGenres) {
+
+            int genreToCheck = mGenres.indexOf(genre);
+            mGenres.get(genreToCheck).setChecked(true);
+        }
+
+        setRecyclerView(mGenres.toArray(new Genre[mGenres.size()]));
+    }
+
+    private void setRecyclerView(Genre[] genres) {
+
         mGenresRecyclerView = (RecyclerView) mDialogLayoutView.findViewById(R.id.genresRecyclerView);
 
-        final GenreRecyclerViewAdapter adapter = new GenreRecyclerViewAdapter(getContext(), new LinkedList<>(Arrays.asList(mGenres)));
+        final GenreRecyclerViewAdapter adapter = new GenreRecyclerViewAdapter(getContext(), new LinkedList<>(Arrays.asList(genres)));
         mGenresRecyclerView.setAdapter(adapter);
 
         final Button genreButtonView = (Button) mDialogLayoutView.findViewById(R.id.genresDoneButtonView);
@@ -82,8 +119,9 @@ public class GenresFragmentDialog extends DialogFragment{
             @Override
             public void onClick(View v) {
 
-                Genre[] selectedGenres = adapter.getSelectedGenres();
+                List<Genre> selectedGenres = getSelectedGenres();
                 mListener.onGenreSelectionCompleted(selectedGenres);
+                setRetainInstance(true);
                 dismiss();
             }
         });
@@ -92,7 +130,19 @@ public class GenresFragmentDialog extends DialogFragment{
         mGenresRecyclerView.setLayoutManager(manager);
 
         mGenresRecyclerView.setHasFixedSize(true);
+    }
 
-        return dialogBuilder.create();
+    private List<Genre> getSelectedGenres() {
+
+        List<Genre> selectedGenres = new ArrayList<>();
+        for(Genre genre : mGenres) {
+
+            if(genre.isChecked()) {
+
+                selectedGenres.add(genre);
+            }
+        }
+
+        return selectedGenres;
     }
 }

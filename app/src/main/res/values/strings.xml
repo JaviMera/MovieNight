@@ -14,4 +14,12 @@
     <string name="movies_result_text">Movies Result!</string>
     <string name="empty_genre_text">no genres selected</string>
     <string name="dialog_button_text">done !</string>
+
+    <string-array name="filter_options_array">
+        <item>Filter by...</item>
+        <item>Genre</item>
+        <item>Release Date Range</item>
+        <item>Rating</item>
+        <item>Number of ratings</item>
+    </string-array>
 </resources>

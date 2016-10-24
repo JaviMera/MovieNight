@@ -66,4 +66,15 @@ public class Genre implements Parcelable{
 
         mChecked = checked;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        Genre otherGenre = (Genre)obj;
+
+        if(mId.equals(otherGenre.getId()))
+            return true;
+
+        return false;
+    }
 }
