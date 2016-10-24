@@ -1,6 +1,7 @@
 package movienight.javi.com.movienight.ui.SearchActivity;
 
 import android.support.v4.app.DialogFragment;
+import android.support.v4.media.RatingCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,14 +22,17 @@ import movienight.javi.com.movienight.adapters.FilterSpinnerAdapter;
 import movienight.javi.com.movienight.dialogs.DaterangeDialogFragment;
 import movienight.javi.com.movienight.dialogs.GenresFragmentDialog;
 import movienight.javi.com.movienight.R;
+import movienight.javi.com.movienight.dialogs.RateDialogFragment;
 import movienight.javi.com.movienight.listeners.DateRangePickerListener;
 import movienight.javi.com.movienight.listeners.GenresSelectedListener;
+import movienight.javi.com.movienight.listeners.RateSelectedListener;
 import movienight.javi.com.movienight.model.DateRangeFilterableItem;
 import movienight.javi.com.movienight.model.FilterableItem;
 import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.model.GenreFilterableItem;
+import movienight.javi.com.movienight.model.RateFIlterableItem;
 
-public class SearchActivity extends AppCompatActivity implements SearchActivityView, GenresSelectedListener, DateRangePickerListener{
+public class SearchActivity extends AppCompatActivity implements SearchActivityView, GenresSelectedListener, DateRangePickerListener, RateSelectedListener{
 
     private final double mProgressDivider = 10.0;
 
@@ -43,13 +47,6 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
 
     @BindView(R.id.filterItemsRecyclerView)
     RecyclerView mFilterRecyclerView;
-
-//    @BindView(R.id.seekBarView) SeekBar mSeekBarView;
-//    @BindView(R.id.genreButtonView) AppCompatButton mGenresPickerButtonView;
-//    @BindView(R.id.startReleaseDateButtonView) AppCompatButton mStartReleaseDateButtonView;
-//    @BindView(R.id.endReleaseDateButtonView) AppCompatButton mEndReleaseDateButtonView;
-//    @BindView(R.id.votesCountEditTextView) EditText mVoteCountEditText;
-//    @BindView(R.id.seekbarResultTextView) TextView mRatingValueTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +77,12 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
                     case 2:
                         dialog = DaterangeDialogFragment.newInstance();
                         dialog.show(getSupportFragmentManager(), "daterange_dialog");
+                        break;
+
+                    case 3:
+                        dialog = RateDialogFragment.newInstance();
+                        dialog.show(getSupportFragmentManager(), "rate_dialog");
+                        break;
                 }
             }
 
@@ -96,20 +99,6 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
         mFilterRecyclerView.setLayoutManager(manager);
 
         mFilterRecyclerView.setHasFixedSize(true);
-//        mSeekBarView.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//
-//                mPresenter.updateSeekBarProgressTextView(progress);
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {}
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {}
-//        });
     }
 
     @Override
@@ -144,36 +133,15 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
         adapter.addFilterItem(item);
     }
 
-//    @Override
-//    public void setSeekBarProgressTextView(int progress) {
-//
-//        DecimalFormat df = new DecimalFormat("#.#");
-//        String progressValue = df.format(progress / mProgressDivider);
-//        mRatingValueTextView.setText(progressValue);
-//    }
-//
-//    @OnClick(R.id.genreButtonView)
-//    public void onGenresButtonClick(View view) {
-//
-//        GenresFragmentDialog dialog = GenresFragmentDialog.newInstance(mGenres);
-//        dialog.show(getSupportFragmentManager(), "genres_tag");
-//    }
-//
-//    @OnClick(R.id.startReleaseDateButtonView)
-//    public void onDatepickerImageClick(View view) {
-//
-//        mDateButtonClicked = mStartReleaseDateButtonView;
-//        DatePickerFragmentDialog dialog = DatePickerFragmentDialog.newInstance(mDateButtonClicked.getText().toString());
-//        dialog.show(getSupportFragmentManager(), "start_tag");
-//    }
-//
-//    @OnClick(R.id.endReleaseDateButtonView)
-//    public void onEndReleaseDateButtonClick(View view) {
-//
-//        mDateButtonClicked = mEndReleaseDateButtonView;
-//        DatePickerFragmentDialog dialog = DatePickerFragmentDialog.newInstance(mDateButtonClicked.getText().toString());
-//        dialog.show(getSupportFragmentManager(), "start_tag");
-//    }
+    @Override
+    public void onRateDone(Double rate) {
+
+        mFilterMovieSpinner.setSelection(0);
+
+        FilterableItem item = new RateFIlterableItem(rate);
+        FilterRecyclerViewAdapter adapter = (FilterRecyclerViewAdapter)mFilterRecyclerView.getAdapter();
+        adapter.addFilterItem(item);
+    }
 //
 //    @OnClick(R.id.findMoviesButtonView)
 //    public void onFindMoviesButtonClick(View view) {
@@ -188,56 +156,5 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
 //        Intent intent = new Intent(SearchActivity.this, MoviesActivity.class);
 //        intent.putExtra(ActivityExtras.MOVIE_REQUEST_KEY, movieRequest);
 //        startActivity(intent);
-//    }
-//
-//    @Override
-//    public void OnDatePickerDone(String date) {
-//
-//        mDateButtonClicked.setText(date);
-//    }
-//
-//    @Override
-//    public void onGenreSelectionCompleted(Genre[] genres) {
-//
-//        String genresSelectedTexts = "";
-//
-//        for(int i = 0 ; i < genres.length ; i++) {
-//
-//            Genre currentGenre = genres[i];
-//            if(currentGenre.isChecked()) {
-//
-//                if(i == genres.length - 1) {
-//
-//                    genresSelectedTexts += currentGenre.getDescription();
-//                }
-//                else {
-//
-//                    genresSelectedTexts += currentGenre.getDescription() + ", ";
-//                }
-//            }
-//        }
-//
-//        mGenresPickerButtonView.setText(genresSelectedTexts);
-//    }
-//
-//    @Override
-//    public void onTaskCompleted(Genre[] result) {
-//
-//        mGenres = result;
-//    }
-//
-//    private Genre[] getSelectedGenres(Genre[] genres) {
-//
-//        List<Genre> selectedGenres = new LinkedList<>();
-//
-//        for(Genre genre : genres) {
-//
-//            if(genre.isChecked()) {
-//
-//                selectedGenres.add(genre);
-//            }
-//        }
-//
-//        return selectedGenres.toArray(new Genre[selectedGenres.size()]);
 //    }
 }
