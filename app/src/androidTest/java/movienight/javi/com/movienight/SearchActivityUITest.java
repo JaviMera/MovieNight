@@ -98,6 +98,24 @@ public class SearchActivityUITest {
         onView(withId(R.id.filterMoviesSpinnerView)).check(matches(withSpinnerText(mFilterItems[0])));
     }
 
+    @Test
+    public void voteCountSpinnerItemClickDisplaysDateRangeDialog() throws Exception {
+
+        // Arrange
+        String expectedItem = mFilterItems[4];
+
+        // Act
+        onView(withId(R.id.filterMoviesSpinnerView)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is(expectedItem))).perform(click());
+
+        // Assert
+        onView(withId(R.id.voteCountEditTextView)).check(matches(isDisplayed()));
+
+        // Assert that the spinner goes back to showing filter by item
+        onView(withId(R.id.voteCountDoneButtonView)).perform(click()); // close the genre dialog
+        onView(withId(R.id.filterMoviesSpinnerView)).check(matches(withSpinnerText(mFilterItems[0])));
+    }
+
     //    @Test
 //    private ViewAction SetProgress(int progress) {
 //

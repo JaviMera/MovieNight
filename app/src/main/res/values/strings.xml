@@ -7,7 +7,7 @@
     <string name="empty_date_picker_text">mm-dd-yyyy</string>
     <string name="rating_text">Rating:</string>
     <string name="vote_count_text">People\'s votes:</string>
-    <string name="vote_count_hint_text">12345</string>
+    <string name="vote_count_hint_text">Example: 12345</string>
     <string name="genre_text">Genre:</string>
     <string name="search_title_text">Search for movies!</string>
     <string name="find_movies_button_text">Go find movies!</string>

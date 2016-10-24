@@ -9,7 +9,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,7 +33,7 @@ public class GenreRecyclerViewAdapter extends RecyclerView.Adapter<GenreRecycler
     @Override
     public GenreViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(mContext).inflate(R.layout.genre_item_layout, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.genre_recycler_item_layout, parent, false);
         GenreViewHolder holder = new GenreViewHolder(view);
 
         return holder;

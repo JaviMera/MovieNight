@@ -1,7 +1,6 @@
 package movienight.javi.com.movienight.ui.SearchActivity;
 
 import android.support.v4.app.DialogFragment;
-import android.support.v4.media.RatingCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,16 +22,19 @@ import movienight.javi.com.movienight.dialogs.DaterangeDialogFragment;
 import movienight.javi.com.movienight.dialogs.GenresFragmentDialog;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.dialogs.RateDialogFragment;
-import movienight.javi.com.movienight.listeners.DateRangePickerListener;
+import movienight.javi.com.movienight.dialogs.VoteCountDialogFragment;
+import movienight.javi.com.movienight.listeners.DateSelectedListener;
 import movienight.javi.com.movienight.listeners.GenresSelectedListener;
 import movienight.javi.com.movienight.listeners.RateSelectedListener;
+import movienight.javi.com.movienight.listeners.VoteCountSelectedListener;
 import movienight.javi.com.movienight.model.DateRangeFilterableItem;
 import movienight.javi.com.movienight.model.FilterableItem;
 import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.model.GenreFilterableItem;
 import movienight.javi.com.movienight.model.RateFIlterableItem;
+import movienight.javi.com.movienight.model.VoteCountFilterableItem;
 
-public class SearchActivity extends AppCompatActivity implements SearchActivityView, GenresSelectedListener, DateRangePickerListener, RateSelectedListener{
+public class SearchActivity extends AppCompatActivity implements SearchActivityView, GenresSelectedListener, DateSelectedListener, RateSelectedListener, VoteCountSelectedListener{
 
     private final double mProgressDivider = 10.0;
 
@@ -82,6 +84,11 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
                     case 3:
                         dialog = RateDialogFragment.newInstance();
                         dialog.show(getSupportFragmentManager(), "rate_dialog");
+                        break;
+
+                    case 4:
+                        dialog = VoteCountDialogFragment.newInstance();
+                        dialog.show(getSupportFragmentManager(), "votecount_dialog");
                         break;
                 }
             }
@@ -139,6 +146,16 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
         mFilterMovieSpinner.setSelection(0);
 
         FilterableItem item = new RateFIlterableItem(rate);
+        FilterRecyclerViewAdapter adapter = (FilterRecyclerViewAdapter)mFilterRecyclerView.getAdapter();
+        adapter.addFilterItem(item);
+    }
+
+    @Override
+    public void onVoteCountDone(Integer voteCount) {
+
+        mFilterMovieSpinner.setSelection(0);
+
+        FilterableItem item = new VoteCountFilterableItem(voteCount);
         FilterRecyclerViewAdapter adapter = (FilterRecyclerViewAdapter)mFilterRecyclerView.getAdapter();
         adapter.addFilterItem(item);
     }

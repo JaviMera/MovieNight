@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import movienight.javi.com.movienight.R;
-import movienight.javi.com.movienight.listeners.DateRangePickerListener;
+import movienight.javi.com.movienight.listeners.DateSelectedListener;
 import movienight.javi.com.movienight.model.ReleaseDate;
 import movienight.javi.com.movienight.ui.SearchActivity.SearchActivity;
 
@@ -27,7 +27,7 @@ public class DaterangeDialogFragment extends DialogFragment {
 
     private String mStartDate;
     private String mEndDate;
-    private DateRangePickerListener mListener;
+    private DateSelectedListener mListener;
 
     public static DaterangeDialogFragment newInstance() {
 
