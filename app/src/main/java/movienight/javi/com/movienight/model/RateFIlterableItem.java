@@ -14,8 +14,14 @@ public class RateFIlterableItem implements FilterableItem {
     }
 
     @Override
+    public String getTitle() {
+
+        return "With an average of: ";
+    }
+
+    @Override
     public String getValue() {
 
-        return "Searching movies with a minimum rate of " + String.format("%.1f",mRate);
+        return String.format("%.1f",mRate);
     }
 }

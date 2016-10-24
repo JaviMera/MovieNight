@@ -14,8 +14,14 @@ public class VoteCountFilterableItem implements FilterableItem {
     }
 
     @Override
+    public String getTitle() {
+
+        return "With a popularity of: ";
+    }
+
+    @Override
     public String getValue() {
 
-        return "Searching movies with a minimum vote count of " + mVoteCount;
+        return mVoteCount + " votes.";
     }
 }

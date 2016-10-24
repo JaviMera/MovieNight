@@ -14,6 +14,12 @@ public class GenreFilterableItem implements FilterableItem {
     }
 
     @Override
+    public String getTitle() {
+
+        return "With genre(s):";
+    }
+
+    @Override
     public String getValue() {
 
         String selectedGenresText = "";

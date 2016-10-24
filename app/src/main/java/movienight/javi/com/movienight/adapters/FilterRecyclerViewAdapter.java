@@ -78,18 +78,23 @@ public class FilterRecyclerViewAdapter extends RecyclerView.Adapter<FilterRecycl
 
     public class FilterViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView mTextView;
+        public TextView mTitleTextView;
+        public TextView mValueTextView;
 
         public FilterViewHolder(View itemView) {
             super(itemView);
 
-            mTextView = (TextView) itemView.findViewById(R.id.filterItemTextView);
+            mTitleTextView = (TextView) itemView.findViewById(R.id.filterItemTitle);
+            mValueTextView = (TextView) itemView.findViewById(R.id.filterItemTextView);
         }
 
         public void bindItem(FilterableItem filterableItem) {
 
-            if(filterableItem != null)
-                mTextView.setText(filterableItem.getValue());
+            if(filterableItem != null) {
+
+                mTitleTextView.setText(filterableItem.getTitle());
+                mValueTextView.setText(filterableItem.getValue());
+            }
         }
     }
 }
