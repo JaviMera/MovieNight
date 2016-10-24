@@ -11,6 +11,7 @@ import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -39,8 +40,8 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
     private final double mProgressDivider = 10.0;
 
     private List<Genre> mSelectedGenres;
-    private String mStartDate;
-    private String mEndDate;
+    private Date mStartDate;
+    private Date mEndDate;
 
     private SearchActivityPresenter mPresenter;
 
@@ -129,7 +130,7 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
     }
 
     @Override
-    public void onDateRangePickerDone(String startDate, String endDate) {
+    public void onDateRangePickerDone(Date startDate, Date endDate) {
 
         mFilterMovieSpinner.setSelection(0);
         mStartDate = startDate;

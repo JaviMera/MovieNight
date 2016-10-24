@@ -13,6 +13,7 @@ import android.widget.DatePicker;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.listeners.DateSelectedListener;
@@ -61,10 +62,11 @@ public class DaterangeDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
 
-                String startDateFormat = getFormattedDate(startDatePicker);
-                String endDateFormat = getFormattedDate(endDatePicker);
+                mListener.onDateRangePickerDone(
+                    getDate(startDatePicker),
+                    getDate(endDatePicker)
+                );
 
-                mListener.onDateRangePickerDone(startDateFormat, endDateFormat);
                 dismiss();
             }
         });
@@ -72,8 +74,11 @@ public class DaterangeDialogFragment extends DialogFragment {
         return dialogBuilder.create();
     }
 
-    private String getFormattedDate(DatePicker view) {
+    private Date getDate(DatePicker picker) {
 
-        return view.getYear() + "-" + (view.getMonth() + 1) + "-" + view.getDayOfMonth();
+        Calendar c = Calendar.getInstance();
+        c.set(picker.getYear(), picker.getMonth() + 1, picker.getDayOfMonth());
+
+        return c.getTime();
     }
 }

@@ -1,15 +1,18 @@
 package movienight.javi.com.movienight.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by Javi on 10/24/2016.
  */
 
 public class DateRangeFilterableItem implements FilterableItem {
 
-    private String mStartDate;
-    private String mEndDate;
+    private Date mStartDate;
+    private Date mEndDate;
 
-    public DateRangeFilterableItem(String startDate, String endDate) {
+    public DateRangeFilterableItem(Date startDate, Date endDate) {
 
         mStartDate = startDate;
         mEndDate = endDate;
@@ -18,6 +21,7 @@ public class DateRangeFilterableItem implements FilterableItem {
     @Override
     public String getValue() {
 
-        return "Searching from " + mStartDate + " to " + mEndDate;
+        SimpleDateFormat formatter = new SimpleDateFormat("M/dd/yyyy");
+        return "Searching from " + formatter.format(mStartDate) + " to " + formatter.format(mEndDate);
     }
 }
