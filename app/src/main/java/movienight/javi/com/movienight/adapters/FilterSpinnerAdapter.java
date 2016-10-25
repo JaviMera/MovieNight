@@ -3,6 +3,7 @@ package movienight.javi.com.movienight.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,8 +71,11 @@ public class FilterSpinnerAdapter extends ArrayAdapter<String> {
         String filterItem = getItem(position);
         holder.mFilterDropdownItemView.setText(filterItem);
 
-        if(position == 0)
-            holder.mFilterDropdownItemView.setVisibility(View.GONE);
+        if(position == 0) {
+
+            holder.mFilterDropdownItemView.setText("");
+            holder.mFilterDropdownItemView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.movie_dark_purple));
+        }
 
         return convertView;
     }
