@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 import movienight.javi.com.movienight.listeners.MovieSelectedListener;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.adapters.MovieRecyclerViewAdapter;
-import movienight.javi.com.movienight.asyntasks.MovieAsyncTask;
+import movienight.javi.com.movienight.asyntasks.MoviesFilterAsyncTask;
 import movienight.javi.com.movienight.listeners.MoviesAsyncTaskListener;
 import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.model.Movie;
@@ -69,7 +69,7 @@ public class MoviesActivity extends AppCompatActivity implements MoviesActivityV
                         mPresenter.setProgressBarVisibility(View.VISIBLE);
 
                         MovieUrl url = createMovieUrl(mCurrentPageNumber, mMovieRequest);
-                        new MovieAsyncTask((MoviesActivity)recyclerView.getContext()).execute(url);
+                        new MoviesFilterAsyncTask((MoviesActivity)recyclerView.getContext()).execute(url);
                     }
                     else {
 
@@ -85,20 +85,20 @@ public class MoviesActivity extends AppCompatActivity implements MoviesActivityV
         mPresenter.setProgressBarVisibility(View.VISIBLE);
 
         MovieUrl url = createMovieUrl(mCurrentPageNumber, mMovieRequest);
-        new MovieAsyncTask(this).execute(url);
+        new MoviesFilterAsyncTask(this).execute(url);
     }
 
     @Override
-    public void onCompleted(Integer totalPages, Page page) {
+    public void onCompleted(Integer totalPages, Movie[] movies) {
 
         if(null == mTotalPages) {
 
             mTotalPages = totalPages;
-            mPresenter.setRecyclerViewAdapter(this, page.getMovies(), this);
+            mPresenter.setRecyclerViewAdapter(this, movies, this);
         }
         else {
 
-            mPresenter.updateRecyclerViewAdapter(page.getMovies());
+            mPresenter.updateRecyclerViewAdapter(movies);
         }
 
         mPresenter.setProgressBarVisibility(View.INVISIBLE);

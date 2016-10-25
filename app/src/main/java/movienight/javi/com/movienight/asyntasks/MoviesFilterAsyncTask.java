@@ -31,18 +31,18 @@ import okhttp3.Response;
  */
 
 
-public class MovieAsyncTask extends AsyncTask<AbstractUrl, Void, Page> {
+public class MoviesFilterAsyncTask extends AsyncTask<AbstractUrl, Void, Movie[]> {
 
     private MoviesAsyncTaskListener mListener;
     private Integer mTotalPages;
 
-    public MovieAsyncTask(MoviesAsyncTaskListener listener) {
+    public MoviesFilterAsyncTask(MoviesAsyncTaskListener listener) {
 
         mListener = listener;
     }
 
     @Override
-    protected Page doInBackground(AbstractUrl... params) {
+    protected Movie[] doInBackground(AbstractUrl... params) {
 
         MovieUrl url = (MovieUrl)params[0];
         OkHttpClient client = new OkHttpClient();
@@ -107,9 +107,11 @@ public class MovieAsyncTask extends AsyncTask<AbstractUrl, Void, Page> {
                 }
             }
 
-            int pageNumber = jsonObject.getInt("page");
+//            int pageNumber = jsonObject.getInt("page");
+//
+//            return new Page(pageNumber, movies.toArray(new Movie[movies.size()]));
 
-            return new Page(pageNumber, movies.toArray(new Movie[movies.size()]));
+            return movies.toArray(new Movie[movies.size()]);
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -123,8 +125,8 @@ public class MovieAsyncTask extends AsyncTask<AbstractUrl, Void, Page> {
     }
 
     @Override
-    protected void onPostExecute(Page page) {
+    protected void onPostExecute(Movie[] movies) {
 
-        mListener.onCompleted(mTotalPages, page);
+        mListener.onCompleted(mTotalPages, movies);
     }
 }

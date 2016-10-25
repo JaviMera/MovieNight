@@ -15,7 +15,7 @@ public class GenreUrl extends AbstractUrl {
     public String toString() {
 
         String url = mUrl;
-        url += mApiKey;
+        url += mApiKeyParameter;
         url += mLanguage;
 
         return url;

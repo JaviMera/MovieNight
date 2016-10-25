@@ -1,5 +1,6 @@
 package movienight.javi.com.movienight.listeners;
 
+import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.model.Page;
 
 /**
@@ -8,5 +9,5 @@ import movienight.javi.com.movienight.model.Page;
 
 public interface MoviesAsyncTaskListener {
 
-    void onCompleted(Integer totalPages, Page page);
+    void onCompleted(Integer totalPages, Movie[] movies);
 }

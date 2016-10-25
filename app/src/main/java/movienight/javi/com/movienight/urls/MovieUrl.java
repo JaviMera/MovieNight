@@ -1,12 +1,5 @@
 package movienight.javi.com.movienight.urls;
 
-import android.view.LayoutInflater;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by Javi on 10/21/2016.
  */
@@ -75,7 +68,7 @@ public class MovieUrl extends AbstractUrl {
     public String toString() {
 
         String request = mUrl;
-        request += mApiKey;
+        request += mApiKeyParameter;
         request += "&" + language + "=" + mLanguage;
         request += "&" + sort + "=" + mSort;
         request += "&" + adult + "=" + mAdult;

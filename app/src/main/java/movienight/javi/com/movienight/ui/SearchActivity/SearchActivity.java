@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,8 +20,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import movienight.javi.com.movienight.adapters.FilterRecyclerViewAdapter;
+import movienight.javi.com.movienight.adapters.DefaultMoviesRecyclerAdapter;
 import movienight.javi.com.movienight.adapters.FilterSpinnerAdapter;
+import movienight.javi.com.movienight.asyntasks.PopularMoviesAsyncTask;
 import movienight.javi.com.movienight.dialogs.DaterangeDialogFragment;
 import movienight.javi.com.movienight.dialogs.GenresFragmentDialog;
 import movienight.javi.com.movienight.R;
@@ -29,20 +30,20 @@ import movienight.javi.com.movienight.dialogs.RateDialogFragment;
 import movienight.javi.com.movienight.dialogs.VoteCountDialogFragment;
 import movienight.javi.com.movienight.listeners.DateSelectedListener;
 import movienight.javi.com.movienight.listeners.GenresSelectedListener;
+import movienight.javi.com.movienight.listeners.MoviesAsyncTaskListener;
 import movienight.javi.com.movienight.listeners.RateSelectedListener;
 import movienight.javi.com.movienight.listeners.VoteCountSelectedListener;
-import movienight.javi.com.movienight.model.DateRangeFilterableItem;
-import movienight.javi.com.movienight.model.FilterableItem;
 import movienight.javi.com.movienight.model.Genre;
-import movienight.javi.com.movienight.model.GenreFilterableItem;
+import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.model.MovieRequest;
-import movienight.javi.com.movienight.model.RateFIlterableItem;
 import movienight.javi.com.movienight.model.ReleaseDate;
-import movienight.javi.com.movienight.model.VoteCountFilterableItem;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.ui.MoviesActivity.MoviesActivity;
+import movienight.javi.com.movienight.urls.PopularMoviesUrl;
 
-public class SearchActivity extends AppCompatActivity implements SearchActivityView, GenresSelectedListener, DateSelectedListener, RateSelectedListener, VoteCountSelectedListener{
+public class SearchActivity extends AppCompatActivity
+    implements SearchActivityView, GenresSelectedListener, DateSelectedListener,
+    RateSelectedListener, VoteCountSelectedListener, MoviesAsyncTaskListener {
 
     private List<Genre> mSelectedGenres;
     private Date mStartDate;
@@ -112,13 +113,9 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
             }
         });
 
-        final FilterRecyclerViewAdapter adapter = new FilterRecyclerViewAdapter(this);
-        mFilterRecyclerView.setAdapter(adapter);
-
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(this);
-        mFilterRecyclerView.setLayoutManager(manager);
-
-        mFilterRecyclerView.setHasFixedSize(true);
+        PopularMoviesUrl url = new PopularMoviesUrl();
+            new PopularMoviesAsyncTask(this)
+                .execute(url);
     }
 
     @Override
@@ -135,10 +132,6 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
 
         mSelectedGenres.clear();
         mSelectedGenres = genres;
-
-        FilterableItem item = new GenreFilterableItem(mSelectedGenres.toArray(new Genre[mSelectedGenres.size()]));
-        FilterRecyclerViewAdapter adapter = (FilterRecyclerViewAdapter)mFilterRecyclerView.getAdapter();
-        adapter.addFilterItem(item);
     }
 
     @Override
@@ -147,10 +140,6 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
         mFilterMovieSpinner.setSelection(0);
         mStartDate = startDate;
         mEndDate = endDate;
-
-        FilterableItem item = new DateRangeFilterableItem(mStartDate, mEndDate);
-        FilterRecyclerViewAdapter adapter = (FilterRecyclerViewAdapter)mFilterRecyclerView.getAdapter();
-        adapter.addFilterItem(item);
     }
 
     @Override
@@ -158,10 +147,6 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
 
         mFilterMovieSpinner.setSelection(0);
         mRate = rate;
-
-        FilterableItem item = new RateFIlterableItem(rate);
-        FilterRecyclerViewAdapter adapter = (FilterRecyclerViewAdapter)mFilterRecyclerView.getAdapter();
-        adapter.addFilterItem(item);
     }
 
     @Override
@@ -169,10 +154,6 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
 
         mFilterMovieSpinner.setSelection(0);
         mVoteCount = voteCount;
-
-        FilterableItem item = new VoteCountFilterableItem(voteCount);
-        FilterRecyclerViewAdapter adapter = (FilterRecyclerViewAdapter)mFilterRecyclerView.getAdapter();
-        adapter.addFilterItem(item);
     }
 
     @OnClick(R.id.findMoviesButtonView)
@@ -191,5 +172,17 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
         Intent intent = new Intent(SearchActivity.this, MoviesActivity.class);
         intent.putExtra(ActivityExtras.MOVIE_REQUEST_KEY, movieRequest);
         startActivity(intent);
+    }
+
+    @Override
+    public void onCompleted(Integer totalPages, Movie[] movies) {
+
+        final DefaultMoviesRecyclerAdapter recyclerAdapter = new DefaultMoviesRecyclerAdapter(this, movies);
+        mFilterRecyclerView.setAdapter(recyclerAdapter);
+
+        RecyclerView.LayoutManager gridManager = new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false);
+        mFilterRecyclerView.setLayoutManager(gridManager);
+
+        mFilterRecyclerView.setHasFixedSize(true);
     }
 }
