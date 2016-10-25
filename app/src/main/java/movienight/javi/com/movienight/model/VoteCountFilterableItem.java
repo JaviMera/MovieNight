@@ -14,12 +14,6 @@ public class VoteCountFilterableItem implements FilterableItem {
     }
 
     @Override
-    public String getTitle() {
-
-        return "With a popularity of: ";
-    }
-
-    @Override
     public String getValue() {
 
         return mVoteCount + " votes.";

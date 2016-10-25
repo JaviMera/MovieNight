@@ -15,10 +15,9 @@ import java.util.List;
 
 import movienight.javi.com.movienight.listeners.MoviesAsyncTaskListener;
 import movienight.javi.com.movienight.model.Movie;
-import movienight.javi.com.movienight.model.Page;
-import movienight.javi.com.movienight.model.ReleaseDate;
 import movienight.javi.com.movienight.model.jsonvalues.JSONMovie;
 import movienight.javi.com.movienight.model.jsonvalues.JSONMovieDiscover;
+import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.urls.AbstractUrl;
 import movienight.javi.com.movienight.urls.MovieUrl;
 import okhttp3.Call;
@@ -54,8 +53,8 @@ public class MoviesFilterAsyncTask extends AsyncTask<AbstractUrl, Void, Movie[]>
 
         try
         {
-            Date startDateRquest = new SimpleDateFormat(ReleaseDate.FORMAT).parse(url.getStartDate());
-            Date endDateRequest = new SimpleDateFormat(ReleaseDate.FORMAT).parse(url.getEndDate());
+            Date startDateRquest = new SimpleDateFormat(ActivityExtras.RELEASE_DATE_FORMAT).parse(url.getStartDate());
+            Date endDateRequest = new SimpleDateFormat(ActivityExtras.RELEASE_DATE_FORMAT).parse(url.getEndDate());
 
             Response response = call.execute();
             String jsonString = response.body().string();
@@ -69,9 +68,9 @@ public class MoviesFilterAsyncTask extends AsyncTask<AbstractUrl, Void, Movie[]>
 
                 JSONObject currentJSONObject = resultsArray.getJSONObject(result);
 
-                String release_date = currentJSONObject.getString(JSONMovie.RELEASE_DATE_KEY);
+                String releaseDateJson = currentJSONObject.getString(JSONMovie.RELEASE_DATE_KEY);
 
-                Date releaseDate = new SimpleDateFormat(ReleaseDate.FORMAT).parse(release_date);
+                Date releaseDate = new SimpleDateFormat(ActivityExtras.RELEASE_DATE_FORMAT).parse(releaseDateJson);
 
                 if((releaseDate.compareTo(startDateRquest) == 0 || releaseDate.compareTo(endDateRequest) == 0)
                     || (releaseDate.compareTo(startDateRquest) == 1 && releaseDate.compareTo(endDateRequest) == -1)){

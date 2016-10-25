@@ -19,12 +19,6 @@ public class DateRangeFilterableItem implements FilterableItem {
     }
 
     @Override
-    public String getTitle() {
-
-        return "With dates between: ";
-    }
-
-    @Override
     public String getValue() {
 
         SimpleDateFormat formatter = new SimpleDateFormat("M/dd/yyyy");

@@ -1,8 +1,5 @@
 package movienight.javi.com.movienight.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by Javi on 10/24/2016.
  */
@@ -14,12 +11,6 @@ public class GenreFilterableItem implements FilterableItem {
     public GenreFilterableItem(Genre[] genres) {
 
         mSelectedGenres = genres;
-    }
-
-    @Override
-    public String getTitle() {
-
-        return "With genre(s):";
     }
 
     @Override

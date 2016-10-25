@@ -14,12 +14,6 @@ public class RateFilterableItem implements FilterableItem {
     }
 
     @Override
-    public String getTitle() {
-
-        return "With an average of: ";
-    }
-
-    @Override
     public String getValue() {
 
         return String.format("%.1f",mRate);
