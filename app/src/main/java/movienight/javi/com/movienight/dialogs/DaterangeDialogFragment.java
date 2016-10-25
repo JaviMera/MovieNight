@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -26,13 +27,19 @@ import movienight.javi.com.movienight.ui.SearchActivity.SearchActivity;
 
 public class DaterangeDialogFragment extends DialogFragment {
 
-    private String mStartDate;
-    private String mEndDate;
     private DateSelectedListener mListener;
+    private Date mStartDate;
+    private Date mEndDate;
 
-    public static DaterangeDialogFragment newInstance() {
+    public static DaterangeDialogFragment newInstance(Date startDate, Date endDate) {
 
         DaterangeDialogFragment dialog = new DaterangeDialogFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putLong("start_date", startDate.getTime());
+        bundle.putLong("end_date", endDate.getTime());
+        dialog.setArguments(bundle);
+
         return dialog;
     }
 
@@ -41,6 +48,26 @@ public class DaterangeDialogFragment extends DialogFragment {
         super.onAttach(context);
 
         mListener = (SearchActivity)getActivity();
+        mStartDate = new Date();
+        mEndDate = new Date();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        long startDateInMilliseconds = getArguments().getLong("start_date");
+        long endDateInMilliseconds = getArguments().getLong("end_date");
+
+        if(startDateInMilliseconds != 0L) {
+
+            mStartDate.setTime(startDateInMilliseconds);
+        }
+
+        if(endDateInMilliseconds != 0L) {
+
+            mEndDate.setTime(endDateInMilliseconds);
+        }
     }
 
     @NonNull
@@ -55,6 +82,14 @@ public class DaterangeDialogFragment extends DialogFragment {
 
         final DatePicker startDatePicker = (DatePicker) view.findViewById(R.id.startDateRangePickerView);
         final DatePicker endDatePicker = (DatePicker) view.findViewById(R.id.endDateRangePickerView);
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(mStartDate);
+        startDatePicker.updateDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+
+        c.setTime(mEndDate);
+        endDatePicker.updateDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+
         final Button doneButton = (Button) view.findViewById(R.id.dateRangeDoneButtonView);
 
         doneButton.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +112,7 @@ public class DaterangeDialogFragment extends DialogFragment {
     private Date getDate(DatePicker picker) {
 
         Calendar c = Calendar.getInstance();
-        c.set(picker.getYear(), picker.getMonth() + 1, picker.getDayOfMonth());
+        c.set(picker.getYear(), picker.getMonth(), picker.getDayOfMonth());
 
         return c.getTime();
     }

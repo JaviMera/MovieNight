@@ -58,6 +58,9 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
         ButterKnife.bind(this);
 
         mSelectedGenres = new ArrayList<>();
+        mStartDate = new Date();
+        mEndDate = new Date();
+
         mPresenter = new SearchActivityPresenter(this);
 
         String[] filterItems = getResources().getStringArray(R.array.filter_options_array);
@@ -78,7 +81,7 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
                         break;
 
                     case 2:
-                        dialog = DaterangeDialogFragment.newInstance();
+                        dialog = DaterangeDialogFragment.newInstance(mStartDate, mEndDate);
                         dialog.show(getSupportFragmentManager(), "daterange_dialog");
                         break;
 
