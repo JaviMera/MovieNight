@@ -6,14 +6,11 @@
     android:layout_height="match_parent" >
 
     <TextView
-        android:textSize="16sp"
-        android:layout_margin="15dp"
-        style="@style/VotesCountTextView"/>
+        style="@style/VotesCountDialogTitleTextView"/>
 
     <EditText
         android:id="@+id/voteCountEditTextView"
-        android:layout_margin="15dp"
-        style="@style/VoteCountEditTextView"/>
+        style="@style/VoteCountDialogEditTextView"/>
 
     <Button
         android:id="@+id/voteCountDoneButtonView"

@@ -12,7 +12,7 @@ import java.io.IOException;
 import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.model.jsonvalues.JSONGenre;
 import movienight.javi.com.movienight.ui.AsyncTaskListener;
-import movienight.javi.com.movienight.dialogs.LoadingFragmentDialog;
+import movienight.javi.com.movienight.dialogs.LoadDialogFragment;
 import movienight.javi.com.movienight.urls.AbstractUrl;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
@@ -26,13 +26,13 @@ import okhttp3.Response;
 public class GenreAsyncTask extends AsyncTask<AbstractUrl, Integer, Genre[]> {
 
     private AsyncTaskListener mListener;
-    private LoadingFragmentDialog mLoadingDialogFragment;
+    private LoadDialogFragment mLoadingDialogFragment;
     private FragmentManager mFragmentManager;
 
     public GenreAsyncTask(FragmentManager fragmentManager, AsyncTaskListener delegate) {
         mListener = delegate;
         mFragmentManager = fragmentManager;
-        mLoadingDialogFragment = new LoadingFragmentDialog();
+        mLoadingDialogFragment = new LoadDialogFragment();
     }
 
     @Override

@@ -16,7 +16,7 @@ import movienight.javi.com.movienight.R;
  * Created by Javi on 10/19/2016.
  */
 
-public class LoadingFragmentDialog extends DialogFragment {
+public class LoadDialogFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

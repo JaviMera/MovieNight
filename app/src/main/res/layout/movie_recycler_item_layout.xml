@@ -6,10 +6,5 @@
 
     <TextView
         android:id="@+id/movieTitleTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/movie_dark_purple"
-        android:textSize="15sp"
-        android:layout_centerInParent="true"
-        android:padding="10dp"/>
+        style="@style/MovieItemTitleTextView" />
 </RelativeLayout>

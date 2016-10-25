@@ -30,4 +30,17 @@
     <dimen name="underline_view_top_margin">10dp</dimen>
     <dimen name="dialog_button_margin">15dp</dimen>
     <dimen name="dialog_button_text_size">15sp</dimen>
+    <dimen name="dialog_load_margin">10dp</dimen>
+    <dimen name="dialog_load_title_text_size">14sp</dimen>
+    <dimen name="zero">0dp</dimen>
+    <dimen name="dialog_title_text_view_size">18sp</dimen>
+    <dimen name="date_range_dialog_text_pad">15dp</dimen>
+    <dimen name="rate_dialog_score_text_view_text">15dp</dimen>
+    <dimen name="rate_dialog_rating_bar_margin">15dp</dimen>
+    <dimen name="recycler_view_item_text_size">15sp</dimen>
+    <dimen name="recycler_view_item_pad">10dp</dimen>
+    <dimen name="recycler_item_value_text_size">15sp</dimen>
+    <dimen name="filter_item_title_text_size">18sp</dimen>
+    <dimen name="filter_item_value_margin">15dp</dimen>
+    <dimen name="vote_count_dialog_margin">15dp</dimen>
 </resources>

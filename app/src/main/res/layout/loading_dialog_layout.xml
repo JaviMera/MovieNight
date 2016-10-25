@@ -7,20 +7,10 @@
     android:background="#271F3B">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Loading data from the strange world of internet..."
-        android:textSize="14sp"
-        android:textColor="@color/movie_dark_purple"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_margin="10dp"/>
+        style="@style/DialogLoadTitleTextView"/>
 
     <ProgressBar
         android:id="@+id/loadingActivityProgressBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:indeterminateDrawable="@drawable/progress_bar_drawable"/>
+        style="@style/DialogLoadProgressBar"/>
 
 </LinearLayout>

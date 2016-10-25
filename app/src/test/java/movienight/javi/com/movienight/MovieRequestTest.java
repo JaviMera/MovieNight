@@ -39,7 +39,7 @@ public class MovieRequestTest {
     public void setMovieRequestRating() throws Exception {
 
         // Arrange
-        double expectedRating = 6.5;
+        Float expectedRating = 6.5f;
 
         // Act
         mMovieRequest.setRating(expectedRating);

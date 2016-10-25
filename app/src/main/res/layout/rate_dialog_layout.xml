@@ -8,42 +8,24 @@
     <LinearLayout
         android:id="@+id/rateLinearLayout"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_height="wrap_content">
+        android:layout_marginLeft="30dp">
 
         <TextView
-            android:textSize="20sp"
-            android:layout_width="wrap_content"
             style="@style/RatingTextView"/>
 
         <TextView
             android:id="@+id/ratingScoreTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:text="0.0"
-            android:textSize="18sp"
-            android:textColor="@color/movie_dark_purple"/>
+            style="@style/RatingScoreTextView"/>
+
     </LinearLayout>
 
     <RatingBar
         android:id="@+id/rateBarView"
-        android:layout_margin="20dp"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="?android:ratingBarStyleSmall"
-        android:rating="0"
-        android:scaleX="2"
-        android:scaleY="2"
-        android:numStars="10"
-        android:isIndicator="false"/>
+        style="@style/RateDialogRatingBarView"/>
 
     <Button
         android:id="@+id/rateDoneButtonView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="30dp"
         style="@style/DialogButtonView"/>
 </LinearLayout>

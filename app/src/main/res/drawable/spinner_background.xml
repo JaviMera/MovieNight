@@ -20,7 +20,7 @@
     <item>
         <bitmap
             android:gravity="center|right"
-            android:src="@drawable/arrow_down_float"/>
+            android:src="@drawable/spinner_arrow_icon"/>
     </item>
 
 </layer-list>
