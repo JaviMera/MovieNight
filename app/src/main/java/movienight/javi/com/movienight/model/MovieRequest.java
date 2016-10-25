@@ -2,6 +2,7 @@ package movienight.javi.com.movienight.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.view.ViewDebug;
 
 /**
  * Created by Javi on 10/18/2016.
@@ -13,7 +14,7 @@ public class MovieRequest implements Parcelable{
     private String mStartDateReleaseSelected;
     private String mEndDateReleaseSelected;
     private Integer mVoteCountSelected;
-    private Double mRatingSelected;
+    private Float mRatingSelected;
 
     public MovieRequest() {}
 
@@ -22,7 +23,7 @@ public class MovieRequest implements Parcelable{
         mStartDateReleaseSelected = in.readString();
         mEndDateReleaseSelected = in.readString();
         mVoteCountSelected = in.readInt();
-        mRatingSelected = in.readDouble();
+        mRatingSelected = in.readFloat();
     }
 
     public static final Creator<MovieRequest> CREATOR = new Creator<MovieRequest>() {
@@ -45,7 +46,7 @@ public class MovieRequest implements Parcelable{
         return mGenreSelected;
     }
 
-    public double getRatingSelected() {
+    public Float getRatingSelected() {
         return mRatingSelected;
     }
 
@@ -62,7 +63,7 @@ public class MovieRequest implements Parcelable{
         mGenreSelected = genre;
     }
 
-    public void setRating(Double rating) {
+    public void setRating(Float rating) {
 
         mRatingSelected = rating;
     }
@@ -93,6 +94,6 @@ public class MovieRequest implements Parcelable{
         dest.writeString(mStartDateReleaseSelected);
         dest.writeString(mEndDateReleaseSelected);
         dest.writeInt(mVoteCountSelected);
-        dest.writeDouble(mRatingSelected);
+        dest.writeFloat(mRatingSelected);
     }
 }

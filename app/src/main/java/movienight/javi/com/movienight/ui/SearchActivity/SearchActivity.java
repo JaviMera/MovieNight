@@ -1,5 +1,6 @@
 package movienight.javi.com.movienight.ui.SearchActivity;
 
+import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -17,6 +19,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import movienight.javi.com.movienight.adapters.FilterRecyclerViewAdapter;
 import movienight.javi.com.movienight.adapters.FilterSpinnerAdapter;
 import movienight.javi.com.movienight.dialogs.DaterangeDialogFragment;
@@ -32,8 +35,12 @@ import movienight.javi.com.movienight.model.DateRangeFilterableItem;
 import movienight.javi.com.movienight.model.FilterableItem;
 import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.model.GenreFilterableItem;
+import movienight.javi.com.movienight.model.MovieRequest;
 import movienight.javi.com.movienight.model.RateFIlterableItem;
+import movienight.javi.com.movienight.model.ReleaseDate;
 import movienight.javi.com.movienight.model.VoteCountFilterableItem;
+import movienight.javi.com.movienight.ui.ActivityExtras;
+import movienight.javi.com.movienight.ui.MoviesActivity.MoviesActivity;
 
 public class SearchActivity extends AppCompatActivity implements SearchActivityView, GenresSelectedListener, DateSelectedListener, RateSelectedListener, VoteCountSelectedListener{
 
@@ -167,19 +174,22 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
         FilterRecyclerViewAdapter adapter = (FilterRecyclerViewAdapter)mFilterRecyclerView.getAdapter();
         adapter.addFilterItem(item);
     }
-//
-//    @OnClick(R.id.findMoviesButtonView)
-//    public void onFindMoviesButtonClick(View view) {
-//
-//        MovieRequest movieRequest = new MovieRequest();
-//        movieRequest.setGenre(getSelectedGenres(mGenres));
-//        movieRequest.setStartDateRelease(mStartReleaseDateButtonView.getText().toString());
-//        movieRequest.setEndDateReleaseSelected(mEndReleaseDateButtonView.getText().toString());
-//        movieRequest.setVoteCount(Integer.parseInt(mVoteCountEditText.getText().toString()));
-//        movieRequest.setRating(Double.parseDouble(mRatingValueTextView.getText().toString()));
-//
-//        Intent intent = new Intent(SearchActivity.this, MoviesActivity.class);
-//        intent.putExtra(ActivityExtras.MOVIE_REQUEST_KEY, movieRequest);
-//        startActivity(intent);
-//    }
+
+    @OnClick(R.id.findMoviesButtonView)
+    public void onFindMoviesButtonClick(View view) {
+
+        MovieRequest movieRequest = new MovieRequest();
+        movieRequest.setGenre(mSelectedGenres.toArray(new Genre[mSelectedGenres.size()]));
+
+        SimpleDateFormat formatter = new SimpleDateFormat(ReleaseDate.FORMAT);
+
+        movieRequest.setStartDateRelease(formatter.format(mStartDate));
+        movieRequest.setEndDateReleaseSelected(formatter.format(mEndDate));
+        movieRequest.setVoteCount(mVoteCount);
+        movieRequest.setRating(mRate);
+
+        Intent intent = new Intent(SearchActivity.this, MoviesActivity.class);
+        intent.putExtra(ActivityExtras.MOVIE_REQUEST_KEY, movieRequest);
+        startActivity(intent);
+    }
 }
