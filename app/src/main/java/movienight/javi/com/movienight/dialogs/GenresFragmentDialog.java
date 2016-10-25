@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,8 +21,9 @@ import java.util.List;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.adapters.GenreRecyclerViewAdapter;
 import movienight.javi.com.movienight.asyntasks.GenreAsyncTask;
-import movienight.javi.com.movienight.listeners.GenresSelectedListener;
+import movienight.javi.com.movienight.listeners.FilterItemListener;
 import movienight.javi.com.movienight.model.Genre;
+import movienight.javi.com.movienight.model.GenreFilterableItem;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.ui.AsyncTaskListener;
 import movienight.javi.com.movienight.ui.SearchActivity.SearchActivity;
@@ -38,7 +38,7 @@ public class GenresFragmentDialog extends DialogFragment implements AsyncTaskLis
     private SearchActivity mParentActivity;
     private View mDialogLayoutView;
     private RecyclerView mGenresRecyclerView;
-    private GenresSelectedListener mListener;
+    private FilterItemListener mListener;
     private List<Genre> mGenres;
     private List<Genre> mSelectedGenres;
 
@@ -120,7 +120,10 @@ public class GenresFragmentDialog extends DialogFragment implements AsyncTaskLis
             public void onClick(View v) {
 
                 List<Genre> selectedGenres = getSelectedGenres();
-                mListener.onGenreSelectionCompleted(selectedGenres);
+                mListener.onFilterItemCreated(1,
+                    new GenreFilterableItem(selectedGenres.toArray(new Genre[selectedGenres.size()]))
+                );
+
                 setRetainInstance(true);
                 dismiss();
             }

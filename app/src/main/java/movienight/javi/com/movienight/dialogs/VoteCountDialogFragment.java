@@ -12,7 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import movienight.javi.com.movienight.R;
-import movienight.javi.com.movienight.listeners.VoteCountSelectedListener;
+import movienight.javi.com.movienight.listeners.FilterItemListener;
+import movienight.javi.com.movienight.model.VoteCountFilterableItem;
 import movienight.javi.com.movienight.ui.SearchActivity.SearchActivity;
 
 /**
@@ -22,7 +23,7 @@ import movienight.javi.com.movienight.ui.SearchActivity.SearchActivity;
 public class VoteCountDialogFragment extends DialogFragment {
 
     private Integer mVoteCount;
-    private VoteCountSelectedListener mListener;
+    private FilterItemListener mListener;
 
     public static VoteCountDialogFragment newInstance(Integer voteCount) {
 
@@ -62,7 +63,7 @@ public class VoteCountDialogFragment extends DialogFragment {
             public void onClick(View v) {
 
                 Integer voteCount = Integer.parseInt(voteCountEditText.getText().toString());
-                mListener.onVoteCountDone(voteCount);
+                mListener.onFilterItemCreated(4, new VoteCountFilterableItem(voteCount));
                 dismiss();
             }
         });

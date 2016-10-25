@@ -24,4 +24,9 @@ public class VoteCountFilterableItem implements FilterableItem {
 
         return mVoteCount + " votes.";
     }
+
+    public Integer getVoteCount() {
+
+        return mVoteCount;
+    }
 }

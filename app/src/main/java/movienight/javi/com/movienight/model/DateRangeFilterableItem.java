@@ -30,4 +30,14 @@ public class DateRangeFilterableItem implements FilterableItem {
         SimpleDateFormat formatter = new SimpleDateFormat("M/dd/yyyy");
         return formatter.format(mStartDate) + " and " + formatter.format(mEndDate);
     }
+
+    public Date getEndDate() {
+
+        return mEndDate;
+    }
+
+    public Date getStartDate() {
+
+        return mStartDate;
+    }
 }

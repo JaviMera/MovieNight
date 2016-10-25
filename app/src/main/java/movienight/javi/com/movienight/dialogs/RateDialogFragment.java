@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
-import android.media.Rating;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -17,7 +16,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import movienight.javi.com.movienight.R;
-import movienight.javi.com.movienight.listeners.RateSelectedListener;
+import movienight.javi.com.movienight.listeners.FilterItemListener;
+import movienight.javi.com.movienight.model.RateFilterableItem;
 import movienight.javi.com.movienight.ui.SearchActivity.SearchActivity;
 
 /**
@@ -27,7 +27,7 @@ import movienight.javi.com.movienight.ui.SearchActivity.SearchActivity;
 public class RateDialogFragment extends DialogFragment {
 
     private float mRate;
-    private RateSelectedListener mListener;
+    private FilterItemListener mListener;
 
     public static DialogFragment newInstance(float rate) {
 
@@ -84,7 +84,7 @@ public class RateDialogFragment extends DialogFragment {
             public void onClick(View v) {
 
                 float rate = ratingBar.getRating();
-                mListener.onRateDone(rate);
+                mListener.onFilterItemCreated(3, new RateFilterableItem(rate));
                 dismiss();
             }
         });

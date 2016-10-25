@@ -12,13 +12,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import movienight.javi.com.movienight.R;
-import movienight.javi.com.movienight.listeners.DateSelectedListener;
-import movienight.javi.com.movienight.model.ReleaseDate;
+import movienight.javi.com.movienight.listeners.FilterItemListener;
+import movienight.javi.com.movienight.model.DateRangeFilterableItem;
 import movienight.javi.com.movienight.ui.SearchActivity.SearchActivity;
 
 /**
@@ -27,7 +26,7 @@ import movienight.javi.com.movienight.ui.SearchActivity.SearchActivity;
 
 public class DaterangeDialogFragment extends DialogFragment {
 
-    private DateSelectedListener mListener;
+    private FilterItemListener mListener;
     private Date mStartDate;
     private Date mEndDate;
 
@@ -97,9 +96,8 @@ public class DaterangeDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
 
-                mListener.onDateRangePickerDone(
-                    getDate(startDatePicker),
-                    getDate(endDatePicker)
+                mListener.onFilterItemCreated(2,
+                    new DateRangeFilterableItem(getDate(startDatePicker),getDate(endDatePicker))
                 );
 
                 dismiss();
