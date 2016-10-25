@@ -26,11 +26,17 @@ import movienight.javi.com.movienight.ui.SearchActivity.SearchActivity;
 
 public class RateDialogFragment extends DialogFragment {
 
+    private float mRate;
     private RateSelectedListener mListener;
 
-    public static DialogFragment newInstance() {
+    public static DialogFragment newInstance(float rate) {
 
         RateDialogFragment dialog = new RateDialogFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putFloat("rate", rate);
+        dialog.setArguments(bundle);
+
         return dialog;
     }
 
@@ -39,6 +45,8 @@ public class RateDialogFragment extends DialogFragment {
         super.onAttach(context);
 
         mListener = (SearchActivity)getActivity();
+
+        mRate = getArguments().getFloat("rate");
     }
 
     @NonNull
@@ -55,6 +63,9 @@ public class RateDialogFragment extends DialogFragment {
         final RatingBar ratingBar = (RatingBar) view.findViewById(R.id.rateBarView);
         LayerDrawable lDrawable = (LayerDrawable)ratingBar.getProgressDrawable();
         lDrawable.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
+
+        ratingBar.setRating(mRate);
+        ratingBarTextView.setText(String.valueOf(mRate));
 
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
 

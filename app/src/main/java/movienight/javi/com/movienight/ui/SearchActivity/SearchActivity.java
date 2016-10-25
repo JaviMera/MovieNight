@@ -37,11 +37,10 @@ import movienight.javi.com.movienight.model.VoteCountFilterableItem;
 
 public class SearchActivity extends AppCompatActivity implements SearchActivityView, GenresSelectedListener, DateSelectedListener, RateSelectedListener, VoteCountSelectedListener{
 
-    private final double mProgressDivider = 10.0;
-
     private List<Genre> mSelectedGenres;
     private Date mStartDate;
     private Date mEndDate;
+    private Float mRate;
 
     private SearchActivityPresenter mPresenter;
 
@@ -50,6 +49,7 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
 
     @BindView(R.id.filterItemsRecyclerView)
     RecyclerView mFilterRecyclerView;
+    private Integer mVoteCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +60,8 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
         mSelectedGenres = new ArrayList<>();
         mStartDate = new Date();
         mEndDate = new Date();
+        mRate = 0.0f;
+        mVoteCount = 0;
 
         mPresenter = new SearchActivityPresenter(this);
 
@@ -86,12 +88,12 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
                         break;
 
                     case 3:
-                        dialog = RateDialogFragment.newInstance();
+                        dialog = RateDialogFragment.newInstance(mRate);
                         dialog.show(getSupportFragmentManager(), "rate_dialog");
                         break;
 
                     case 4:
-                        dialog = VoteCountDialogFragment.newInstance();
+                        dialog = VoteCountDialogFragment.newInstance(mVoteCount);
                         dialog.show(getSupportFragmentManager(), "votecount_dialog");
                         break;
                 }
@@ -148,6 +150,7 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
     public void onRateDone(float rate) {
 
         mFilterMovieSpinner.setSelection(0);
+        mRate = rate;
 
         FilterableItem item = new RateFIlterableItem(rate);
         FilterRecyclerViewAdapter adapter = (FilterRecyclerViewAdapter)mFilterRecyclerView.getAdapter();
@@ -158,6 +161,7 @@ public class SearchActivity extends AppCompatActivity implements SearchActivityV
     public void onVoteCountDone(Integer voteCount) {
 
         mFilterMovieSpinner.setSelection(0);
+        mVoteCount = voteCount;
 
         FilterableItem item = new VoteCountFilterableItem(voteCount);
         FilterRecyclerViewAdapter adapter = (FilterRecyclerViewAdapter)mFilterRecyclerView.getAdapter();

@@ -21,11 +21,16 @@ import movienight.javi.com.movienight.ui.SearchActivity.SearchActivity;
 
 public class VoteCountDialogFragment extends DialogFragment {
 
+    private Integer mVoteCount;
     private VoteCountSelectedListener mListener;
 
-    public static VoteCountDialogFragment newInstance() {
+    public static VoteCountDialogFragment newInstance(Integer voteCount) {
 
         VoteCountDialogFragment dialog = new VoteCountDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("vote_count", voteCount);
+        dialog.setArguments(bundle);
+
         return dialog;
     }
 
@@ -34,6 +39,8 @@ public class VoteCountDialogFragment extends DialogFragment {
         super.onAttach(context);
 
         mListener = (SearchActivity)getActivity();
+
+        mVoteCount = getArguments().getInt("vote_count");
     }
 
     @NonNull
@@ -46,6 +53,7 @@ public class VoteCountDialogFragment extends DialogFragment {
         dialogBuilder.setView(view);
 
         final EditText voteCountEditText = (EditText) view.findViewById(R.id.voteCountEditTextView);
+        voteCountEditText.setText(String.valueOf(mVoteCount));
         final Button doneButton = (Button) view.findViewById(R.id.voteCountDoneButtonView);
 
         doneButton.setOnClickListener(new View.OnClickListener() {
