@@ -22,6 +22,7 @@ import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.adapters.GenreRecyclerViewAdapter;
 import movienight.javi.com.movienight.asyntasks.GenreAsyncTask;
 import movienight.javi.com.movienight.listeners.FilterItemListener;
+import movienight.javi.com.movienight.model.FilterableItemKeys;
 import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.model.GenreFilterableItem;
 import movienight.javi.com.movienight.ui.ActivityExtras;
@@ -120,8 +121,7 @@ public class GenresFragmentDialog extends DialogFragment implements AsyncTaskLis
             public void onClick(View v) {
 
                 List<Genre> selectedGenres = getSelectedGenres();
-                mListener.onFilterItemCreated(1,
-                    new GenreFilterableItem(selectedGenres.toArray(new Genre[selectedGenres.size()]))
+                mListener.onFilterItemCreated(1,new GenreFilterableItem(selectedGenres.toArray(new Genre[selectedGenres.size()]))
                 );
 
                 setRetainInstance(true);

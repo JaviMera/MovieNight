@@ -38,10 +38,17 @@
         android:layout_margin="15dp" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/filterItemsRecyclerView"
+        android:id="@+id/filtersRecyclerView"
+        android:layout_below="@+id/filterMoviesSpinnerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/filterMoviesSpinnerView"
+        android:layout_marginLeft="15dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/movieResultRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/filtersRecyclerView"
         android:layout_above="@+id/findMoviesButtonView"
         android:layout_margin="15dp">
 

@@ -9,7 +9,7 @@
 
     <!-- Logo Image View -->
     <style name="ImageViewBase">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:src">@drawable/play_store</item>
         <item name="android:scaleType">fitStart</item>

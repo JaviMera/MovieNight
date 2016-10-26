@@ -6,8 +6,8 @@
     <dimen name="movie_title_padding">20dp</dimen>
     <dimen name="loading_text_size">15sp</dimen>
     <dimen name="loading_text_margin_top">15dp</dimen>
-    <dimen name="logo_max_height">100dp</dimen>
-    <dimen name="logo_max_width">70dp</dimen>
+    <dimen name="logo_max_height">70dp</dimen>
+    <dimen name="logo_max_width">50dp</dimen>
     <dimen name="container_padding">15dp</dimen>
     <dimen name="container_margin_bottom">20dp</dimen>
     <dimen name="search_criteria_text_size">13sp</dimen>

@@ -7,6 +7,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import movienight.javi.com.movienight.adapters.DefaultMoviesRecyclerAdapter;
+import movienight.javi.com.movienight.adapters.FilterItemRecyclerAdapter;
 import movienight.javi.com.movienight.adapters.FilterSpinnerAdapter;
 import movienight.javi.com.movienight.asyntasks.PopularMoviesAsyncTask;
 import movienight.javi.com.movienight.dialogs.DaterangeDialogFragment;
@@ -32,6 +34,7 @@ import movienight.javi.com.movienight.listeners.FilterItemListener;
 import movienight.javi.com.movienight.listeners.MoviesAsyncTaskListener;
 import movienight.javi.com.movienight.model.DateRangeFilterableItem;
 import movienight.javi.com.movienight.model.FilterableItem;
+import movienight.javi.com.movienight.model.FilterableItemKeys;
 import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.model.GenreFilterableItem;
 import movienight.javi.com.movienight.model.Movie;
@@ -48,8 +51,11 @@ public class SearchActivity extends AppCompatActivity
     @BindView(R.id.filterMoviesSpinnerView)
     Spinner mFilterMovieSpinner;
 
-    @BindView(R.id.filterItemsRecyclerView)
-    RecyclerView mFilterRecyclerView;
+    @BindView(R.id.movieResultRecyclerView)
+    RecyclerView mMovieResultRecyclerView;
+
+    @BindView(R.id.filtersRecyclerView)
+    RecyclerView mFiltersRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +83,8 @@ public class SearchActivity extends AppCompatActivity
 
                 switch(position) {
 
-                    case 1:
-                        GenreFilterableItem genreItem = (GenreFilterableItem) mFilters.get(1);
+                    case FilterableItemKeys.GENRE:
+                        GenreFilterableItem genreItem = (GenreFilterableItem) mFilters.get(FilterableItemKeys.GENRE);
                         List<Genre> selectedGenres = new ArrayList(Arrays.asList(genreItem.getSelectedGenres()));
 
                         dialog = GenresFragmentDialog.newInstance(selectedGenres);
@@ -110,6 +116,14 @@ public class SearchActivity extends AppCompatActivity
 
             }
         });
+
+        final FilterItemRecyclerAdapter recyclerAdapter = new FilterItemRecyclerAdapter(this, new ArrayList<FilterableItem>());
+        mFiltersRecyclerView.setAdapter(recyclerAdapter);
+
+        RecyclerView.LayoutManager gridManager = new GridLayoutManager(this, 2, GridLayoutManager.HORIZONTAL, false);
+        mFiltersRecyclerView.setLayoutManager(gridManager);
+
+        mFiltersRecyclerView.setHasFixedSize(true);
 
         PopularMoviesUrl url = new PopularMoviesUrl();
             new PopularMoviesAsyncTask(this)
@@ -145,18 +159,22 @@ public class SearchActivity extends AppCompatActivity
     public void onCompleted(Integer totalPages, Movie[] movies) {
 
         final DefaultMoviesRecyclerAdapter recyclerAdapter = new DefaultMoviesRecyclerAdapter(this, movies);
-        mFilterRecyclerView.setAdapter(recyclerAdapter);
+        mMovieResultRecyclerView.setAdapter(recyclerAdapter);
 
         RecyclerView.LayoutManager gridManager = new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false);
-        mFilterRecyclerView.setLayoutManager(gridManager);
+        mMovieResultRecyclerView.setLayoutManager(gridManager);
 
-        mFilterRecyclerView.setHasFixedSize(true);
+        mMovieResultRecyclerView.setHasFixedSize(true);
     }
 
     @Override
     public void onFilterItemCreated(Integer key, FilterableItem item) {
 
         mFilterMovieSpinner.setSelection(0);
+
+        FilterItemRecyclerAdapter adapter = (FilterItemRecyclerAdapter) mFiltersRecyclerView.getAdapter();
+        adapter.updateData(item);
+
         mFilters.put(key, item);
     }
 }
