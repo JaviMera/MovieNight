@@ -44,17 +44,16 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/movieResultRecyclerView"
+    <GridView
+        android:id="@+id/moviesGridView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="15dp"
         android:layout_below="@+id/filtersRecyclerView"
-        android:layout_above="@+id/findMoviesButtonView"
-        android:layout_margin="15dp">
+        android:numColumns="auto_fit"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        android:stretchMode="columnWidth"
+        />
 
-    </android.support.v7.widget.RecyclerView>
-
-    <Button
-        android:id="@+id/findMoviesButtonView"
-        style="@style/FindMoviesButtonView"/>
 </RelativeLayout>

@@ -21,6 +21,7 @@ public class Movie{
     private int mVoteCount;
     private Double mRating;
     private int[] mGenreIds;
+    private String mPosterPath;
     private Bitmap mPoster;
 
     public static Movie fromJSON(JSONObject jsonObject) throws JSONException{
@@ -29,6 +30,7 @@ public class Movie{
         String movieOverview = jsonObject.getString(JSONMovie.OVERVIEW_KEY);
         String movieOriginalTitle = jsonObject.getString(JSONMovie.ORIGINAL_TITLE_KEY);
         String movieTitle = jsonObject.getString(JSONMovie.TITLE_KEY);
+        String moviePosterPath = jsonObject.getString("poster_path");
         double moviePopularity = jsonObject.getDouble(JSONMovie.POPULARITY_KEY);
         int movieVotes = jsonObject.getInt(JSONMovie.VOTE_COUNT_KEY);
         double movieRating = jsonObject.getDouble(JSONMovie.VOTE_AVERAGE_KEY);
@@ -50,6 +52,7 @@ public class Movie{
             movieVotes,
             movieRating,
             genreIds,
+            moviePosterPath,
             null
         );
     }
@@ -63,6 +66,7 @@ public class Movie{
         int voteCount,
         double rating,
         int[] genreIds,
+        String posterPath,
         Bitmap poster)
     {
         mId = id;
@@ -73,6 +77,7 @@ public class Movie{
         mVoteCount = voteCount;
         mRating = rating;
         mGenreIds = genreIds;
+        mPosterPath = posterPath;
         mPoster = poster;
     }
 
@@ -117,5 +122,13 @@ public class Movie{
     public void setPoster(Bitmap poster) {
 
         mPoster = poster;
+    }
+
+    public String getPosterPath() {
+        return mPosterPath;
+    }
+
+    public void setmPosterPath(String mPosterPath) {
+        mPosterPath = mPosterPath;
     }
 }
