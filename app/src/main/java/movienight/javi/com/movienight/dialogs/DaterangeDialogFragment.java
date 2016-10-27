@@ -2,70 +2,64 @@ package movienight.javi.com.movienight.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import movienight.javi.com.movienight.R;
-import movienight.javi.com.movienight.listeners.FilterItemListener;
+import movienight.javi.com.movienight.listeners.FilterItemAddedListener;
 import movienight.javi.com.movienight.model.DateRangeFilterableItem;
+import movienight.javi.com.movienight.model.FilterableItem;
+import movienight.javi.com.movienight.model.GenreFilterableItem;
+import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.ui.SearchActivity.SearchActivity;
 
 /**
  * Created by Javi on 10/24/2016.
  */
 
-public class DaterangeDialogFragment extends DialogFragment {
+public class DaterangeDialogFragment extends DialogFragmentBase {
 
-    private FilterItemListener mListener;
     private Date mStartDate;
     private Date mEndDate;
 
-    public static DaterangeDialogFragment newInstance(Date startDate, Date endDate) {
+    public static DaterangeDialogFragment newInstance(List<FilterableItem> dateItems) {
 
         DaterangeDialogFragment dialog = new DaterangeDialogFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putLong("start_date", startDate.getTime());
-        bundle.putLong("end_date", endDate.getTime());
+        bundle.putParcelableArrayList(ActivityExtras.SELECTED_DATE_RANGE_KEY, (ArrayList)dateItems);
         dialog.setArguments(bundle);
 
         return dialog;
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        mListener = (SearchActivity)getActivity();
-        mStartDate = new Date();
-        mEndDate = new Date();
-    }
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        long startDateInMilliseconds = getArguments().getLong("start_date");
-        long endDateInMilliseconds = getArguments().getLong("end_date");
+        mStartDate = new Date();
+        mEndDate = new Date();
 
-        if(startDateInMilliseconds != 0L) {
+        List<DateRangeFilterableItem> dateItems = getArguments().getParcelableArrayList(ActivityExtras.SELECTED_DATE_RANGE_KEY);
 
-            mStartDate.setTime(startDateInMilliseconds);
-        }
+        if(!dateItems.isEmpty()) {
 
-        if(endDateInMilliseconds != 0L) {
-
-            mEndDate.setTime(endDateInMilliseconds);
+            mStartDate = dateItems.get(0).getStartDate();
+            mEndDate = dateItems.get(0).getEndDate();
         }
     }
 
@@ -104,7 +98,10 @@ public class DaterangeDialogFragment extends DialogFragment {
             }
         });
 
-        return dialogBuilder.create();
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.setOnKeyListener(onBackButtonPressed());
+
+        return dialog;
     }
 
     private Date getDate(DatePicker picker) {

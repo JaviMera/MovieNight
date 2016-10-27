@@ -1,6 +1,7 @@
 package movienight.javi.com.movienight.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -73,8 +74,9 @@ public class FilterSpinnerAdapter extends ArrayAdapter<String> {
 
         if(position == 0) {
 
-            holder.mFilterDropdownItemView.setText("");
             holder.mFilterDropdownItemView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.movie_dark_purple));
+            holder.mFilterDropdownItemView.setTextColor(Color.WHITE);
+            holder.mFilterDropdownItemView.setClickable(false);
         }
 
         return convertView;

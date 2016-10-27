@@ -7,12 +7,10 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,22 +28,18 @@ import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.dialogs.GenresFragmentDialog;
 import movienight.javi.com.movienight.dialogs.RateDialogFragment;
 import movienight.javi.com.movienight.dialogs.VoteCountDialogFragment;
-import movienight.javi.com.movienight.listeners.FilterItemListener;
+import movienight.javi.com.movienight.listeners.FilterItemAddedListener;
+import movienight.javi.com.movienight.listeners.FilterItemRemovedListener;
 import movienight.javi.com.movienight.listeners.MoviesAsyncTaskListener;
-import movienight.javi.com.movienight.model.DateRangeFilterableItem;
 import movienight.javi.com.movienight.model.FilterableItem;
 import movienight.javi.com.movienight.model.FilterableItemKeys;
-import movienight.javi.com.movienight.model.Genre;
-import movienight.javi.com.movienight.model.GenreFilterableItem;
 import movienight.javi.com.movienight.model.Movie;
-import movienight.javi.com.movienight.model.RateFilterableItem;
-import movienight.javi.com.movienight.model.VoteCountFilterableItem;
 import movienight.javi.com.movienight.urls.PopularMoviesUrl;
 
 public class SearchActivity extends AppCompatActivity
-    implements SearchActivityView, MoviesAsyncTaskListener, FilterItemListener{
+    implements SearchActivityView, MoviesAsyncTaskListener, FilterItemAddedListener, FilterItemRemovedListener{
 
-    private Map<Integer, FilterableItem> mFilters;
+    private Map<Integer, List<FilterableItem>> mFilters;
     private SearchActivityPresenter mPresenter;
 
     @BindView(R.id.filterMoviesSpinnerView)
@@ -64,63 +58,27 @@ public class SearchActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         mFilters = new LinkedHashMap<>();
-        mFilters.put(1, new GenreFilterableItem(new Genre[]{}));
-        mFilters.put(2, new DateRangeFilterableItem(new Date(), new Date()));
-        mFilters.put(3, new RateFilterableItem(0.0f));
-        mFilters.put(4, new VoteCountFilterableItem(0));
+        mFilters.put(-1, new ArrayList<FilterableItem>());
+        mFilters.put(1, new ArrayList<FilterableItem>());
+        mFilters.put(2, new ArrayList<FilterableItem>());
+        mFilters.put(3, new ArrayList<FilterableItem>());
+        mFilters.put(4, new ArrayList<FilterableItem>());
 
         mPresenter = new SearchActivityPresenter(this);
 
         String[] filterItems = getResources().getStringArray(R.array.filter_options_array);
         mPresenter.setFilterSpinnerAdapter(filterItems);
 
-        mFilterMovieSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mFilterMovieSpinner.setOnItemSelectedListener(spinnerListener());
 
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        final FilterItemRecyclerAdapter recyclerAdapter = new FilterItemRecyclerAdapter(
+            this,
+            new ArrayList<FilterableItem>(),
+            this);
 
-                DialogFragment dialog;
-
-                switch(position) {
-
-                    case FilterableItemKeys.GENRE:
-                        GenreFilterableItem genreItem = (GenreFilterableItem) mFilters.get(FilterableItemKeys.GENRE);
-                        List<Genre> selectedGenres = new ArrayList(Arrays.asList(genreItem.getSelectedGenres()));
-
-                        dialog = GenresFragmentDialog.newInstance(selectedGenres);
-                        dialog.show(getSupportFragmentManager(), "genre_dialog");
-                        break;
-
-                    case 2:
-                        DateRangeFilterableItem dateRangeItem = (DateRangeFilterableItem)mFilters.get(2);
-                        dialog = DaterangeDialogFragment.newInstance(dateRangeItem.getStartDate(), dateRangeItem.getEndDate());
-                        dialog.show(getSupportFragmentManager(), "daterange_dialog");
-                        break;
-
-                    case 3:
-                        RateFilterableItem rateItem = (RateFilterableItem) mFilters.get(3);
-                        dialog = RateDialogFragment.newInstance(rateItem.getRate());
-                        dialog.show(getSupportFragmentManager(), "rate_dialog");
-                        break;
-
-                    case 4:
-                        VoteCountFilterableItem voteItem = (VoteCountFilterableItem) mFilters.get(4);
-                        dialog = VoteCountDialogFragment.newInstance(voteItem.getVoteCount());
-                        dialog.show(getSupportFragmentManager(), "votecount_dialog");
-                        break;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        final FilterItemRecyclerAdapter recyclerAdapter = new FilterItemRecyclerAdapter(this, new ArrayList<FilterableItem>());
         mFiltersRecyclerView.setAdapter(recyclerAdapter);
 
-        RecyclerView.LayoutManager gridManager = new GridLayoutManager(this, 2, GridLayoutManager.HORIZONTAL, false);
+        RecyclerView.LayoutManager gridManager = new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false);
         mFiltersRecyclerView.setLayoutManager(gridManager);
 
         mFiltersRecyclerView.setHasFixedSize(true);
@@ -168,13 +126,71 @@ public class SearchActivity extends AppCompatActivity
     }
 
     @Override
-    public void onFilterItemCreated(Integer key, FilterableItem item) {
+    public void onFilterItemCreated(Integer key, FilterableItem[] item) {
 
         mFilterMovieSpinner.setSelection(0);
+        mFilters.put(key, new ArrayList<>(Arrays.asList(item)));
 
         FilterItemRecyclerAdapter adapter = (FilterItemRecyclerAdapter) mFiltersRecyclerView.getAdapter();
-        adapter.updateData(item);
-
-        mFilters.put(key, item);
+        adapter.updateData(mFilters.values());
     }
+
+    @Override
+    public void onFilterItemDeleted(FilterableItem itemRemoved) {
+
+        for(List<FilterableItem> items : mFilters.values()) {
+
+            if(items.contains(itemRemoved)) {
+
+                items.remove(itemRemoved);
+                break;
+            }
+        }
+    }
+
+    private AdapterView.OnItemSelectedListener spinnerListener() {
+
+        return new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                DialogFragment dialog;
+                List<FilterableItem> items;
+
+                switch(position) {
+
+                    case FilterableItemKeys.GENRE:
+                        items = mFilters.get(FilterableItemKeys.GENRE);
+                        dialog = GenresFragmentDialog.newInstance(items);
+                        dialog.show(getSupportFragmentManager(), "genre_dialog");
+                        break;
+
+                    case 2:
+                        items = mFilters.get(FilterableItemKeys.DATE_RANGE);
+                        dialog = DaterangeDialogFragment.newInstance(items);
+                        dialog.show(getSupportFragmentManager(), "daterange_dialog");
+                        break;
+
+                    case 3:
+                        items = mFilters.get(FilterableItemKeys.RATE);
+                        dialog = RateDialogFragment.newInstance(items);
+                        dialog.show(getSupportFragmentManager(), "rate_dialog");
+                        break;
+
+                    case 4:
+                        items = mFilters.get(FilterableItemKeys.VOTE_COUNT);
+                        dialog = VoteCountDialogFragment.newInstance(items);
+                        dialog.show(getSupportFragmentManager(), "votecount_dialog");
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        };
+    }
+
 }

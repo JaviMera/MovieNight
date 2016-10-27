@@ -7,10 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import movienight.javi.com.movienight.R;
+import movienight.javi.com.movienight.listeners.FilterItemRemovedListener;
 import movienight.javi.com.movienight.model.FilterableItem;
+import movienight.javi.com.movienight.model.GenreFilterableItem;
 
 /**
  * Created by Javier on 10/26/2016.
@@ -20,11 +26,13 @@ public class FilterItemRecyclerAdapter extends RecyclerView.Adapter<FilterItemRe
 
     private Context mContext;
     private List<FilterableItem> mItems;
+    private FilterItemRemovedListener mListener;
 
-    public FilterItemRecyclerAdapter(Context context, List<FilterableItem> items) {
+    public FilterItemRecyclerAdapter(Context context, List<FilterableItem> items, FilterItemRemovedListener listener) {
 
         mContext = context;
         mItems = items;
+        mListener = listener;
     }
 
     @Override
@@ -48,9 +56,15 @@ public class FilterItemRecyclerAdapter extends RecyclerView.Adapter<FilterItemRe
         return mItems.size();
     }
 
-    public void updateData(FilterableItem newItem) {
+    public void updateData(Collection<List<FilterableItem>> newItem) {
 
-        mItems.add(newItem);
+        mItems.clear();
+
+        for(List<FilterableItem> filters : newItem) {
+
+            mItems.addAll(filters);
+        }
+
         notifyDataSetChanged();
     }
 
@@ -71,6 +85,21 @@ public class FilterItemRecyclerAdapter extends RecyclerView.Adapter<FilterItemRe
                 @Override
                 public void onClick(View view) {
 
+                    String textClicked = ((TextView)view).getText().toString();
+                    FilterableItem itemToRemove = null;
+
+                    for(FilterableItem item : mItems) {
+
+                        if(item.getValue().equals(textClicked)) {
+
+                            itemToRemove = item;
+                            break;
+                        }
+                    }
+
+                    mItems.remove(itemToRemove);
+                    mListener.onFilterItemDeleted(itemToRemove);
+                    notifyDataSetChanged();
                 }
             });
         }

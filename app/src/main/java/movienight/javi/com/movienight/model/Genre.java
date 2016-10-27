@@ -25,6 +25,9 @@ public class Genre implements Parcelable{
         mChecked = in.readByte() != 0;
     }
 
+    public Genre() {
+    }
+
     public String getDescription() {
         return mDescription;
     }
@@ -68,12 +71,23 @@ public class Genre implements Parcelable{
     }
 
     @Override
+    public int hashCode() {
+
+        return mId.hashCode();
+    }
+
+    @Override
     public boolean equals(Object obj) {
 
-        Genre otherGenre = (Genre)obj;
+        if(obj instanceof Genre) {
 
-        if(mId.equals(otherGenre.getId()))
-            return true;
+            Genre otherGenre = (Genre)obj;
+
+            if(mId.equals(otherGenre.getId()))
+                return true;
+
+            return false;
+        }
 
         return false;
     }

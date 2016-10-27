@@ -1,44 +1,81 @@
 package movienight.javi.com.movienight.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.Objects;
+
 /**
  * Created by Javi on 10/24/2016.
  */
 
-public class GenreFilterableItem implements FilterableItem {
+public class GenreFilterableItem implements FilterableItem<Genre>, Parcelable {
 
-    private Genre[] mSelectedGenres;
+    private Genre mSelectedGenre;
 
-    public GenreFilterableItem(Genre[] genres) {
+    public GenreFilterableItem(Genre genre) {
 
-        mSelectedGenres = genres;
+        mSelectedGenre = genre;
+    }
+
+    protected GenreFilterableItem(Parcel in) {
+        mSelectedGenre = in.readParcelable(Genre.class.getClassLoader());
+    }
+
+    public static final Creator<GenreFilterableItem> CREATOR = new Creator<GenreFilterableItem>() {
+        @Override
+        public GenreFilterableItem createFromParcel(Parcel in) {
+            return new GenreFilterableItem(in);
+        }
+
+        @Override
+        public GenreFilterableItem[] newArray(int size) {
+            return new GenreFilterableItem[size];
+        }
+    };
+
+    @Override
+    public Genre getObject() {
+
+        return mSelectedGenre;
     }
 
     @Override
     public String getValue() {
 
-        String selectedGenresText = "";
-
-        for(int i = 0 ; i < mSelectedGenres.length ; i++) {
-
-            Genre currentGenre = mSelectedGenres[i];
-            if(currentGenre.isChecked()) {
-
-                if(i == mSelectedGenres.length - 1) {
-
-                    selectedGenresText += currentGenre.getDescription();
-                }
-                else {
-
-                    selectedGenresText += currentGenre.getDescription() + ", ";
-                }
-            }
-        }
-
-        return selectedGenresText;
+        return mSelectedGenre.getDescription();
     }
 
-    public Genre[] getSelectedGenres() {
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
-        return mSelectedGenres;
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeParcelable(mSelectedGenre, i);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return mSelectedGenre.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if(obj instanceof  GenreFilterableItem) {
+
+            GenreFilterableItem otherItem = (GenreFilterableItem)obj;
+            if(mSelectedGenre.getId().equals(otherItem.getObject().getId())) {
+
+                return true;
+            }
+
+            return false;
+        }
+
+        return false;
     }
 }

@@ -6,7 +6,7 @@ import movienight.javi.com.movienight.model.FilterableItem;
  * Created by Javier on 10/25/2016.
  */
 
-public interface FilterItemListener {
+public interface FilterItemAddedListener {
 
-    void onFilterItemCreated(Integer key, FilterableItem item);
+    void onFilterItemCreated(Integer key, FilterableItem... item);
 }
