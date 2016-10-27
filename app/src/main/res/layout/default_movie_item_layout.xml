@@ -5,14 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/defaultMovieTextView"
-        android:background="@color/movie_dark_purple"
-        android:padding="10dp"
-        android:layout_margin="10dp"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/moviePosterImageView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="This is an item"
-        android:textColor="@android:color/white"
-        android:gravity="center" />
+        android:adjustViewBounds="true"
+        android:layout_gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/dimensionImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </LinearLayout>

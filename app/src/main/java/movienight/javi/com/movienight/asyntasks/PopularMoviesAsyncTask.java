@@ -54,37 +54,9 @@ public class PopularMoviesAsyncTask extends AsyncTask<AbstractUrl, Void, Movie[]
             for(int result = 0 ; result < resultsArray.length(); result++) {
 
                 JSONObject currentJSONObject = resultsArray.getJSONObject(result);
+                Movie newMovie = Movie.fromJSON(currentJSONObject);
 
-                String release_date = currentJSONObject.getString(JSONMovie.RELEASE_DATE_KEY);
-
-                    int movieId = currentJSONObject.getInt(JSONMovie.ID_KEY);
-                    String movieOverview = currentJSONObject.getString(JSONMovie.OVERVIEW_KEY);
-                    String movieOriginalTitle = currentJSONObject.getString(JSONMovie.ORIGINAL_TITLE_KEY);
-                    String movieTitle = currentJSONObject.getString(JSONMovie.TITLE_KEY);
-                    double moviePopularity = currentJSONObject.getDouble(JSONMovie.POPULARITY_KEY);
-                    int movieVotes = currentJSONObject.getInt(JSONMovie.VOTE_COUNT_KEY);
-                    double movieRating = currentJSONObject.getDouble(JSONMovie.VOTE_AVERAGE_KEY);
-
-                    JSONArray genreIdsArray = currentJSONObject.getJSONArray(JSONMovie.GENRE_IDS_KEY);
-                    int[] genreIds = new int[genreIdsArray.length()];
-
-                    for(int g = 0 ; g < genreIdsArray.length() ; g++) {
-
-                        genreIds[g] = genreIdsArray.getInt(g);
-                    }
-
-                    Movie newMovie = new Movie(
-                            movieId,
-                            movieOverview,
-                            movieOriginalTitle,
-                            movieTitle,
-                            moviePopularity,
-                            movieVotes,
-                            movieRating,
-                            genreIds
-                    );
-
-                    movies.add(newMovie);
+                movies.add(newMovie);
             }
 
             return movies.toArray(new Movie[movies.size()]);

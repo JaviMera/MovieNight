@@ -1,5 +1,6 @@
 package movienight.javi.com.movienight.ui.SearchActivity;
 
+import android.graphics.Bitmap;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import movienight.javi.com.movienight.adapters.DefaultMoviesRecyclerAdapter;
 import movienight.javi.com.movienight.adapters.FilterItemRecyclerAdapter;
 import movienight.javi.com.movienight.adapters.FilterSpinnerAdapter;
 import movienight.javi.com.movienight.asyntasks.PopularMoviesAsyncTask;
+import movienight.javi.com.movienight.asyntasks.PostersAsyncTask;
 import movienight.javi.com.movienight.dialogs.DaterangeDialogFragment;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.dialogs.GenresFragmentDialog;
@@ -30,6 +32,7 @@ import movienight.javi.com.movienight.dialogs.RateDialogFragment;
 import movienight.javi.com.movienight.dialogs.VoteCountDialogFragment;
 import movienight.javi.com.movienight.listeners.FilterItemAddedListener;
 import movienight.javi.com.movienight.listeners.FilterItemRemovedListener;
+import movienight.javi.com.movienight.listeners.MoviePostersListener;
 import movienight.javi.com.movienight.listeners.MoviesAsyncTaskListener;
 import movienight.javi.com.movienight.model.FilterableItem;
 import movienight.javi.com.movienight.model.FilterableItemKeys;
@@ -37,8 +40,9 @@ import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.urls.PopularMoviesUrl;
 
 public class SearchActivity extends AppCompatActivity
-    implements SearchActivityView, MoviesAsyncTaskListener, FilterItemAddedListener, FilterItemRemovedListener{
+    implements SearchActivityView, MoviesAsyncTaskListener, FilterItemAddedListener, FilterItemRemovedListener, MoviePostersListener{
 
+    private Movie[] mMovies;
     private Map<Integer, List<FilterableItem>> mFilters;
     private SearchActivityPresenter mPresenter;
 
@@ -116,13 +120,9 @@ public class SearchActivity extends AppCompatActivity
     @Override
     public void onCompleted(Integer totalPages, Movie[] movies) {
 
-        final DefaultMoviesRecyclerAdapter recyclerAdapter = new DefaultMoviesRecyclerAdapter(this, movies);
-        mMovieResultRecyclerView.setAdapter(recyclerAdapter);
+        mMovies = movies;
 
-        RecyclerView.LayoutManager gridManager = new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false);
-        mMovieResultRecyclerView.setLayoutManager(gridManager);
-
-        mMovieResultRecyclerView.setHasFixedSize(true);
+        new PostersAsyncTask(this).execute();
     }
 
     @Override
@@ -193,4 +193,20 @@ public class SearchActivity extends AppCompatActivity
         };
     }
 
+    @Override
+    public void onPostersCompleted(Bitmap[] posters) {
+
+        for(int i = 0 ; i < mMovies.length ; i++) {
+
+            mMovies[i].setPoster(posters[0]);
+        }
+
+        final DefaultMoviesRecyclerAdapter recyclerAdapter = new DefaultMoviesRecyclerAdapter(this, mMovies);
+        mMovieResultRecyclerView.setAdapter(recyclerAdapter);
+
+        RecyclerView.LayoutManager gridManager = new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false);
+        mMovieResultRecyclerView.setLayoutManager(gridManager);
+
+        mMovieResultRecyclerView.setHasFixedSize(true);
+    }
 }

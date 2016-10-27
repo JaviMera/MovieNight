@@ -1,10 +1,12 @@
 package movienight.javi.com.movienight.adapters;
 
 import android.content.Context;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import movienight.javi.com.movienight.R;
@@ -47,17 +49,17 @@ public class DefaultMoviesRecyclerAdapter extends RecyclerView.Adapter<DefaultMo
 
     public class DefaulMoviesViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView mDefaultMovieTitle;
+        public ImageView mMoviePosterImageView;
 
         public DefaulMoviesViewHolder(View itemView) {
             super(itemView);
 
-            mDefaultMovieTitle = (TextView) itemView.findViewById(R.id.defaultMovieTextView);
+            mMoviePosterImageView = (ImageView) itemView.findViewById(R.id.moviePosterImageView);
         }
 
         public void bind(Movie mItem) {
 
-            mDefaultMovieTitle.setText(mItem.getTitle());
+            mMoviePosterImageView.setImageBitmap(mItem.getPoster());
         }
     }
 }
