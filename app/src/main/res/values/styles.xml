@@ -16,19 +16,18 @@
         <item name="android:maxHeight">@dimen/logo_max_height</item>
         <item name="android:maxWidth">@dimen/logo_max_width</item>
         <item name="android:adjustViewBounds">true</item>
-        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingLeft">1dp</item>
         <item name="android:paddingTop">10dp</item>
     </style>
 
     <!-- Search Movie Title -->
     <style name="SearchTitleTextView">
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:text">@string/search_title_text</item>
-        <item name="android:textStyle">italic|bold</item>
         <item name="android:textSize">@dimen/search_title_text_size</item>
         <item name="android:textColor">@color/movie_dark_purple</item>
-        <item name="android:layout_centerInParent">true</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:paddingLeft">@dimen/search_title_padding</item>
     </style>
 
@@ -36,41 +35,21 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:text">@string/movies_result_text</item>
-        <item name="android:textStyle">italic|bold</item>
         <item name="android:textSize">@dimen/search_title_text_size</item>
         <item name="android:textColor">@color/movie_dark_purple</item>
         <item name="android:layout_centerInParent">true</item>
         <item name="android:paddingLeft">@dimen/search_title_padding</item>
     </style>
 
-    <!--<style name="TableRowTextView">-->
-        <!--<item name="android:layout_width">match_parent</item>-->
-        <!--<item name="android:layout_height">wrap_content</item>-->
-        <!--<item name="android:layout_gravity">center</item>-->
-        <!--<item name="android:gravity">left|center</item>-->
-        <!--<item name="android:textColor">@color/movie_dark_purple</item>-->
-        <!--<item name="android:layout_marginBottom">5dp</item>-->
-        <!--<item name="android:paddingLeft">5dp</item>-->
-    <!--</style>-->
-
-    <!--<style name="StartReleaseDate" parent="TableRowTextView">-->
-        <!--<item name="android:text">@string/start_release_date_text</item>-->
-    <!--</style>-->
-
-    <!--<style name="EndReleaseDate" parent="TableRowTextView">-->
-        <!--<item name="android:text">@string/end_release_date_text</item>-->
-    <!--</style>-->
-
-    <!--<style name="VotesCountTextView" parent="TableRowTextView">-->
-        <!--<item name="android:text">@string/vote_count_text</item>-->
-    <!--</style>-->
-
-    <!--<style name="RatingTextView" parent="TableRowTextView">-->
-        <!--<item name="android:text">@string/rating_text</item>-->
-    <!--</style>-->
-
-
-
+    <style name="TopRatedMoviesTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:text">@string/top_rated_movies_text</item>
+        <item name="android:textColor">@color/movie_dark_purple</item>
+        <item name="android:textSize">@dimen/top_rated_movies_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
     <style name="FindMoviesButtonView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -176,7 +155,7 @@
         <item name="android:rating">0</item>
         <item name="android:numStars">10</item>
         <item name="android:isIndicator">false</item>
-        <item name="android:scaleX">2</item>
+        <item name="android:scaleX">1.8</item>
         <item name="android:scaleY">2</item>
     </style>
 

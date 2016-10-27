@@ -21,7 +21,9 @@ public class FakeMovies {
                 9000.0,
                 9999999,
                 10.0,
-                new int[]{12,14}));
+                new int[]{12,14},
+                "",
+                null));
 
             put(2, new Movie(
                     456,
@@ -31,7 +33,9 @@ public class FakeMovies {
                     0.000,
                     0,
                     0.0,
-                    new int[]{878}));
+                    new int[]{878},
+                    "",
+                    null));
         }
     };
 

@@ -15,6 +15,7 @@
     <string name="empty_genre_text">no genres selected</string>
     <string name="dialog_button_text">done !</string>
     <string name="dialog_load_title_text">Loading data from the strange world of internet...</string>
+    <string name="top_rated_movies_text">Weekly Top Rated Movies!</string>
 
     <string-array name="filter_options_array">
         <item>Filter by...</item>

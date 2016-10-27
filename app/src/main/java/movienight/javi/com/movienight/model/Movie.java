@@ -127,8 +127,4 @@ public class Movie{
     public String getPosterPath() {
         return mPosterPath;
     }
-
-    public void setmPosterPath(String mPosterPath) {
-        mPosterPath = mPosterPath;
-    }
 }

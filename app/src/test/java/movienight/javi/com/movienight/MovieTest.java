@@ -1,5 +1,7 @@
 package movienight.javi.com.movienight;
 
+import android.graphics.Bitmap;
+
 import junit.framework.Assert;
 
 import org.junit.Before;
@@ -22,6 +24,8 @@ public class MovieTest {
     private int mExpectedVoteCount = 2067;
     private Double mExpectedRating = 6.12;
     private int[] mExpectedGenreIds = new int[]{28,12,14,878};
+    private String mExpectedPosterPath = "/someposter.jpg";
+    private Bitmap mExpectedBitmap = null;
 
     @Before
     public void SetUp() throws Exception {
@@ -34,7 +38,9 @@ public class MovieTest {
             mExpectedPopularity,
             mExpectedVoteCount,
             mExpectedRating,
-            mExpectedGenreIds
+            mExpectedGenreIds,
+            mExpectedPosterPath,
+                mExpectedBitmap
         );
     }
 

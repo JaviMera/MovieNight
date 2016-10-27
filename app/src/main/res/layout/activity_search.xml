@@ -1,37 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_search"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/activity_background_color">
-
-    <LinearLayout
-        android:id="@+id/titleLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
-
-        <include
-            layout="@layout/logo_layout" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="4"
-            android:layout_gravity="center|bottom"
-            style="@style/SearchTitleTextView" />
-
-    </LinearLayout>
-
-    <View
-        android:id="@+id/lineSeparatorView"
-        android:layout_below="@id/titleLayout"
-        style="@style/UnderlineView" />
+    android:background="@color/activity_background_color"
+    android:orientation="vertical">
 
     <Spinner
         android:id="@+id/filterMoviesSpinnerView"
-        android:layout_below="@+id/lineSeparatorView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/spinner_background"
@@ -39,21 +16,31 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/filtersRecyclerView"
-        android:layout_below="@+id/filterMoviesSpinnerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_marginLeft="15dp" />
 
+    <TextView
+        android:layout_marginLeft="15dp"
+        android:gravity="left|center"
+        style="@style/TopRatedMoviesTextView"
+        />
     <GridView
         android:id="@+id/moviesGridView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:layout_below="@+id/filtersRecyclerView"
+        android:layout_height="0dp"
+        android:layout_weight="7"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:numColumns="auto_fit"
         android:verticalSpacing="10dp"
         android:horizontalSpacing="10dp"
         android:stretchMode="columnWidth"
         />
 
-</RelativeLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/FindMoviesButtonView"/>
+</LinearLayout>
