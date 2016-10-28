@@ -16,6 +16,7 @@ import java.util.List;
 
 import movienight.javi.com.movienight.listeners.MoviesAsyncTaskListener;
 import movienight.javi.com.movienight.model.Movie;
+import movienight.javi.com.movienight.model.Page;
 import movienight.javi.com.movienight.model.jsonvalues.JSONMovie;
 import movienight.javi.com.movienight.model.jsonvalues.JSONMovieDiscover;
 import movienight.javi.com.movienight.ui.ActivityExtras;
@@ -31,7 +32,7 @@ import okhttp3.Response;
  */
 
 
-public class MoviesFilterAsyncTask extends AsyncTask<AbstractUrl, Void, Movie[]> {
+public class MoviesFilterAsyncTask extends AsyncTask<AbstractUrl, Void, Page> {
 
     private MoviesAsyncTaskListener mListener;
     private Integer mTotalPages;
@@ -42,7 +43,7 @@ public class MoviesFilterAsyncTask extends AsyncTask<AbstractUrl, Void, Movie[]>
     }
 
     @Override
-    protected Movie[] doInBackground(AbstractUrl... params) {
+    protected Page doInBackground(AbstractUrl... params) {
 
         MovieUrl url = (MovieUrl)params[0];
         OkHttpClient client = new OkHttpClient();
@@ -80,11 +81,9 @@ public class MoviesFilterAsyncTask extends AsyncTask<AbstractUrl, Void, Movie[]>
                 }
             }
 
-//            int pageNumber = jsonObject.getInt("page");
-//
-//            return new Page(pageNumber, movies.toArray(new Movie[movies.size()]));
+            int pageNumber = jsonObject.getInt("page");
 
-            return movies.toArray(new Movie[movies.size()]);
+            return new Page(pageNumber, movies.toArray(new Movie[movies.size()]));
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -98,8 +97,8 @@ public class MoviesFilterAsyncTask extends AsyncTask<AbstractUrl, Void, Movie[]>
     }
 
     @Override
-    protected void onPostExecute(Movie[] movies) {
+    protected void onPostExecute(Page page) {
 
-        mListener.onCompleted(mTotalPages, movies);
+        mListener.onCompleted(mTotalPages, page.getMovies());
     }
 }

@@ -5,20 +5,15 @@ import android.graphics.Bitmap;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,7 +25,6 @@ import butterknife.OnClick;
 import movienight.javi.com.movienight.adapters.FilterItemRecyclerAdapter;
 import movienight.javi.com.movienight.adapters.FilterSpinnerAdapter;
 import movienight.javi.com.movienight.adapters.MovieRecyclerViewAdapter;
-import movienight.javi.com.movienight.adapters.MoviesGridAdapter;
 import movienight.javi.com.movienight.asyntasks.PopularMoviesAsyncTask;
 import movienight.javi.com.movienight.asyntasks.PostersAsyncTask;
 import movienight.javi.com.movienight.dialogs.DaterangeDialogFragment;
@@ -53,6 +47,7 @@ import movienight.javi.com.movienight.model.MovieRequest;
 import movienight.javi.com.movienight.model.RateFilterableItem;
 import movienight.javi.com.movienight.model.VoteCountFilterableItem;
 import movienight.javi.com.movienight.ui.ActivityExtras;
+import movienight.javi.com.movienight.ui.MoviesActivity.MoviesActivity;
 import movienight.javi.com.movienight.urls.PopularMoviesUrl;
 
 public class SearchActivity extends AppCompatActivity
@@ -239,6 +234,10 @@ public class SearchActivity extends AppCompatActivity
 
             request.setGenre(genres.toArray(new Genre[genres.size()]));
         }
+        else {
+
+            request.setGenre(new Genre[]{});
+        }
 
         List<FilterableItem> datesSelected = mFilters.get(FilterableItemKeys.DATE_RANGE);
 
@@ -246,8 +245,13 @@ public class SearchActivity extends AppCompatActivity
 
             DateRangeFilterableItem item = (DateRangeFilterableItem)datesSelected.get(0);
             SimpleDateFormat formatter = new SimpleDateFormat(ActivityExtras.RELEASE_DATE_FORMAT);
-            request.setStartDateRelease(formatter.format(item.getStartDate()));
-            request.setEndDateReleaseSelected(formatter.format(item.getEndDate()));
+            request.setStartReleasedDate(formatter.format(item.getStartDate()));
+            request.setEndReleaseDate(formatter.format(item.getEndDate()));
+        }
+        else {
+
+            request.setStartReleasedDate("");
+            request.setEndReleaseDate("");
         }
 
         List<FilterableItem> rateSelected = mFilters.get(FilterableItemKeys.RATE);
@@ -257,6 +261,8 @@ public class SearchActivity extends AppCompatActivity
             RateFilterableItem item = (RateFilterableItem)rateSelected.get(0);
             request.setRating(item.getObject());
         }
+        else
+            request.setRating(-1.0f);
 
         List<FilterableItem> voteCountSelected = mFilters.get(FilterableItemKeys.VOTE_COUNT);
 
@@ -265,5 +271,12 @@ public class SearchActivity extends AppCompatActivity
             VoteCountFilterableItem item = (VoteCountFilterableItem)voteCountSelected.get(0);
             request.setVoteCount(item.getObject());
         }
+        else
+            request.setVoteCount(-1);
+
+        Intent intent = new Intent(SearchActivity.this, MoviesActivity.class);
+        intent.putExtra(ActivityExtras.MOVIE_REQUEST_KEY, request);
+
+        startActivity(intent);
     }
 }

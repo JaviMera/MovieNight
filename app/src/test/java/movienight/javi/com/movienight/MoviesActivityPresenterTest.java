@@ -11,6 +11,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.listeners.MovieSelectedListener;
 import movienight.javi.com.movienight.ui.MoviesActivity.MoviesActivityPresenter;
@@ -53,7 +56,7 @@ public class MoviesActivityPresenterTest {
     public void updateRecyclerViewAdapter() throws Exception {
 
         // Arrange
-        Movie[] movies = new Movie[]{FakeMovies.get(1)};
+        List<Movie> movies = new LinkedList<>();
 
         // Act
         mPresenter.updateRecyclerViewAdapter(movies);

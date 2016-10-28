@@ -73,12 +73,12 @@ public class MovieRequest implements Parcelable{
         mVoteCountSelected = voteCount;
     }
 
-    public void setStartDateRelease(String releaseDate) {
+    public void setStartReleasedDate(String releaseDate) {
 
         mStartDateReleaseSelected = releaseDate;
     }
 
-    public void setEndDateReleaseSelected(String endDateReleaseSelected) {
+    public void setEndReleaseDate(String endDateReleaseSelected) {
         mEndDateReleaseSelected = endDateReleaseSelected;
     }
 

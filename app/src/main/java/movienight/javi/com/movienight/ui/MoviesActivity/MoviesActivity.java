@@ -2,8 +2,11 @@ package movienight.javi.com.movienight.ui.MoviesActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.provider.Telephony;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -12,9 +15,12 @@ import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import movienight.javi.com.movienight.asyntasks.PostersAsyncTask;
+import movienight.javi.com.movienight.listeners.MoviePostersListener;
 import movienight.javi.com.movienight.listeners.MovieSelectedListener;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.adapters.MovieRecyclerViewAdapter;
@@ -23,21 +29,22 @@ import movienight.javi.com.movienight.listeners.MoviesAsyncTaskListener;
 import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.model.MovieRequest;
-import movienight.javi.com.movienight.model.Page;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.urls.MovieUrl;
 import movienight.javi.com.movienight.urls.MovieUrlBuilder;
 
-public class MoviesActivity extends AppCompatActivity implements MoviesActivityView, MoviesAsyncTaskListener, MovieSelectedListener {
+public class MoviesActivity extends AppCompatActivity
+        implements MoviesActivityView, MoviesAsyncTaskListener, MovieSelectedListener, MoviePostersListener {
 
     private Integer mTotalPages;
     private int mCurrentPageNumber;
+    private List<Movie> mMovies;
     private MovieRequest mMovieRequest;
     private MoviesActivityPresenter mPresenter;
 
     private RecyclerView.LayoutManager mRecyclerViewManager;
 
-    @BindView(R.id.movieRecyclerListView) RecyclerView mMovieRecyclerView;
+    @BindView(R.id.moviesSearchRecyclerView) RecyclerView mMovieRecyclerView;
     @BindView(R.id.updateRecyclerViewProgressBar) ProgressBar mMoviesProgressBar;
 
     @Override
@@ -47,13 +54,20 @@ public class MoviesActivity extends AppCompatActivity implements MoviesActivityV
 
         ButterKnife.bind(this);
 
+        mCurrentPageNumber = 1;
+        mMovies = new LinkedList<>();
         mPresenter = new MoviesActivityPresenter(this);
 
         Intent intent = getIntent();
         mMovieRequest = intent.getParcelableExtra(ActivityExtras.MOVIE_REQUEST_KEY);
 
-        mRecyclerViewManager = new LinearLayoutManager(this);
+        MovieRecyclerViewAdapter adapter = new MovieRecyclerViewAdapter(this, mMovies, this);
+        mMovieRecyclerView.setAdapter(adapter);
+
+        mRecyclerViewManager = new GridLayoutManager(this, 3, LinearLayoutManager.VERTICAL, false);
         mPresenter.setRecyclerViewLayoutManager(mRecyclerViewManager);
+
+        mMovieRecyclerView.setHasFixedSize(true);
 
         mMovieRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -79,9 +93,6 @@ public class MoviesActivity extends AppCompatActivity implements MoviesActivityV
             }
         });
 
-        mMovieRecyclerView.setHasFixedSize(true);
-
-        mCurrentPageNumber = 1;
         mPresenter.setProgressBarVisibility(View.VISIBLE);
 
         MovieUrl url = createMovieUrl(mCurrentPageNumber, mMovieRequest);
@@ -91,17 +102,17 @@ public class MoviesActivity extends AppCompatActivity implements MoviesActivityV
     @Override
     public void onCompleted(Integer totalPages, Movie[] movies) {
 
-        if(null == mTotalPages) {
+        mTotalPages = totalPages;
+        mMovies = new LinkedList<>(Arrays.asList(movies));
+        List<String> posterPaths = new LinkedList<>();
 
-            mTotalPages = totalPages;
-            mPresenter.setRecyclerViewAdapter(this, movies, this);
+        for(Movie m : mMovies) {
+
+            posterPaths.add(m.getPosterPath());
         }
-        else {
 
-            mPresenter.updateRecyclerViewAdapter(movies);
-        }
-
-        mPresenter.setProgressBarVisibility(View.INVISIBLE);
+        new PostersAsyncTask(this, getSupportFragmentManager())
+            .execute(posterPaths.toArray(new String[posterPaths.size()]));
     }
 
     @Override
@@ -128,10 +139,10 @@ public class MoviesActivity extends AppCompatActivity implements MoviesActivityV
     }
 
     @Override
-    public void updateRecyclerAdapter(Movie[] movies) {
+    public void updateRecyclerAdapter(List<Movie> movies) {
 
         MovieRecyclerViewAdapter movieAdapter = (MovieRecyclerViewAdapter)mMovieRecyclerView.getAdapter();
-        movieAdapter.updateData(new LinkedList<>(Arrays.asList(movies)));
+        movieAdapter.updateData(movies);
     }
 
     @Override
@@ -178,6 +189,18 @@ public class MoviesActivity extends AppCompatActivity implements MoviesActivityV
         }
 
         return genresIds;
+    }
+
+    @Override
+    public void onPostersCompleted(Bitmap[] posters) {
+
+        for(int i = 0 ; i < mMovies.size() ; i++) {
+
+            mMovies.get(i).setPoster(posters[i]);
+        }
+
+        mPresenter.updateRecyclerViewAdapter(mMovies);
+        mPresenter.setProgressBarVisibility(View.INVISIBLE);
     }
 }
 

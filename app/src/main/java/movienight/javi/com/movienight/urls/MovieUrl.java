@@ -1,5 +1,12 @@
 package movienight.javi.com.movienight.urls;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import movienight.javi.com.movienight.ui.ActivityExtras;
+
 /**
  * Created by Javi on 10/21/2016.
  */
@@ -56,12 +63,20 @@ public class MovieUrl extends AbstractUrl {
 
     public String getStartDate() {
 
-        return mStartDate;
+        SimpleDateFormat formatter = new SimpleDateFormat(ActivityExtras.RELEASE_DATE_FORMAT);
+
+        return mStartDate.isEmpty()
+            ? formatter.format(new Date())
+            : mStartDate;
     }
 
     public String getEndDate() {
 
-        return mEndDate;
+        SimpleDateFormat formatter = new SimpleDateFormat(ActivityExtras.RELEASE_DATE_FORMAT);
+
+        return mEndDate.isEmpty()
+            ? formatter.format(new Date())
+            : mEndDate;
     }
 
     @Override
@@ -74,11 +89,25 @@ public class MovieUrl extends AbstractUrl {
         request += "&" + adult + "=" + mAdult;
         request += "&" + video + "=" + mVideo;
         request += "&" + page + "=" + mPage;
-        request += "&" + minRelaseDate + "=" + mStartDate;
-        request += "&" + maxReleaseDate + "=" + mEndDate;
-        request += "&" + vote + "=" + mVoteCount;
-        request += "&" + rating + "=" + mRating;
-        request += "&" + genres + "=" + mGenres;
+        request += "&" + minRelaseDate + "=";
+        if(!mStartDate.isEmpty())
+             request += mStartDate;
+
+        request += "&" + maxReleaseDate + "=";
+        if(!mEndDate.isEmpty())
+             request += mEndDate;
+
+        request += "&" + vote + "=";
+        if(!mVoteCount.isEmpty())
+            request += mVoteCount;
+
+        request += "&" + rating + "=";
+        if(!mRating.isEmpty())
+            request += mRating;
+
+        request += "&" + genres + "=";
+        if(!mGenres.isEmpty())
+            request += mGenres;
 
         return request;
     }

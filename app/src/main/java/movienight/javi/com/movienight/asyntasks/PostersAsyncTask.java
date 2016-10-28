@@ -19,28 +19,23 @@ import movienight.javi.com.movienight.listeners.MoviePostersListener;
 public class PostersAsyncTask extends AsyncTask<String, Void, Bitmap[]> {
 
     private FragmentManager mManager;
-    private LoadDialogFragment mDialog;
     private MoviePostersListener mListener;
 
     public PostersAsyncTask(MoviePostersListener listener, FragmentManager manager) {
 
         mListener = listener;
         mManager = manager;
-        mDialog = new LoadDialogFragment();
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-
-        mDialog.show(mManager, "load_dialog");
     }
 
     @Override
     protected void onPostExecute(Bitmap[] bitmaps) {
 
         mListener.onPostersCompleted(bitmaps);
-        mDialog.dismiss();
     }
 
     @Override
@@ -63,6 +58,4 @@ public class PostersAsyncTask extends AsyncTask<String, Void, Bitmap[]> {
 
         return null;
     }
-
-
 }

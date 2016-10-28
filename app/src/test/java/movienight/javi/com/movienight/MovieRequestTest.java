@@ -68,7 +68,7 @@ public class MovieRequestTest {
         String expectedDate = "10/18/2016";
 
         // Act
-        mMovieRequest.setStartDateRelease(expectedDate);
+        mMovieRequest.setStartReleasedDate(expectedDate);
 
         // Assert
         Assert.assertEquals(expectedDate, mMovieRequest.getStartDateReleaseSelected());

@@ -3,6 +3,8 @@ package movienight.javi.com.movienight.ui.MoviesActivity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 
+import java.util.List;
+
 import movienight.javi.com.movienight.listeners.MovieSelectedListener;
 import movienight.javi.com.movienight.model.Movie;
 
@@ -19,7 +21,7 @@ public class MoviesActivityPresenter {
         mView = view;
     }
 
-    public void updateRecyclerViewAdapter(Movie[] movies) {
+    public void updateRecyclerViewAdapter(List<Movie> movies) {
 
         mView.updateRecyclerAdapter(movies);
     }

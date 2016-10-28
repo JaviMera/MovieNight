@@ -1,30 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_movies"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <RelativeLayout
-        android:id="@+id/titleLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <include
-            layout="@layout/logo_layout" />
-
-        <TextView
-            android:layout_above="@+id/lineSeparatorView"
-            style="@style/MoviesResultTextView" />
-
-        <View
-            android:id="@+id/lineSeparatorView"
-            android:layout_below="@+id/logoImageView"
-            style="@style/UnderlineView" />
-
-    </RelativeLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -33,7 +13,7 @@
         android:layout_margin="10dp">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/movieRecyclerListView"
+            android:id="@+id/moviesSearchRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
@@ -41,7 +21,7 @@
             android:id="@+id/updateRecyclerViewProgressBar"
             android:visibility="invisible"
             android:indeterminateDrawable="@drawable/progress_bar_drawable"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"/>
     </FrameLayout>
