@@ -14,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,6 +40,7 @@ import movienight.javi.com.movienight.urls.GenreUrl;
 public class GenresFragmentDialog extends DialogFragmentBase implements AsyncTaskListener<Genre>{
 
     private View mDialogLayoutView;
+    private ProgressBar mGenresProgressBar;
     private RecyclerView mGenresRecyclerView;
     private List<Genre> mGenres;
     private List<Genre> mSelectedGenres;
@@ -87,6 +89,9 @@ public class GenresFragmentDialog extends DialogFragmentBase implements AsyncTas
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
         dialogBuilder.setView(mDialogLayoutView);
 
+        mGenresProgressBar = (ProgressBar) mDialogLayoutView.findViewById(R.id.genresProgressBar);
+        mGenresProgressBar.setVisibility(View.VISIBLE);
+
         AlertDialog dialog = dialogBuilder.create();
         dialog.setOnKeyListener(onBackButtonPressed());
 
@@ -103,6 +108,8 @@ public class GenresFragmentDialog extends DialogFragmentBase implements AsyncTas
             int genreToCheck = mGenres.indexOf(genre);
             mGenres.get(genreToCheck).setChecked(true);
         }
+
+        mGenresProgressBar.setVisibility(View.INVISIBLE);
 
         setRecyclerView(mGenres.toArray(new Genre[mGenres.size()]));
     }

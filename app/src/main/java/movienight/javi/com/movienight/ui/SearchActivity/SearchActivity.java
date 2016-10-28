@@ -9,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import java.text.SimpleDateFormat;
@@ -66,6 +67,9 @@ public class SearchActivity extends AppCompatActivity
     @BindView(R.id.filtersRecyclerView)
     RecyclerView mFiltersRecyclerView;
 
+    @BindView(R.id.popularMoviesProgressBar)
+    ProgressBar mPopularMoviesProgressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +107,8 @@ public class SearchActivity extends AppCompatActivity
 
         final RecyclerView.LayoutManager movieRecyclerLayout = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
         mMoviesRecyclerView.setLayoutManager(movieRecyclerLayout);
+
+        mPopularMoviesProgressBar.setVisibility(View.VISIBLE);
 
         mMoviesRecyclerView.setHasFixedSize(true);
         PopularMoviesUrl url = new PopularMoviesUrl();
@@ -206,6 +212,8 @@ public class SearchActivity extends AppCompatActivity
 
             mMovies[i].setPoster(posters[i]);
         }
+
+        mPopularMoviesProgressBar.setVisibility(View.INVISIBLE);
 
         MovieRecyclerViewAdapter adapter = (MovieRecyclerViewAdapter) mMoviesRecyclerView.getAdapter();
         adapter.updateData(new ArrayList(Arrays.asList(mMovies)));

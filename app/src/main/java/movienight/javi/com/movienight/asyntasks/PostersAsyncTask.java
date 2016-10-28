@@ -9,7 +9,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import movienight.javi.com.movienight.dialogs.LoadDialogFragment;
 import movienight.javi.com.movienight.listeners.MoviePostersListener;
 
 /**
