@@ -49,7 +49,7 @@ public class MoviesGridAdapter extends ArrayAdapter<Movie> {
 
         if(null == convertView) {
 
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.movie_grid_item_layout, parent, false);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.movie_recycler_item_layout, parent, false);
             holder = new MovieAdapterViewHolder();
 
             holder.mMoviePosterImageView = (ImageView) convertView.findViewById(R.id.moviePosterImageView);

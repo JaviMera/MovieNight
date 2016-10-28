@@ -27,7 +27,7 @@ import okhttp3.Response;
 public class PopularMoviesAsyncTask extends AsyncTask<AbstractUrl, Void, Movie[]> {
 
     private MoviesAsyncTaskListener mListener;
-
+    private int mTotalPages;
     public PopularMoviesAsyncTask(MoviesAsyncTaskListener listener) {
 
         mListener = listener;
@@ -59,6 +59,7 @@ public class PopularMoviesAsyncTask extends AsyncTask<AbstractUrl, Void, Movie[]
                 movies.add(newMovie);
             }
 
+            mTotalPages = jsonObject.getInt("page");
             return movies.toArray(new Movie[movies.size()]);
         }
         catch (IOException e) {
@@ -73,6 +74,6 @@ public class PopularMoviesAsyncTask extends AsyncTask<AbstractUrl, Void, Movie[]
     @Override
     protected void onPostExecute(Movie[] movies) {
 
-        mListener.onCompleted(1, movies);
+        mListener.onCompleted(mTotalPages, movies);
     }
 }

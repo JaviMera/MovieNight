@@ -55,7 +55,7 @@ public class VoteCountDialogFragment extends DialogFragmentBase {
 
         if(!voteCountItems.isEmpty()) {
 
-            mVoteCount = voteCountItems.get(0).getVoteCount();
+            mVoteCount = voteCountItems.get(0).getObject();
         }
     }
 

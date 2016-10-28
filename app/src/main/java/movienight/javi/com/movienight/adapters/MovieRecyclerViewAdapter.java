@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import java.util.List;
 
@@ -59,19 +59,19 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
 
     public class MovieViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView mMovieTitleTextView;
+        public ImageView mMoviePoster;
 
         public MovieViewHolder(View itemView) {
 
             super(itemView);
 
-            mMovieTitleTextView = (TextView) itemView.findViewById(R.id.movieTitleTextView);
+            mMoviePoster = (ImageView) itemView.findViewById(R.id.moviePosterImageView);
         }
 
         public void bindMovie(final Movie movie, final MovieSelectedListener listener) {
 
             if(null != movie){
-                mMovieTitleTextView.setText(movie.getOriginalTitle());
+                mMoviePoster.setImageBitmap(movie.getPoster());
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

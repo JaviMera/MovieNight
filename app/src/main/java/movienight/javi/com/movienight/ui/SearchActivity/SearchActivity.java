@@ -1,18 +1,24 @@
 package movienight.javi.com.movienight.ui.SearchActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,8 +26,10 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import movienight.javi.com.movienight.adapters.FilterItemRecyclerAdapter;
 import movienight.javi.com.movienight.adapters.FilterSpinnerAdapter;
+import movienight.javi.com.movienight.adapters.MovieRecyclerViewAdapter;
 import movienight.javi.com.movienight.adapters.MoviesGridAdapter;
 import movienight.javi.com.movienight.asyntasks.PopularMoviesAsyncTask;
 import movienight.javi.com.movienight.asyntasks.PostersAsyncTask;
@@ -33,14 +41,22 @@ import movienight.javi.com.movienight.dialogs.VoteCountDialogFragment;
 import movienight.javi.com.movienight.listeners.FilterItemAddedListener;
 import movienight.javi.com.movienight.listeners.FilterItemRemovedListener;
 import movienight.javi.com.movienight.listeners.MoviePostersListener;
+import movienight.javi.com.movienight.listeners.MovieSelectedListener;
 import movienight.javi.com.movienight.listeners.MoviesAsyncTaskListener;
+import movienight.javi.com.movienight.model.DateRangeFilterableItem;
 import movienight.javi.com.movienight.model.FilterableItem;
 import movienight.javi.com.movienight.model.FilterableItemKeys;
+import movienight.javi.com.movienight.model.Genre;
+import movienight.javi.com.movienight.model.GenreFilterableItem;
 import movienight.javi.com.movienight.model.Movie;
+import movienight.javi.com.movienight.model.MovieRequest;
+import movienight.javi.com.movienight.model.RateFilterableItem;
+import movienight.javi.com.movienight.model.VoteCountFilterableItem;
+import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.urls.PopularMoviesUrl;
 
 public class SearchActivity extends AppCompatActivity
-    implements SearchActivityView, MoviesAsyncTaskListener, FilterItemAddedListener, FilterItemRemovedListener, MoviePostersListener{
+    implements SearchActivityView, MovieSelectedListener, MoviesAsyncTaskListener, FilterItemAddedListener, FilterItemRemovedListener, MoviePostersListener{
 
     private Movie[] mMovies;
     private Map<Integer, List<FilterableItem>> mFilters;
@@ -50,9 +66,7 @@ public class SearchActivity extends AppCompatActivity
     Spinner mFilterMovieSpinner;
 
     @BindView(R.id.moviesGridView)
-    GridView mMoviesGridView;
-//    @BindView(R.id.movieResultRecyclerView)
-//    RecyclerView mMovieResultRecyclerView;
+    RecyclerView mMoviesRecyclerView;
 
     @BindView(R.id.filtersRecyclerView)
     RecyclerView mFiltersRecyclerView;
@@ -84,14 +98,18 @@ public class SearchActivity extends AppCompatActivity
 
         mFiltersRecyclerView.setAdapter(recyclerAdapter);
 
-        RecyclerView.LayoutManager gridManager = new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false);
-        mFiltersRecyclerView.setLayoutManager(gridManager);
+        RecyclerView.LayoutManager filterRecyclerLayout = new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false);
+        mFiltersRecyclerView.setLayoutManager(filterRecyclerLayout);
 
         mFiltersRecyclerView.setHasFixedSize(true);
 
-        MoviesGridAdapter adapter = new MoviesGridAdapter(this, new Movie[]{});
-        mMoviesGridView.setAdapter(adapter);
+        MovieRecyclerViewAdapter adapter = new MovieRecyclerViewAdapter(this, new ArrayList<Movie>(), this);
+        mMoviesRecyclerView.setAdapter(adapter);
 
+        final RecyclerView.LayoutManager movieRecyclerLayout = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
+        mMoviesRecyclerView.setLayoutManager(movieRecyclerLayout);
+
+        mMoviesRecyclerView.setHasFixedSize(true);
         PopularMoviesUrl url = new PopularMoviesUrl();
             new PopularMoviesAsyncTask(this)
                 .execute(url);
@@ -194,7 +212,58 @@ public class SearchActivity extends AppCompatActivity
             mMovies[i].setPoster(posters[i]);
         }
 
-        MoviesGridAdapter adapter = (MoviesGridAdapter)mMoviesGridView.getAdapter();
-        adapter.updateData(mMovies);
+        MovieRecyclerViewAdapter adapter = (MovieRecyclerViewAdapter) mMoviesRecyclerView.getAdapter();
+        adapter.updateData(new ArrayList(Arrays.asList(mMovies)));
+    }
+
+    @Override
+    public void onMovieSelectedListener(Movie movie) {
+
+    }
+
+    @OnClick(R.id.findMoviesButtonView)
+    public void onFindMoviesButtonClick(View view) {
+
+        MovieRequest request = new MovieRequest();
+
+        List<FilterableItem> genresSelected = mFilters.get(FilterableItemKeys.GENRE);
+
+        if(!genresSelected.isEmpty()) {
+
+            List<Genre> genres = new ArrayList<>();
+            for(FilterableItem item : genresSelected) {
+
+                GenreFilterableItem genre = (GenreFilterableItem)item;
+                    genres.add(genre.getObject());
+            }
+
+            request.setGenre(genres.toArray(new Genre[genres.size()]));
+        }
+
+        List<FilterableItem> datesSelected = mFilters.get(FilterableItemKeys.DATE_RANGE);
+
+        if(!datesSelected.isEmpty()) {
+
+            DateRangeFilterableItem item = (DateRangeFilterableItem)datesSelected.get(0);
+            SimpleDateFormat formatter = new SimpleDateFormat(ActivityExtras.RELEASE_DATE_FORMAT);
+            request.setStartDateRelease(formatter.format(item.getStartDate()));
+            request.setEndDateReleaseSelected(formatter.format(item.getEndDate()));
+        }
+
+        List<FilterableItem> rateSelected = mFilters.get(FilterableItemKeys.RATE);
+
+        if(!rateSelected.isEmpty()) {
+
+            RateFilterableItem item = (RateFilterableItem)rateSelected.get(0);
+            request.setRating(item.getObject());
+        }
+
+        List<FilterableItem> voteCountSelected = mFilters.get(FilterableItemKeys.VOTE_COUNT);
+
+        if(!voteCountSelected.isEmpty()) {
+
+            VoteCountFilterableItem item = (VoteCountFilterableItem)voteCountSelected.get(0);
+            request.setVoteCount(item.getObject());
+        }
     }
 }

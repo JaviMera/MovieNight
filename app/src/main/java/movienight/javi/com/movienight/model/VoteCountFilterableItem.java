@@ -35,18 +35,14 @@ public class VoteCountFilterableItem implements FilterableItem<Integer>, Parcela
 
     @Override
     public Integer getObject() {
-        return null;
+
+        return mVoteCount;
     }
 
     @Override
     public String getValue() {
 
         return mVoteCount + " votes.";
-    }
-
-    public Integer getVoteCount() {
-
-        return mVoteCount;
     }
 
     @Override

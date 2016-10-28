@@ -58,7 +58,7 @@ public class RateDialogFragment extends DialogFragmentBase {
 
         if(!rateItems.isEmpty()) {
 
-            mRate = rateItems.get(0).getRate();
+            mRate = rateItems.get(0).getObject();
         }
     }
 
