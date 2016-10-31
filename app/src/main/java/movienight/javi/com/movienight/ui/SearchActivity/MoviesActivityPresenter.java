@@ -2,10 +2,12 @@ package movienight.javi.com.movienight.ui.SearchActivity;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.widget.AdapterView;
 
 import java.util.List;
 
 import movienight.javi.com.movienight.listeners.MovieSelectedListener;
+import movienight.javi.com.movienight.model.FilterableItem;
 import movienight.javi.com.movienight.model.Movie;
 
 /**
@@ -26,18 +28,44 @@ public class MoviesActivityPresenter {
         mView.updateRecyclerAdapter(movies);
     }
 
-    public void setRecyclerViewLayoutManager(RecyclerView.LayoutManager manager) {
+    public void setMoviesRecyclerViewAdapter(Movie[] movies) {
 
-        mView.setRecyclerViewManager(manager);
-    }
-
-    public void setRecyclerViewAdapter(Context context, Movie[] movies, MovieSelectedListener listener) {
-
-        mView.setRecyclerViewAdapter(context, movies, listener);
+        mView.setMoviesRecyclerViewAdapter(movies);
     }
 
     public void setProgressBarVisibility(int progressBarVisibility) {
 
         mView.setProgressBarVisibility(progressBarVisibility);
+    }
+
+    public void setRecyclerViewManager(RecyclerView view, int numberOfColumns, int orientation) {
+
+        mView.setRecyclerViewManager(view, numberOfColumns, orientation);
+    }
+
+    public void setRecyclerSize(RecyclerView view, boolean fixedSize) {
+
+        mView.setRecyclerSize(view, fixedSize);
+    }
+
+
+    public void setFilterItemRecyclerViewAdapter(FilterableItem[] items) {
+
+        mView.setFilterItemRecyclerViewAdapter(items);
+    }
+
+    public void setMovieRecyclerScrollListener(RecyclerView.OnScrollListener listener) {
+
+        mView.setMovieRecyclerScrollListener(listener);
+    }
+
+    public void setFilterOptionsSpinnerViewAdapter(String[] items) {
+
+        mView.setFilterOptionsSpinnerViewAdapter(items);
+    }
+
+    public void setFilterSpinnerItemClickListener(AdapterView.OnItemSelectedListener listener) {
+
+        mView.setFilterSpinnerItemClickListener(listener);
     }
 }

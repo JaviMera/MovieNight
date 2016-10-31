@@ -1,8 +1,7 @@
 package movienight.javi.com.movienight;
 
-import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.AdapterView;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,8 +13,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.LinkedList;
 import java.util.List;
 
+import movienight.javi.com.movienight.model.FilterableItem;
 import movienight.javi.com.movienight.model.Movie;
-import movienight.javi.com.movienight.listeners.MovieSelectedListener;
 import movienight.javi.com.movienight.ui.SearchActivity.MoviesActivityPresenter;
 import movienight.javi.com.movienight.ui.SearchActivity.MoviesActivityView;
 
@@ -38,18 +37,56 @@ public class SearchActivityPresenterTest {
     }
 
     @Test
-    public void setRecyclerViewAdapter() throws Exception {
+    public void setFilterSpinnerViewAdapter() throws Exception {
 
         // Arrange
-        Context context = null;
-        Movie[] movies = new Movie[]{FakeMovies.get(1)};
-        MovieSelectedListener listener = null;
+        String[] items = null;
 
         // Act
-        mPresenter.setRecyclerViewAdapter(context, movies, listener);
+        mPresenter.setFilterOptionsSpinnerViewAdapter(items);
 
         // Assert
-        Mockito.verify(mView).setRecyclerViewAdapter(context, movies, listener);
+        Mockito.verify(mView).setFilterOptionsSpinnerViewAdapter(items);
+    }
+
+
+    @Test
+    public void setFilterSpinnerItemClickListener() throws Exception {
+
+        // Arrange
+        AdapterView.OnItemSelectedListener listener = null;
+
+        // Act
+        mPresenter.setFilterSpinnerItemClickListener(listener);
+
+        // Assert
+        Mockito.verify(mView).setFilterSpinnerItemClickListener(listener);
+    }
+
+    @Test
+    public void setFilterItemRecyclerAdapter() throws Exception {
+
+        // Arrange
+        FilterableItem[] items = null;
+
+        // Act
+        mPresenter.setFilterItemRecyclerViewAdapter(items);
+
+        // Assert
+        Mockito.verify(mView).setFilterItemRecyclerViewAdapter(items);
+    }
+
+    @Test
+    public void setMoviesRecyclerViewAdapter() throws Exception {
+
+        // Arrange
+        Movie[] movies = new Movie[]{FakeMovies.get(1)};
+
+        // Act
+        mPresenter.setMoviesRecyclerViewAdapter(movies);
+
+        // Assert
+        Mockito.verify(mView).setMoviesRecyclerViewAdapter(movies);
     }
 
     @Test
@@ -66,19 +103,6 @@ public class SearchActivityPresenterTest {
     }
 
     @Test
-    public void setRecyclerViewLayoutManager() throws Exception {
-
-        // Arrange
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(null);
-
-        // Act
-        mPresenter.setRecyclerViewLayoutManager(manager);
-
-        // Assert
-        Mockito.verify(mView).setRecyclerViewManager(manager);
-    }
-
-    @Test
     public void setRecyclerViewProgressBarVisibility() throws Exception {
 
         // Arrange
@@ -89,5 +113,47 @@ public class SearchActivityPresenterTest {
 
         // // Assert
         Mockito.verify(mView).setProgressBarVisibility(someVisibility);
+    }
+
+    @Test
+    public void setRecyclerViewManager() throws Exception {
+
+        // Arrange
+        int numberOfColumns = 1;
+        int orientation = 1;
+        RecyclerView view = null;
+
+        // Act
+        mPresenter.setRecyclerViewManager(view, numberOfColumns, orientation);
+
+        // Assert
+        Mockito.verify(mView).setRecyclerViewManager(view, numberOfColumns, orientation);
+    }
+
+    @Test
+    public void setRecyclerViewSize() throws Exception {
+
+        // Arrange
+        RecyclerView view = null;
+        boolean fixedSize = true;
+
+        // Act
+        mPresenter.setRecyclerSize(view, fixedSize);
+
+        // Assert
+        Mockito.verify(mView).setRecyclerSize(view, fixedSize);
+    }
+
+    @Test
+    public void setMovieRecyclerScrollListener() throws Exception {
+
+        // Arrange
+        RecyclerView.OnScrollListener listener = null;
+
+        // Act
+        mPresenter.setMovieRecyclerScrollListener(listener);
+
+        // Assert
+        Mockito.verify(mView).setMovieRecyclerScrollListener(listener);
     }
 }

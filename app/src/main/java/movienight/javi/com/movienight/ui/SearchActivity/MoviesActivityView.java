@@ -2,10 +2,12 @@ package movienight.javi.com.movienight.ui.SearchActivity;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.widget.AdapterView;
 
 import java.util.List;
 
 import movienight.javi.com.movienight.listeners.MovieSelectedListener;
+import movienight.javi.com.movienight.model.FilterableItem;
 import movienight.javi.com.movienight.model.Movie;
 
 /**
@@ -14,8 +16,13 @@ import movienight.javi.com.movienight.model.Movie;
 
 public interface MoviesActivityView {
 
-    void setRecyclerViewManager(RecyclerView.LayoutManager manager);
-    void setRecyclerViewAdapter(Context context, Movie[] movies, MovieSelectedListener listener);
+    void setMoviesRecyclerViewAdapter(Movie[] movies);
     void updateRecyclerAdapter(List<Movie> movies);
     void setProgressBarVisibility(int someVisibility);
+    void setRecyclerViewManager(RecyclerView view, int numberOfColumns, int orientation);
+    void setRecyclerSize(RecyclerView view, boolean fixedSize);
+    void setFilterItemRecyclerViewAdapter(FilterableItem[] items);
+    void setMovieRecyclerScrollListener(RecyclerView.OnScrollListener listener);
+    void setFilterOptionsSpinnerViewAdapter(String[] items);
+    void setFilterSpinnerItemClickListener(AdapterView.OnItemSelectedListener listener);
 }

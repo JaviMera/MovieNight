@@ -1,6 +1,5 @@
 package movienight.javi.com.movienight.ui.SearchActivity;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -65,7 +64,6 @@ public class SearchActivity extends AppCompatActivity
     private MoviesActivityPresenter mPresenter;
     private MovieUrl mUrl;
     private Map<Integer, List<FilterableItem>> mFilters;
-    private RecyclerView.LayoutManager mRecyclerViewManager;
 
     @BindView(R.id.moviesSearchRecyclerView) RecyclerView mMovieRecyclerView;
     @BindView(R.id.updateRecyclerViewProgressBar) ProgressBar mMoviesProgressBar;
@@ -79,68 +77,25 @@ public class SearchActivity extends AppCompatActivity
 
         ButterKnife.bind(this);
 
-        mGenres = new ArrayList<>();
         mGenres = getIntent().getParcelableArrayListExtra(ActivityExtras.GENRES_KEY);
-
-        mFilters = new LinkedHashMap<>();
-        mFilters.put(-1, new ArrayList<FilterableItem>());
-        mFilters.put(1, new ArrayList<FilterableItem>());
-        mFilters.put(2, new ArrayList<FilterableItem>());
-        mFilters.put(3, new ArrayList<FilterableItem>());
-        mFilters.put(4, new ArrayList<FilterableItem>());
+        mFilters = initializeFiltersMap();
 
         mCurrentPageNumber = 1;
         mMovies = new LinkedList<>();
         mPresenter = new MoviesActivityPresenter(this);
 
         String[] filterItems = getResources().getStringArray(R.array.filter_options_array);
-        FilterSpinnerAdapter spinnerAdapter = new FilterSpinnerAdapter(this, new LinkedList<>(Arrays.asList(filterItems)));
-        mFilterMovieSpinner.setAdapter(spinnerAdapter);
+        mPresenter.setFilterOptionsSpinnerViewAdapter(filterItems);
+        mPresenter.setFilterSpinnerItemClickListener(spinnerItemClickListener());
 
-        mFilterMovieSpinner.setOnItemSelectedListener(spinnerListener());
+        mPresenter.setFilterItemRecyclerViewAdapter(new FilterableItem[]{});
+        mPresenter.setRecyclerViewManager(mFiltersRecyclerView, 1, LinearLayoutManager.HORIZONTAL);
+        mPresenter.setRecyclerSize(mFiltersRecyclerView, true);
 
-        final FilterItemRecyclerAdapter recyclerAdapter = new FilterItemRecyclerAdapter(
-                this,
-                new ArrayList<FilterableItem>(),
-                this);
-
-        mFiltersRecyclerView.setAdapter(recyclerAdapter);
-
-        RecyclerView.LayoutManager filterRecyclerLayout = new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false);
-        mFiltersRecyclerView.setLayoutManager(filterRecyclerLayout);
-
-        mFiltersRecyclerView.setHasFixedSize(true);
-
-        MovieRecyclerViewAdapter movieRecyclerAdapter = new MovieRecyclerViewAdapter(this, mMovies, this);
-        mMovieRecyclerView.setAdapter(movieRecyclerAdapter);
-
-        mRecyclerViewManager = new GridLayoutManager(this, 3, LinearLayoutManager.VERTICAL, false);
-        mPresenter.setRecyclerViewLayoutManager(mRecyclerViewManager);
-
-        mMovieRecyclerView.setHasFixedSize(true);
-
-        mMovieRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-
-                LinearLayoutManager linearManager = (LinearLayoutManager)mRecyclerViewManager;
-
-                // Check if the scroll happened when the adapter's data was cleared
-                // In such case, we don't want to call the endless scroll code.
-                if(linearManager.getItemCount() == 0)
-                    return;
-
-                if(linearManager.getItemCount() == linearManager.findLastCompletelyVisibleItemPosition() + 1) {
-
-                    if(mCurrentPageNumber < mTotalPages) {
-
-                        mCurrentPageNumber++;
-                        requestMovies(mCurrentPageNumber);
-                    }
-                }
-            }
-        });
+        mPresenter.setMoviesRecyclerViewAdapter(mMovies.toArray(new Movie[]{}));
+        mPresenter.setRecyclerViewManager(mMovieRecyclerView, 3, LinearLayoutManager.VERTICAL);
+        mPresenter.setRecyclerSize(mMovieRecyclerView, true);
+        mPresenter.setMovieRecyclerScrollListener(scrollListener());
     }
 
     @Override
@@ -166,18 +121,12 @@ public class SearchActivity extends AppCompatActivity
     }
 
     @Override
-    public void setRecyclerViewManager(RecyclerView.LayoutManager manager) {
-
-        mMovieRecyclerView.setLayoutManager(mRecyclerViewManager);
-    }
-
-    @Override
-    public void setRecyclerViewAdapter(Context context, Movie[] movies, MovieSelectedListener listener) {
+    public void setMoviesRecyclerViewAdapter(Movie[] movies) {
 
         MovieRecyclerViewAdapter movieAdapter = new MovieRecyclerViewAdapter(
-            this,
-            new LinkedList<>(Arrays.asList(movies)),
-            this);
+                this,
+                new LinkedList<>(Arrays.asList(movies)),
+                this);
 
         mMovieRecyclerView.setAdapter(movieAdapter);
     }
@@ -193,6 +142,58 @@ public class SearchActivity extends AppCompatActivity
     public void setProgressBarVisibility(int visibility) {
 
         mMoviesProgressBar.setVisibility(visibility);
+    }
+
+    @Override
+    public void setRecyclerViewManager(RecyclerView view, int numberOfColumns, int orientation) {
+
+        RecyclerView.LayoutManager manager = new GridLayoutManager(
+            this,
+            numberOfColumns,
+            orientation,
+            false
+        );
+
+        view.setLayoutManager(manager);
+    }
+
+    @Override
+    public void setRecyclerSize(RecyclerView view, boolean fixedSize) {
+
+        view.setHasFixedSize(fixedSize);
+    }
+
+    @Override
+    public void setFilterItemRecyclerViewAdapter(FilterableItem[] items) {
+
+        FilterItemRecyclerAdapter adapter = new FilterItemRecyclerAdapter(
+            this,
+            new ArrayList(Arrays.asList(items)), this)
+        ;
+
+        mFiltersRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void setMovieRecyclerScrollListener(RecyclerView.OnScrollListener listener) {
+
+        mMovieRecyclerView.addOnScrollListener(listener);
+    }
+
+    @Override
+    public void setFilterOptionsSpinnerViewAdapter(String[] items) {
+
+        FilterSpinnerAdapter spinnerAdapter = new FilterSpinnerAdapter(
+            this
+            , new LinkedList<>(Arrays.asList(items)));
+
+        mFilterMovieSpinner.setAdapter(spinnerAdapter);
+    }
+
+    @Override
+    public void setFilterSpinnerItemClickListener(AdapterView.OnItemSelectedListener listener) {
+
+        mFilterMovieSpinner.setOnItemSelectedListener(listener);
     }
 
     @Override
@@ -228,6 +229,29 @@ public class SearchActivity extends AppCompatActivity
         mMovies.clear();
         mCurrentPageNumber = 1;
         requestMovies(mCurrentPageNumber);
+    }
+
+    @Override
+    public void onFilterItemDeleted(FilterableItem itemRemoved) {
+
+        for(List<FilterableItem> items : mFilters.values()) {
+
+            if(items.contains(itemRemoved)) {
+
+                items.remove(itemRemoved);
+                break;
+            }
+        }
+
+        MovieRecyclerViewAdapter movieSearchAdapter = (MovieRecyclerViewAdapter)mMovieRecyclerView.getAdapter();
+        movieSearchAdapter.removeData();
+
+        mCurrentPageNumber = 1;
+        mMovies.clear();
+        mUrl = createUrl(mCurrentPageNumber);
+
+        new MoviesFilterAsyncTask(this).execute(mUrl);
+        mMoviesProgressBar.setVisibility(View.VISIBLE);
     }
 
     private MovieUrl createUrl(int pageNumber) {
@@ -280,30 +304,7 @@ public class SearchActivity extends AppCompatActivity
                 .createMovieUrl();
     }
 
-    @Override
-    public void onFilterItemDeleted(FilterableItem itemRemoved) {
-
-        for(List<FilterableItem> items : mFilters.values()) {
-
-            if(items.contains(itemRemoved)) {
-
-                items.remove(itemRemoved);
-                break;
-            }
-        }
-
-        MovieRecyclerViewAdapter movieSearchAdapter = (MovieRecyclerViewAdapter)mMovieRecyclerView.getAdapter();
-        movieSearchAdapter.removeData();
-
-        mCurrentPageNumber = 1;
-        mMovies.clear();
-        mUrl = createUrl(mCurrentPageNumber);
-
-        new MoviesFilterAsyncTask(this).execute(mUrl);
-        mMoviesProgressBar.setVisibility(View.VISIBLE);
-    }
-
-    private AdapterView.OnItemSelectedListener spinnerListener() {
+    private AdapterView.OnItemSelectedListener spinnerItemClickListener() {
 
         return new AdapterView.OnItemSelectedListener() {
 
@@ -355,4 +356,43 @@ public class SearchActivity extends AppCompatActivity
 
         new MoviesFilterAsyncTask(this).execute(mUrl);
     }
+
+    private RecyclerView.OnScrollListener scrollListener() {
+
+        return new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+
+                LinearLayoutManager linearManager = (LinearLayoutManager)recyclerView.getLayoutManager();
+
+                // Check if the scroll happened when the adapter's data was cleared
+                // In such case, we don't want to call the endless scroll code.
+                if(linearManager.getItemCount() == 0)
+                    return;
+
+                if(linearManager.getItemCount() == linearManager.findLastCompletelyVisibleItemPosition() + 1) {
+
+                    if(mCurrentPageNumber < mTotalPages) {
+
+                        mCurrentPageNumber++;
+                        requestMovies(mCurrentPageNumber);
+                    }
+                }
+            }
+        };
+    }
+
+    private Map<Integer, List<FilterableItem>> initializeFiltersMap() {
+
+            return new LinkedHashMap<Integer, List<FilterableItem>>(){
+                {
+                    put(-1, new ArrayList<FilterableItem>());
+                    put(1, new ArrayList<FilterableItem>());
+                    put(2, new ArrayList<FilterableItem>());
+                    put(3, new ArrayList<FilterableItem>());
+                    put(4, new ArrayList<FilterableItem>());
+                }
+            };
+        }
 }
