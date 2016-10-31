@@ -15,4 +15,5 @@ public class JSONMovie {
     public static final String VOTE_COUNT_KEY = "vote_count";
     public static final String VOTE_AVERAGE_KEY = "vote_average";
     public static final String GENRE_IDS_KEY = "genre_ids";
+    public static final String POSTER_PATH_KEY = "poster_path";
 }

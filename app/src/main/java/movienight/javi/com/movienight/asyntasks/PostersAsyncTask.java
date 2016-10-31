@@ -19,11 +19,13 @@ public class PostersAsyncTask extends AsyncTask<String, Void, Bitmap[]> {
 
     private FragmentManager mManager;
     private MoviePostersListener mListener;
+    private String mPosterResolution;
 
-    public PostersAsyncTask(MoviePostersListener listener, FragmentManager manager) {
+    public PostersAsyncTask(MoviePostersListener listener, FragmentManager manager, String posterResolution) {
 
         mListener = listener;
         mManager = manager;
+        mPosterResolution = posterResolution;
     }
 
     @Override
@@ -45,7 +47,7 @@ public class PostersAsyncTask extends AsyncTask<String, Void, Bitmap[]> {
         try {
             for(String path : posterPaths) {
 
-                URL imageurl = new URL("http://image.tmdb.org/t/p/w500/" + path);
+                URL imageurl = new URL("http://image.tmdb.org/t/p/" + mPosterResolution + "/" + path);
                 Bitmap bitmap = BitmapFactory.decodeStream(imageurl.openConnection().getInputStream());
                 posters.add(bitmap);
             }

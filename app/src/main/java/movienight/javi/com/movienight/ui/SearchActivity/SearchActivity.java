@@ -154,7 +154,7 @@ public class SearchActivity extends AppCompatActivity
             posterPaths.add(m.getPosterPath());
         }
 
-        new PostersAsyncTask(this, getSupportFragmentManager())
+        new PostersAsyncTask(this, getSupportFragmentManager(), ActivityExtras.POSTER_RESOLUTION_342)
             .execute(posterPaths.toArray(new String[posterPaths.size()]));
     }
 

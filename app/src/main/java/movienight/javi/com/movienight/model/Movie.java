@@ -30,7 +30,7 @@ public class Movie{
         String movieOverview = jsonObject.getString(JSONMovie.OVERVIEW_KEY);
         String movieOriginalTitle = jsonObject.getString(JSONMovie.ORIGINAL_TITLE_KEY);
         String movieTitle = jsonObject.getString(JSONMovie.TITLE_KEY);
-        String moviePosterPath = jsonObject.getString("poster_path");
+        String moviePosterPath = jsonObject.getString(JSONMovie.POSTER_PATH_KEY);
         double moviePopularity = jsonObject.getDouble(JSONMovie.POPULARITY_KEY);
         int movieVotes = jsonObject.getInt(JSONMovie.VOTE_COUNT_KEY);
         double movieRating = jsonObject.getDouble(JSONMovie.VOTE_AVERAGE_KEY);

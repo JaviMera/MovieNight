@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity
             posterPaths[i] = movies[i].getPosterPath();
         }
 
-        new PostersAsyncTask(this, getSupportFragmentManager()).execute(posterPaths);
+        new PostersAsyncTask(this, getSupportFragmentManager(), ActivityExtras.POSTER_RESOLUTION_500).execute(posterPaths);
     }
 
     @Override
