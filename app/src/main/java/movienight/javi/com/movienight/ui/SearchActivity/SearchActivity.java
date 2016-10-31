@@ -201,7 +201,6 @@ public class SearchActivity extends AppCompatActivity
     @Override
     public void onPostersCompleted(Bitmap[] posters) {
 
-        // TODO - check to see if every movie has a poster path
         for(int i = 0 ; i < mMovies.size() ; i++) {
 
             mMovies.get(i).setPoster(posters[i]);
@@ -216,6 +215,12 @@ public class SearchActivity extends AppCompatActivity
 
         mFilterMovieSpinner.setSelection(0);
         mFilters.put(key, new ArrayList<>(Arrays.asList(newItems)));
+
+        // If the user pressed on the back button on any filter item dialog, then return from method
+        // and don't request for movies
+        if(key == -1) {
+            return;
+        }
 
         FilterItemRecyclerAdapter adapter = (FilterItemRecyclerAdapter) mFiltersRecyclerView.getAdapter();
         adapter.updateData(mFilters.values());
