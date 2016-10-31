@@ -219,6 +219,8 @@ public class SearchActivity extends AppCompatActivity
         MovieRecyclerViewAdapter movieSearchAdapter = (MovieRecyclerViewAdapter)mMovieRecyclerView.getAdapter();
         movieSearchAdapter.removeData();
 
+        mMovieRecyclerView.smoothScrollToPosition(0);
+
         mCurrentPageNumber = 1;
         mMovies.clear();
         mUrl = createUrl();

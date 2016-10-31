@@ -21,7 +21,7 @@ import java.util.List;
 
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.model.FilterableItem;
-import movienight.javi.com.movienight.model.RateFilterableItem;
+import movienight.javi.com.movienight.model.RateFIlterableItem;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 
 /**
@@ -53,7 +53,7 @@ public class RateFilterDialog extends FilterDialogBase {
         super.onCreate(savedInstanceState);
 
         mRate = 0.0f;
-        List<RateFilterableItem> rateItems = getArguments().getParcelableArrayList(ActivityExtras.SELECTED_RATE_KEY);
+        List<RateFIlterableItem> rateItems = getArguments().getParcelableArrayList(ActivityExtras.SELECTED_RATE_KEY);
 
         if(!rateItems.isEmpty()) {
 
@@ -96,7 +96,7 @@ public class RateFilterDialog extends FilterDialogBase {
             public void onClick(View v) {
 
                 float rate = ratingBar.getRating();
-                mListener.onFilterItemCreated(3, new RateFilterableItem(rate));
+                mListener.onFilterItemCreated(3, new RateFIlterableItem(rate));
                 dismiss();
             }
         });

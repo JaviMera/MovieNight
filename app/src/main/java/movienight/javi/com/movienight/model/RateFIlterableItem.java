@@ -7,28 +7,28 @@ import android.os.Parcelable;
  * Created by Javi on 10/24/2016.
  */
 
-public class RateFilterableItem implements FilterableItem<Float>, Parcelable {
+public class RateFIlterableItem implements FilterableItem<Float>, Parcelable {
 
     private float mRate;
 
-    public RateFilterableItem(float rate) {
+    public RateFIlterableItem(float rate) {
 
         mRate = rate;
     }
 
-    protected RateFilterableItem(Parcel in) {
+    protected RateFIlterableItem(Parcel in) {
         mRate = in.readFloat();
     }
 
-    public static final Creator<RateFilterableItem> CREATOR = new Creator<RateFilterableItem>() {
+    public static final Creator<RateFIlterableItem> CREATOR = new Creator<RateFIlterableItem>() {
         @Override
-        public RateFilterableItem createFromParcel(Parcel in) {
-            return new RateFilterableItem(in);
+        public RateFIlterableItem createFromParcel(Parcel in) {
+            return new RateFIlterableItem(in);
         }
 
         @Override
-        public RateFilterableItem[] newArray(int size) {
-            return new RateFilterableItem[size];
+        public RateFIlterableItem[] newArray(int size) {
+            return new RateFIlterableItem[size];
         }
     };
 

@@ -78,14 +78,17 @@ public class MoviesFilterAsyncTask extends AsyncTask<AbstractUrl, Void, Page> {
 
                 String releaseDateJson = currentJSONObject.getString(JSONMovie.RELEASE_DATE_KEY);
 
-                Date releaseDate = new SimpleDateFormat(ActivityExtras.RELEASE_DATE_FORMAT).parse(releaseDateJson);
-
                 if(startDateRequest != null && endDateRequest != null) {
 
-                    if ((releaseDate.compareTo(startDateRequest) == 0 || releaseDate.compareTo(endDateRequest) == 0)
-                            || (releaseDate.compareTo(startDateRequest) == 1 && releaseDate.compareTo(endDateRequest) == -1)) {
+                    if(!releaseDateJson.isEmpty()) {
 
-                        movies.add(Movie.fromJSON(currentJSONObject));
+                        Date releaseDate = new SimpleDateFormat(ActivityExtras.RELEASE_DATE_FORMAT).parse(releaseDateJson);
+
+                        if ((releaseDate.compareTo(startDateRequest) == 0 || releaseDate.compareTo(endDateRequest) == 0)
+                                || (releaseDate.compareTo(startDateRequest) == 1 && releaseDate.compareTo(endDateRequest) == -1)) {
+
+                            movies.add(Movie.fromJSON(currentJSONObject));
+                        }
                     }
                 }
 
