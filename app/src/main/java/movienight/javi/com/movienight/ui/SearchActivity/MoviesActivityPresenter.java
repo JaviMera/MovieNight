@@ -1,4 +1,4 @@
-package movienight.javi.com.movienight.ui.MoviesActivity;
+package movienight.javi.com.movienight.ui.SearchActivity;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

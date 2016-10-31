@@ -10,11 +10,11 @@
     <string name="vote_count_hint_text">Example: 12345</string>
     <string name="genre_text">Genre:</string>
     <string name="search_title_text">Search for movies!</string>
-    <string name="find_movies_button_text">Go find movies!</string>
+    <string name="find_movies_button_text">Search for Movies!</string>
     <string name="movies_result_text">Movies Result!</string>
     <string name="empty_genre_text">no genres selected</string>
     <string name="dialog_button_text">done !</string>
-    <string name="dialog_load_title_text">Loading data from the strange world of internet...</string>
+    <string name="dialog_load_title_text">Movie Night</string>
     <string name="top_rated_movies_text">Weekly Top Rated Movies!</string>
 
     <string-array name="filter_options_array">

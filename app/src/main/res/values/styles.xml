@@ -101,15 +101,14 @@
     <style name="DialogLoadTitleTextView" parent="DialogTextViewTitle">
         <item name="android:text">@string/dialog_load_title_text</item>
         <item name="android:textSize">@dimen/dialog_title_text_view_size</item>
-        <item name="android:textColor">@color/movie_dark_purple</item>
         <item name="android:layout_margin">@dimen/dialog_load_margin</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="DialogLoadProgressBar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:indeterminateDrawable">@drawable/progress_bar_drawable</item>
-        <item name="android:gravity">center</item>
+        <!--<item name="android:indeterminateDrawable">@drawable/progress_bar_drawable</item>-->
     </style>
 
     <!-- Date Range Dialog Styles -->

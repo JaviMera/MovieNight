@@ -1,6 +1,5 @@
 package movienight.javi.com.movienight.model;
 
-import android.app.FragmentManager;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -13,19 +12,16 @@ import java.util.Date;
 
 public class DateRangeFilterableItem implements FilterableItem<Date>, Parcelable {
 
-    private Date mStartDate;
-    private Date mEndDate;
+    private Date mDateSelected;
 
-    public DateRangeFilterableItem(Date startDate, Date endDate) {
+    public DateRangeFilterableItem(Date date) {
 
-        mStartDate = startDate;
-        mEndDate = endDate;
+        mDateSelected = date;
     }
 
     protected DateRangeFilterableItem(Parcel in) {
 
-        mStartDate = new Date(in.readLong());
-        mEndDate = new Date(in.readLong());
+        mDateSelected = new Date(in.readLong());
     }
 
     public static final Creator<DateRangeFilterableItem> CREATOR = new Creator<DateRangeFilterableItem>() {
@@ -41,25 +37,21 @@ public class DateRangeFilterableItem implements FilterableItem<Date>, Parcelable
     };
 
     @Override
-    public Date getObject() {
-        return null;
+    public Date getValue() {
+
+        return mDateSelected;
     }
 
     @Override
-    public String getValue() {
+    public String toString() {
 
         SimpleDateFormat formatter = new SimpleDateFormat("M/dd/yyyy");
-        return "Between " + formatter.format(mStartDate) + " and " + formatter.format(mEndDate);
+        return formatter.format(mDateSelected);
     }
 
-    public Date getEndDate() {
+    @Override
+    public void update(Date newItem) {
 
-        return mEndDate;
-    }
-
-    public Date getStartDate() {
-
-        return mStartDate;
     }
 
     @Override
@@ -70,7 +62,6 @@ public class DateRangeFilterableItem implements FilterableItem<Date>, Parcelable
     @Override
     public void writeToParcel(Parcel parcel, int i) {
 
-        parcel.writeLong(mStartDate.getTime());
-        parcel.writeLong(mEndDate.getTime());
+        parcel.writeLong(mDateSelected.getTime());
     }
 }

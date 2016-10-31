@@ -33,15 +33,21 @@ public class RateFilterableItem implements FilterableItem<Float>, Parcelable {
     };
 
     @Override
-    public Float getObject() {
+    public Float getValue() {
 
         return mRate;
     }
 
     @Override
-    public String getValue() {
+    public String toString() {
 
         return String.format("%.1f",mRate);
+    }
+
+    @Override
+    public void update(Float newRate) {
+
+        mRate = newRate;
     }
 
     @Override

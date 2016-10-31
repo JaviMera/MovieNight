@@ -10,19 +10,20 @@ public class Genre implements Parcelable{
 
     private Integer mId;
     private String mDescription;
-    private boolean mChecked;
+    private int mChecked;
 
     public Genre(Integer id, String description) {
 
         mId = id;
         mDescription = description;
+        mChecked = 0;
     }
 
     private Genre(Parcel in) {
 
         mId = in.readInt();
         mDescription = in.readString();
-        mChecked = in.readByte() != 0;
+        mChecked = in.readInt();
     }
 
     public Genre() {
@@ -46,7 +47,7 @@ public class Genre implements Parcelable{
 
         dest.writeInt(mId);
         dest.writeString(mDescription);
-        dest.writeByte((byte)(mChecked ? 1 : 0));
+        dest.writeInt(mChecked);
     }
 
     public static final Creator<Genre> CREATOR = new Creator<Genre>() {
@@ -62,12 +63,13 @@ public class Genre implements Parcelable{
     };
 
     public boolean isChecked() {
-        return mChecked;
+
+        return mChecked == 1;
     }
 
     public void setChecked(boolean checked) {
 
-        mChecked = checked;
+        mChecked = checked ? 1 : 0;
     }
 
     @Override

@@ -3,8 +3,6 @@ package movienight.javi.com.movienight.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.Objects;
-
 /**
  * Created by Javi on 10/24/2016.
  */
@@ -35,15 +33,22 @@ public class GenreFilterableItem implements FilterableItem<Genre>, Parcelable {
     };
 
     @Override
-    public Genre getObject() {
+    public Genre getValue() {
 
         return mSelectedGenre;
     }
 
+
     @Override
-    public String getValue() {
+    public String toString() {
 
         return mSelectedGenre.getDescription();
+    }
+
+    @Override
+    public void update(Genre updatedGenre) {
+
+        mSelectedGenre.setChecked(updatedGenre.isChecked());
     }
 
     @Override
@@ -53,7 +58,7 @@ public class GenreFilterableItem implements FilterableItem<Genre>, Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeParcelable(mSelectedGenre, i);
+        parcel.writeParcelable(mSelectedGenre,i);
     }
 
     @Override
@@ -68,7 +73,7 @@ public class GenreFilterableItem implements FilterableItem<Genre>, Parcelable {
         if(obj instanceof  GenreFilterableItem) {
 
             GenreFilterableItem otherItem = (GenreFilterableItem)obj;
-            if(mSelectedGenre.getId().equals(otherItem.getObject().getId())) {
+            if(mSelectedGenre.getId().equals(otherItem.getValue().getId())) {
 
                 return true;
             }

@@ -7,12 +7,12 @@ package movienight.javi.com.movienight.model;
 public class NullFilterableItem implements FilterableItem {
 
     @Override
-    public Object getObject() {
+    public Object getValue() {
         return null;
     }
 
     @Override
-    public String getValue() {
-        return "";
+    public void update(Object newItem) {
+
     }
 }

@@ -55,8 +55,14 @@ public class MoviesFilterAsyncTask extends AsyncTask<AbstractUrl, Void, Page> {
 
         try
         {
-            Date startDateRquest = new SimpleDateFormat(ActivityExtras.RELEASE_DATE_FORMAT).parse(url.getStartDate());
-            Date endDateRequest = new SimpleDateFormat(ActivityExtras.RELEASE_DATE_FORMAT).parse(url.getEndDate());
+            Date startDateRequest = null;
+            Date endDateRequest = null;
+
+            if(!(url.getStartDate().isEmpty() && url.getEndDate().isEmpty())) {
+
+                startDateRequest = new SimpleDateFormat(ActivityExtras.RELEASE_DATE_FORMAT).parse(url.getStartDate());
+                endDateRequest = new SimpleDateFormat(ActivityExtras.RELEASE_DATE_FORMAT).parse(url.getEndDate());
+            }
 
             Response response = call.execute();
             String jsonString = response.body().string();
@@ -74,11 +80,17 @@ public class MoviesFilterAsyncTask extends AsyncTask<AbstractUrl, Void, Page> {
 
                 Date releaseDate = new SimpleDateFormat(ActivityExtras.RELEASE_DATE_FORMAT).parse(releaseDateJson);
 
-                if((releaseDate.compareTo(startDateRquest) == 0 || releaseDate.compareTo(endDateRequest) == 0)
-                    || (releaseDate.compareTo(startDateRquest) == 1 && releaseDate.compareTo(endDateRequest) == -1)){
+                if(startDateRequest != null && endDateRequest != null) {
 
-                    movies.add(Movie.fromJSON(currentJSONObject));
+                    if ((releaseDate.compareTo(startDateRequest) == 0 || releaseDate.compareTo(endDateRequest) == 0)
+                            || (releaseDate.compareTo(startDateRequest) == 1 && releaseDate.compareTo(endDateRequest) == -1)) {
+
+                        movies.add(Movie.fromJSON(currentJSONObject));
+                    }
                 }
+
+                else
+                    movies.add(Movie.fromJSON(currentJSONObject));
             }
 
             int pageNumber = jsonObject.getInt("page");

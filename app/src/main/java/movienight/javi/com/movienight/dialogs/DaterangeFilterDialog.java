@@ -2,13 +2,10 @@ package movienight.javi.com.movienight.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -20,25 +17,25 @@ import java.util.Date;
 import java.util.List;
 
 import movienight.javi.com.movienight.R;
-import movienight.javi.com.movienight.listeners.FilterItemAddedListener;
 import movienight.javi.com.movienight.model.DateRangeFilterableItem;
 import movienight.javi.com.movienight.model.FilterableItem;
-import movienight.javi.com.movienight.model.GenreFilterableItem;
 import movienight.javi.com.movienight.ui.ActivityExtras;
-import movienight.javi.com.movienight.ui.SearchActivity.SearchActivity;
 
 /**
  * Created by Javi on 10/24/2016.
  */
 
-public class DaterangeDialogFragment extends DialogFragmentBase {
+public class DaterangeFilterDialog extends FilterDialogBase {
+
+    private static int START_DATE_INDEX = 0;
+    private static int END_DATE_INDEX = 1;
 
     private Date mStartDate;
     private Date mEndDate;
 
-    public static DaterangeDialogFragment newInstance(List<FilterableItem> dateItems) {
+    public static DaterangeFilterDialog newInstance(List<FilterableItem> dateItems) {
 
-        DaterangeDialogFragment dialog = new DaterangeDialogFragment();
+        DaterangeFilterDialog dialog = new DaterangeFilterDialog();
 
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(ActivityExtras.SELECTED_DATE_RANGE_KEY, (ArrayList)dateItems);
@@ -58,8 +55,8 @@ public class DaterangeDialogFragment extends DialogFragmentBase {
 
         if(!dateItems.isEmpty()) {
 
-            mStartDate = dateItems.get(0).getStartDate();
-            mEndDate = dateItems.get(0).getEndDate();
+            mStartDate = dateItems.get(START_DATE_INDEX).getValue();
+            mEndDate = dateItems.get(END_DATE_INDEX).getValue();
         }
     }
 
@@ -90,9 +87,13 @@ public class DaterangeDialogFragment extends DialogFragmentBase {
             @Override
             public void onClick(View v) {
 
-                mListener.onFilterItemCreated(2,
-                    new DateRangeFilterableItem(getDate(startDatePicker),getDate(endDatePicker))
-                );
+                List<FilterableItem> dateItems = new ArrayList<>();
+                dateItems.add(new DateRangeFilterableItem(getDate(startDatePicker)));
+                dateItems.add(new DateRangeFilterableItem(getDate(endDatePicker)));
+
+                mListener.onFilterItemCreated(
+                    2,
+                    dateItems.toArray(new FilterableItem[dateItems.size()]));
 
                 dismiss();
             }

@@ -7,16 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.listeners.FilterItemRemovedListener;
 import movienight.javi.com.movienight.model.FilterableItem;
-import movienight.javi.com.movienight.model.GenreFilterableItem;
 
 /**
  * Created by Javier on 10/26/2016.
@@ -56,13 +52,13 @@ public class FilterItemRecyclerAdapter extends RecyclerView.Adapter<FilterItemRe
         return mItems.size();
     }
 
-    public void updateData(Collection<List<FilterableItem>> newItem) {
+    public void updateData(Collection<List<FilterableItem>> newItems) {
 
         mItems.clear();
 
-        for(List<FilterableItem> filters : newItem) {
+        for(List<FilterableItem> mapFilters: newItems) {
 
-            mItems.addAll(filters);
+            mItems.addAll(mapFilters);
         }
 
         notifyDataSetChanged();
@@ -78,30 +74,53 @@ public class FilterItemRecyclerAdapter extends RecyclerView.Adapter<FilterItemRe
             mFilterableItemTextView = (TextView) itemView.findViewById(R.id.filterItemTextView);
         }
 
+
         public void bindItem(FilterableItem filterableItem) {
 
-            mFilterableItemTextView.setText(filterableItem.getValue());
+            mFilterableItemTextView.setText(filterableItem.toString());
             mFilterableItemTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
                     String textClicked = ((TextView)view).getText().toString();
-                    FilterableItem itemToRemove = null;
 
-                    for(FilterableItem item : mItems) {
+                    FilterableItem itemClicked = getItemClicked(textClicked);
+                    FilterableItem itemToRemove = getItemToDelete(itemClicked);
 
-                        if(item.getValue().equals(textClicked)) {
+                    if(null != itemToRemove) {
 
-                            itemToRemove = item;
-                            break;
-                        }
+                        mItems.remove(itemToRemove);
+                        mListener.onFilterItemDeleted(itemToRemove);
+                        notifyDataSetChanged();
                     }
-
-                    mItems.remove(itemToRemove);
-                    mListener.onFilterItemDeleted(itemToRemove);
-                    notifyDataSetChanged();
                 }
             });
+        }
+
+        private FilterableItem getItemClicked(String text) {
+
+            for(FilterableItem item : mItems) {
+
+                if(item.toString().equals(text)) {
+
+                    return item;
+                }
+            }
+
+            return null;
+        }
+
+        private FilterableItem getItemToDelete(FilterableItem itemClicked) {
+
+            for(FilterableItem item : mItems) {
+
+                if(item.equals(itemClicked)) {
+
+                    return item;
+                }
+            }
+
+            return null;
         }
     }
 }

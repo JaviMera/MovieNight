@@ -63,20 +63,12 @@ public class MovieUrl extends AbstractUrl {
 
     public String getStartDate() {
 
-        SimpleDateFormat formatter = new SimpleDateFormat(ActivityExtras.RELEASE_DATE_FORMAT);
-
-        return mStartDate.isEmpty()
-            ? formatter.format(new Date())
-            : mStartDate;
+        return mStartDate;
     }
 
     public String getEndDate() {
 
-        SimpleDateFormat formatter = new SimpleDateFormat(ActivityExtras.RELEASE_DATE_FORMAT);
-
-        return mEndDate.isEmpty()
-            ? formatter.format(new Date())
-            : mEndDate;
+        return mEndDate;
     }
 
     @Override
@@ -89,25 +81,36 @@ public class MovieUrl extends AbstractUrl {
         request += "&" + adult + "=" + mAdult;
         request += "&" + video + "=" + mVideo;
         request += "&" + page + "=" + mPage;
-        request += "&" + minRelaseDate + "=";
-        if(!mStartDate.isEmpty())
-             request += mStartDate;
 
-        request += "&" + maxReleaseDate + "=";
-        if(!mEndDate.isEmpty())
-             request += mEndDate;
+        if(!mStartDate.isEmpty()) {
 
-        request += "&" + vote + "=";
-        if(!mVoteCount.isEmpty())
+            request += "&" + minRelaseDate + "=";
+            request += mStartDate;
+        }
+
+        if(!mEndDate.isEmpty()) {
+
+            request += "&" + maxReleaseDate + "=";
+            request += mEndDate;
+        }
+
+        if(!mVoteCount.isEmpty()) {
+
+            request += "&" + vote + "=";
             request += mVoteCount;
+        }
 
-        request += "&" + rating + "=";
-        if(!mRating.isEmpty())
+        if(!mRating.isEmpty()) {
+
+            request += "&" + rating + "=";
             request += mRating;
+        }
 
-        request += "&" + genres + "=";
-        if(!mGenres.isEmpty())
+        if(!mGenres.isEmpty()) {
+
+            request += "&" + genres + "=";
             request += mGenres;
+        }
 
         return request;
     }

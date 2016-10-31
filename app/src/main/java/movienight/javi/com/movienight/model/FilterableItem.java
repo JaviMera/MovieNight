@@ -8,6 +8,6 @@ import movienight.javi.com.movienight.adapters.FilterSpinnerAdapter;
 
 public interface FilterableItem<T> {
 
-    T getObject();
-    String getValue();
+    T getValue();
+    void update(T newItem);
 }

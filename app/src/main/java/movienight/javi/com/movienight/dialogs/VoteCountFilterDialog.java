@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,23 +15,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import movienight.javi.com.movienight.R;
-import movienight.javi.com.movienight.listeners.FilterItemAddedListener;
 import movienight.javi.com.movienight.model.FilterableItem;
 import movienight.javi.com.movienight.model.VoteCountFilterableItem;
 import movienight.javi.com.movienight.ui.ActivityExtras;
-import movienight.javi.com.movienight.ui.SearchActivity.SearchActivity;
 
 /**
  * Created by Javi on 10/24/2016.
  */
 
-public class VoteCountDialogFragment extends DialogFragmentBase {
+public class VoteCountFilterDialog extends FilterDialogBase {
 
     private Integer mVoteCount;
 
-    public static VoteCountDialogFragment newInstance(List<FilterableItem> items) {
+    public static VoteCountFilterDialog newInstance(List<FilterableItem> items) {
 
-        VoteCountDialogFragment dialog = new VoteCountDialogFragment();
+        VoteCountFilterDialog dialog = new VoteCountFilterDialog();
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(ActivityExtras.SELECTED_VOTE_COUNT_KEY, (ArrayList)items);
         dialog.setArguments(bundle);
@@ -55,7 +52,7 @@ public class VoteCountDialogFragment extends DialogFragmentBase {
 
         if(!voteCountItems.isEmpty()) {
 
-            mVoteCount = voteCountItems.get(0).getObject();
+            mVoteCount = voteCountItems.get(0).getValue();
         }
     }
 

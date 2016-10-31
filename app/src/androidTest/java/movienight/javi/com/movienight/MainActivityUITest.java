@@ -8,7 +8,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import movienight.javi.com.movienight.ui.SearchActivity.SearchActivity;
+import movienight.javi.com.movienight.ui.MainActivity.MainActivity;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -28,13 +28,13 @@ import static org.hamcrest.core.AllOf.allOf;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
-public class SearchActivityUITest {
+public class MainActivityUITest {
 
     private String[] mFilterItems;
 
     @Rule
-    public ActivityTestRule<SearchActivity> activityRule =
-            new ActivityTestRule<SearchActivity>(SearchActivity.class);
+    public ActivityTestRule<MainActivity> activityRule =
+            new ActivityTestRule<MainActivity>(MainActivity.class);
 
     @Before
     public void SetUp () throws Exception {

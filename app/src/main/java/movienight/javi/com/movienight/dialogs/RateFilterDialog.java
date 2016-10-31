@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import movienight.javi.com.movienight.R;
-import movienight.javi.com.movienight.listeners.FilterItemAddedListener;
 import movienight.javi.com.movienight.model.FilterableItem;
 import movienight.javi.com.movienight.model.RateFilterableItem;
 import movienight.javi.com.movienight.ui.ActivityExtras;
@@ -29,13 +28,13 @@ import movienight.javi.com.movienight.ui.ActivityExtras;
  * Created by Javi on 10/24/2016.
  */
 
-public class RateDialogFragment extends DialogFragmentBase {
+public class RateFilterDialog extends FilterDialogBase {
 
     private float mRate;
 
     public static DialogFragment newInstance(List<FilterableItem> rateItems) {
 
-        RateDialogFragment dialog = new RateDialogFragment();
+        RateFilterDialog dialog = new RateFilterDialog();
 
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(ActivityExtras.SELECTED_RATE_KEY, (ArrayList)rateItems);
@@ -58,7 +57,7 @@ public class RateDialogFragment extends DialogFragmentBase {
 
         if(!rateItems.isEmpty()) {
 
-            mRate = rateItems.get(0).getObject();
+            mRate = rateItems.get(0).getValue();
         }
     }
 
