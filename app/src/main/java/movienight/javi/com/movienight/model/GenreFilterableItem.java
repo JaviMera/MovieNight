@@ -33,9 +33,9 @@ public class GenreFilterableItem implements FilterableItem<Genre>, Parcelable {
     };
 
     @Override
-    public Genre getValue() {
+    public Genre[] getValue() {
 
-        return mSelectedGenre;
+        return new Genre[]{mSelectedGenre};
     }
 
 
@@ -73,7 +73,7 @@ public class GenreFilterableItem implements FilterableItem<Genre>, Parcelable {
         if(obj instanceof  GenreFilterableItem) {
 
             GenreFilterableItem otherItem = (GenreFilterableItem)obj;
-            if(mSelectedGenre.getId().equals(otherItem.getValue().getId())) {
+            if(mSelectedGenre.getId().equals(otherItem.getValue()[0].getId())) {
 
                 return true;
             }

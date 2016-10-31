@@ -17,6 +17,7 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,6 +40,7 @@ import movienight.javi.com.movienight.listeners.MovieSelectedListener;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.adapters.MovieRecyclerViewAdapter;
 import movienight.javi.com.movienight.listeners.MoviesAsyncTaskListener;
+import movienight.javi.com.movienight.model.DateRangeFilterableItem;
 import movienight.javi.com.movienight.model.FilterableItem;
 import movienight.javi.com.movienight.model.FilterableItemKeys;
 import movienight.javi.com.movienight.model.Genre;
@@ -236,10 +238,10 @@ public class SearchActivity extends AppCompatActivity
         for(int i = 0 ; i < genreItems.size() ; i++ ) {
 
             if(i == genreItems.size() - 1) {
-                genresIds += ((Genre)genreItems.get(i).getValue()).getId();
+                genresIds += ((Genre)genreItems.get(i).getValue()[0]).getId();
             }
             else {
-                genresIds += ((Genre)genreItems.get(i).getValue()).getId() + ",";
+                genresIds += ((Genre)genreItems.get(i).getValue()[0]).getId() + ",";
             }
         }
 
@@ -250,22 +252,23 @@ public class SearchActivity extends AppCompatActivity
 
         if(!datesSelected.isEmpty()) {
 
-            startDate = formatter.format(datesSelected.get(0).getValue());
-            endDate = formatter.format(datesSelected.get(1).getValue());
+            Date[] dates = ((DateRangeFilterableItem)datesSelected.get(0)).getValue();
+            startDate = formatter.format(dates[0]);
+            endDate = formatter.format(dates[1]);
         }
 
         Float rateSelected = null;
 
         for(FilterableItem item : mFilters.get(FilterableItemKeys.RATE)) {
 
-            rateSelected = (Float)item.getValue();
+            rateSelected = (Float)item.getValue()[0];
         }
 
         Integer votesCount = null;
 
         for(FilterableItem item : mFilters.get(FilterableItemKeys.VOTE_COUNT)) {
 
-            votesCount = (Integer)item.getValue();
+            votesCount = (Integer)item.getValue()[0];
         }
 
         return new MovieUrlBuilder()

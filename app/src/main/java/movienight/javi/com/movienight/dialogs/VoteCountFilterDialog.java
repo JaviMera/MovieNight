@@ -52,7 +52,7 @@ public class VoteCountFilterDialog extends FilterDialogBase {
 
         if(!voteCountItems.isEmpty()) {
 
-            mVoteCount = voteCountItems.get(0).getValue();
+            mVoteCount = voteCountItems.get(0).getValue()[0];
         }
     }
 

@@ -34,9 +34,9 @@ public class VoteCountFilterableItem implements FilterableItem<Integer>, Parcela
     };
 
     @Override
-    public Integer getValue() {
+    public Integer[] getValue() {
 
-        return mVoteCount;
+        return new Integer[]{mVoteCount};
     }
 
     @Override

@@ -33,9 +33,9 @@ public class RateFIlterableItem implements FilterableItem<Float>, Parcelable {
     };
 
     @Override
-    public Float getValue() {
+    public Float[] getValue() {
 
-        return mRate;
+        return new Float[]{mRate};
     }
 
     @Override

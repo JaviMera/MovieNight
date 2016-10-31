@@ -57,7 +57,7 @@ public class RateFilterDialog extends FilterDialogBase {
 
         if(!rateItems.isEmpty()) {
 
-            mRate = rateItems.get(0).getValue();
+            mRate = rateItems.get(0).getValue()[0];
         }
     }
 

@@ -27,9 +27,6 @@ import movienight.javi.com.movienight.ui.ActivityExtras;
 
 public class DaterangeFilterDialog extends FilterDialogBase {
 
-    private static int START_DATE_INDEX = 0;
-    private static int END_DATE_INDEX = 1;
-
     private Date mStartDate;
     private Date mEndDate;
 
@@ -55,8 +52,9 @@ public class DaterangeFilterDialog extends FilterDialogBase {
 
         if(!dateItems.isEmpty()) {
 
-            mStartDate = dateItems.get(START_DATE_INDEX).getValue();
-            mEndDate = dateItems.get(END_DATE_INDEX).getValue();
+            Date[] datesSelected = dateItems.get(0).getValue();
+            mStartDate = datesSelected[0];
+            mEndDate = datesSelected[1];
         }
     }
 
@@ -88,8 +86,7 @@ public class DaterangeFilterDialog extends FilterDialogBase {
             public void onClick(View v) {
 
                 List<FilterableItem> dateItems = new ArrayList<>();
-                dateItems.add(new DateRangeFilterableItem(getDate(startDatePicker)));
-                dateItems.add(new DateRangeFilterableItem(getDate(endDatePicker)));
+                dateItems.add(new DateRangeFilterableItem(getDate(startDatePicker), getDate(endDatePicker)));
 
                 mListener.onFilterItemCreated(
                     2,

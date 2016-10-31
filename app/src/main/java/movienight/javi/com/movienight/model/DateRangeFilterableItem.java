@@ -12,16 +12,19 @@ import java.util.Date;
 
 public class DateRangeFilterableItem implements FilterableItem<Date>, Parcelable {
 
-    private Date mDateSelected;
+    private Date mStartDateSelected;
+    private Date mEndDateSelected;
 
-    public DateRangeFilterableItem(Date date) {
+    public DateRangeFilterableItem(Date start, Date end) {
 
-        mDateSelected = date;
+        mStartDateSelected = start;
+        mEndDateSelected = end;
     }
 
     protected DateRangeFilterableItem(Parcel in) {
 
-        mDateSelected = new Date(in.readLong());
+        mStartDateSelected = new Date(in.readLong());
+        mEndDateSelected = new Date(in.readLong());
     }
 
     public static final Creator<DateRangeFilterableItem> CREATOR = new Creator<DateRangeFilterableItem>() {
@@ -37,16 +40,16 @@ public class DateRangeFilterableItem implements FilterableItem<Date>, Parcelable
     };
 
     @Override
-    public Date getValue() {
+    public Date[] getValue() {
 
-        return mDateSelected;
+        return new Date[]{mStartDateSelected, mEndDateSelected};
     }
 
     @Override
     public String toString() {
 
         SimpleDateFormat formatter = new SimpleDateFormat("M/dd/yyyy");
-        return formatter.format(mDateSelected);
+        return "Between " + formatter.format(mStartDateSelected) + " and " + formatter.format(mEndDateSelected);
     }
 
     @Override
@@ -62,6 +65,7 @@ public class DateRangeFilterableItem implements FilterableItem<Date>, Parcelable
     @Override
     public void writeToParcel(Parcel parcel, int i) {
 
-        parcel.writeLong(mDateSelected.getTime());
+        parcel.writeLong(mStartDateSelected.getTime());
+        parcel.writeLong(mEndDateSelected.getTime());
     }
 }
