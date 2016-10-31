@@ -136,10 +136,7 @@ public class SearchActivity extends AppCompatActivity
                     if(mCurrentPageNumber < mTotalPages) {
 
                         mCurrentPageNumber++;
-                        mPresenter.setProgressBarVisibility(View.VISIBLE);
-
-                        mUrl = createUrl();
-                        new MoviesFilterAsyncTask((SearchActivity)recyclerView.getContext()).execute(mUrl);
+                        requestMovies(mCurrentPageNumber);
                     }
                 }
             }
@@ -228,15 +225,12 @@ public class SearchActivity extends AppCompatActivity
         MovieRecyclerViewAdapter movieSearchAdapter = (MovieRecyclerViewAdapter)mMovieRecyclerView.getAdapter();
         movieSearchAdapter.removeData();
 
-        mCurrentPageNumber = 1;
         mMovies.clear();
-        mUrl = createUrl();
-
-        new MoviesFilterAsyncTask(this).execute(mUrl);
-        mMoviesProgressBar.setVisibility(View.VISIBLE);
+        mCurrentPageNumber = 1;
+        requestMovies(mCurrentPageNumber);
     }
 
-    private MovieUrl createUrl() {
+    private MovieUrl createUrl(int pageNumber) {
 
         String genresIds = "";
         List<FilterableItem> genreItems =mFilters.get(FilterableItemKeys.GENRE);
@@ -277,7 +271,7 @@ public class SearchActivity extends AppCompatActivity
         }
 
         return new MovieUrlBuilder()
-                .withPageNumber(mCurrentPageNumber + "")
+                .withPageNumber(pageNumber + "")
                 .withGenres(genresIds)
                 .withStartReleaseDate(startDate)
                 .withEndReleaseDate(endDate)
@@ -303,7 +297,7 @@ public class SearchActivity extends AppCompatActivity
 
         mCurrentPageNumber = 1;
         mMovies.clear();
-        mUrl = createUrl();
+        mUrl = createUrl(mCurrentPageNumber);
 
         new MoviesFilterAsyncTask(this).execute(mUrl);
         mMoviesProgressBar.setVisibility(View.VISIBLE);
@@ -352,5 +346,13 @@ public class SearchActivity extends AppCompatActivity
 
             }
         };
+    }
+
+    private void requestMovies(int pageNumber) {
+
+        mPresenter.setProgressBarVisibility(View.VISIBLE);
+        mUrl = createUrl(pageNumber);
+
+        new MoviesFilterAsyncTask(this).execute(mUrl);
     }
 }
