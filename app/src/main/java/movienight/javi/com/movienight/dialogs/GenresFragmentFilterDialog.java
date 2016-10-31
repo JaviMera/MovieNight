@@ -58,7 +58,7 @@ public class GenresFragmentFilterDialog extends FilterDialogBase {
 
         for(GenreFilterableItem item : selectedGenres) {
 
-            int position = mGenres.indexOf(item.getValue());
+            int position = mGenres.indexOf(item.getValue()[0]);
             Genre genre = mGenres.get(position);
             genre.setChecked(true);
         }

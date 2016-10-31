@@ -125,6 +125,12 @@ public class SearchActivity extends AppCompatActivity
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 
                 LinearLayoutManager linearManager = (LinearLayoutManager)mRecyclerViewManager;
+
+                // Check if the scroll happened when the adapter's data was cleared
+                // In such case, we don't want to call the endless scroll code.
+                if(linearManager.getItemCount() == 0)
+                    return;
+
                 if(linearManager.getItemCount() == linearManager.findLastCompletelyVisibleItemPosition() + 1) {
 
                     if(mCurrentPageNumber < mTotalPages) {
@@ -134,10 +140,6 @@ public class SearchActivity extends AppCompatActivity
 
                         mUrl = createUrl();
                         new MoviesFilterAsyncTask((SearchActivity)recyclerView.getContext()).execute(mUrl);
-                    }
-                    else {
-
-                        Toast.makeText(recyclerView.getContext(), "No more data to request", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -221,8 +223,6 @@ public class SearchActivity extends AppCompatActivity
         MovieRecyclerViewAdapter movieSearchAdapter = (MovieRecyclerViewAdapter)mMovieRecyclerView.getAdapter();
         movieSearchAdapter.removeData();
 
-        mMovieRecyclerView.smoothScrollToPosition(0);
-
         mCurrentPageNumber = 1;
         mMovies.clear();
         mUrl = createUrl();
@@ -292,6 +292,16 @@ public class SearchActivity extends AppCompatActivity
                 break;
             }
         }
+
+        MovieRecyclerViewAdapter movieSearchAdapter = (MovieRecyclerViewAdapter)mMovieRecyclerView.getAdapter();
+        movieSearchAdapter.removeData();
+
+        mCurrentPageNumber = 1;
+        mMovies.clear();
+        mUrl = createUrl();
+
+        new MoviesFilterAsyncTask(this).execute(mUrl);
+        mMoviesProgressBar.setVisibility(View.VISIBLE);
     }
 
     private AdapterView.OnItemSelectedListener spinnerListener() {
