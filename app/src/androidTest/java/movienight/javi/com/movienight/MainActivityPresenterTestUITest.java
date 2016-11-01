@@ -28,7 +28,7 @@ import static org.hamcrest.core.AllOf.allOf;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
-public class MainActivityUITest {
+public class MainActivityPresenterTestUITest {
 
     private String[] mFilterItems;
 

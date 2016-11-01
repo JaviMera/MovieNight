@@ -2,11 +2,13 @@ package movienight.javi.com.movienight.ui.MainActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.Window;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,6 +36,7 @@ import movienight.javi.com.movienight.urls.PopularMoviesUrl;
 
 public class MainActivity extends AppCompatActivity
     implements
+        MainActivityView,
         MovieSelectedListener,
         MoviesAsyncTaskListener,
         MoviePostersListener,
@@ -43,23 +46,23 @@ public class MainActivity extends AppCompatActivity
     private Movie[] mMovies;
     private List<Genre> mGenres;
     private LoadingFilterDialog mDialog;
+    private MainActivityPresenter mPresenter;
 
     @BindView(R.id.popularMoviesRecyclerView) RecyclerView mMoviesRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
 
-        MovieRecyclerViewAdapter adapter = new MovieRecyclerViewAdapter(this, new ArrayList<Movie>(), this);
-        mMoviesRecyclerView.setAdapter(adapter);
+        mPresenter = new MainActivityPresenter(this);
 
-        final RecyclerView.LayoutManager movieRecyclerLayout = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
-        mMoviesRecyclerView.setLayoutManager(movieRecyclerLayout);
-
-        mMoviesRecyclerView.setHasFixedSize(true);
+        mPresenter.setTopMoviesRecyclerViewAdapter(new Movie[]{});
+        mPresenter.setTopMoviesRecyclerViewLayoutManager(2, GridLayoutManager.VERTICAL);
+        mPresenter.setTopMoviesRecyclerViewSize(true);
 
         new GenreAsyncTask(getSupportFragmentManager(), this)
             .execute(new GenreUrl());
@@ -90,9 +93,7 @@ public class MainActivity extends AppCompatActivity
             mMovies[i].setPoster(posters[i]);
         }
 
-        MovieRecyclerViewAdapter adapter = (MovieRecyclerViewAdapter) mMoviesRecyclerView.getAdapter();
-        adapter.updateData(new ArrayList(Arrays.asList(mMovies)));
-
+        mPresenter.updateMoviesRecyclerViewAdapter(mMovies);
         mDialog.dismiss();
     }
 
@@ -118,5 +119,41 @@ public class MainActivity extends AppCompatActivity
         PopularMoviesUrl url = new PopularMoviesUrl();
         new PopularMoviesAsyncTask(this)
                 .execute(url);
+    }
+
+    @Override
+    public void setTopMoviesRecyclerViewAdapter(Movie[] items) {
+
+        MovieRecyclerViewAdapter adapter = new MovieRecyclerViewAdapter(
+            this,
+            new ArrayList(Arrays.asList(items)),
+            this);
+
+        mMoviesRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void setTopMoviesRecyclerViewLayoutManager(int numberOfColumns, int orientation) {
+
+        final RecyclerView.LayoutManager movieRecyclerLayout = new GridLayoutManager(
+            this,
+            numberOfColumns,
+            orientation,
+            false);
+
+        mMoviesRecyclerView.setLayoutManager(movieRecyclerLayout);
+    }
+
+    @Override
+    public void setTopMoviesRecyclerViewSize(boolean fixedSize) {
+
+        mMoviesRecyclerView.setHasFixedSize(fixedSize);
+    }
+
+    @Override
+    public void updateMoviesRecyclerViewAdapter(Movie[] movies) {
+
+        MovieRecyclerViewAdapter adapter = (MovieRecyclerViewAdapter) mMoviesRecyclerView.getAdapter();
+        adapter.updateData(new ArrayList(Arrays.asList(movies)));
     }
 }
