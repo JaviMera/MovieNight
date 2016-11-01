@@ -38,11 +38,6 @@ public class VoteCountFilterDialog extends FilterDialogBase {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -83,6 +78,6 @@ public class VoteCountFilterDialog extends FilterDialogBase {
         AlertDialog dialog = dialogBuilder.create();
         dialog.setOnKeyListener(onBackButtonPressed());
 
-        return dialogBuilder.create();
+        return dialog;
     }
 }
