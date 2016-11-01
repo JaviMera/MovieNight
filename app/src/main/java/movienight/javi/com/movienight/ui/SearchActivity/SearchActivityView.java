@@ -14,7 +14,7 @@ import movienight.javi.com.movienight.model.Movie;
  * Created by Javi on 10/22/2016.
  */
 
-public interface MoviesActivityView {
+public interface SearchActivityView {
 
     void setMoviesRecyclerViewAdapter(Movie[] movies);
     void updateRecyclerAdapter(List<Movie> movies);

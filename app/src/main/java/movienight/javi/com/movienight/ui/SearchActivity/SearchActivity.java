@@ -51,7 +51,7 @@ import movienight.javi.com.movienight.urls.MovieUrlBuilder;
 public class SearchActivity extends AppCompatActivity
         implements FilterItemAddedListener,
         FilterItemRemovedListener,
-        MoviesActivityView,
+        SearchActivityView,
         MoviesAsyncTaskListener,
         MovieSelectedListener,
         MoviePostersListener
@@ -61,7 +61,7 @@ public class SearchActivity extends AppCompatActivity
     private int mCurrentPageNumber;
     private List<Movie> mMovies;
     private List<Genre> mGenres;
-    private MoviesActivityPresenter mPresenter;
+    private SearchActivityPresenter mPresenter;
     private MovieUrl mUrl;
     private Map<Integer, List<FilterableItem>> mFilters;
 
@@ -82,7 +82,7 @@ public class SearchActivity extends AppCompatActivity
 
         mCurrentPageNumber = 1;
         mMovies = new LinkedList<>();
-        mPresenter = new MoviesActivityPresenter(this);
+        mPresenter = new SearchActivityPresenter(this);
 
         String[] filterItems = getResources().getStringArray(R.array.filter_options_array);
         mPresenter.setFilterOptionsSpinnerViewAdapter(filterItems);
@@ -248,10 +248,16 @@ public class SearchActivity extends AppCompatActivity
 
         mCurrentPageNumber = 1;
         mMovies.clear();
-        mUrl = createUrl(mCurrentPageNumber);
 
-        new MoviesFilterAsyncTask(this).execute(mUrl);
-        mMoviesProgressBar.setVisibility(View.VISIBLE);
+        FilterItemRecyclerAdapter filterItemAdapter = (FilterItemRecyclerAdapter)mFiltersRecyclerView.getAdapter();
+        if(filterItemAdapter.getItemCount() == 0) {
+
+            Toast.makeText(this, "No movies to request.", Toast.LENGTH_SHORT).show();
+        }
+        else {
+
+            requestMovies(mCurrentPageNumber);
+        }
     }
 
     private MovieUrl createUrl(int pageNumber) {

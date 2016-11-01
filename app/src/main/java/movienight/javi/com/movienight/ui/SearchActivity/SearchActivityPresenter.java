@@ -1,12 +1,10 @@
 package movienight.javi.com.movienight.ui.SearchActivity;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.widget.AdapterView;
 
 import java.util.List;
 
-import movienight.javi.com.movienight.listeners.MovieSelectedListener;
 import movienight.javi.com.movienight.model.FilterableItem;
 import movienight.javi.com.movienight.model.Movie;
 
@@ -14,11 +12,11 @@ import movienight.javi.com.movienight.model.Movie;
  * Created by Javi on 10/22/2016.
  */
 
-public class MoviesActivityPresenter {
+public class SearchActivityPresenter {
 
-    private MoviesActivityView mView;
+    private SearchActivityView mView;
 
-    public MoviesActivityPresenter(MoviesActivityView view) {
+    public SearchActivityPresenter(SearchActivityView view) {
 
         mView = view;
     }
