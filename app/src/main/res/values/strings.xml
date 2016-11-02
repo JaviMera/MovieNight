@@ -21,11 +21,21 @@
     <string name="rate_text_format_dialog">%.1f</string>
     <string name="movie_genre_title_text">Genre</string>
     <string name="movie_release_date_title_text">Release Date</string>
+
     <string-array name="filter_options_array">
         <item>Filter by...</item>
         <item>Genre</item>
         <item>Release Date Range</item>
         <item>Rating</item>
-        <item>Number of ratings</item>
+        <item>Vote Count</item>
+        <item></item>
+    </string-array>
+
+    <string-array name="sort_options_array">
+        <item>Popularity</item>
+        <item>Release Date</item>
+        <item>Revenue</item>
+        <item>Rating</item>
+        <item>Vote Count</item>
     </string-array>
 </resources>
