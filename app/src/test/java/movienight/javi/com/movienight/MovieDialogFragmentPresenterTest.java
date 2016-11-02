@@ -12,8 +12,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
 
-import movienight.javi.com.movienight.dialogs.MovieDialogFragmentPresenter;
-import movienight.javi.com.movienight.dialogs.MovieDialogFramgnetView;
+import movienight.javi.com.movienight.dialogs.MovieDialog.MovieDialogFragmentPresenter;
+import movienight.javi.com.movienight.dialogs.MovieDialog.MovieDialogFramgnetView;
 import movienight.javi.com.movienight.model.Genre;
 
 /**

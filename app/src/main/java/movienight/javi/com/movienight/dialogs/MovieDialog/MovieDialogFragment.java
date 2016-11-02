@@ -1,4 +1,4 @@
-package movienight.javi.com.movienight.dialogs;
+package movienight.javi.com.movienight.dialogs.MovieDialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -7,9 +7,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;

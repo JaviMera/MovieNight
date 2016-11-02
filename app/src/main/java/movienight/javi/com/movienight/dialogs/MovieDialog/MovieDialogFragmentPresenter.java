@@ -1,4 +1,4 @@
-package movienight.javi.com.movienight.dialogs;
+package movienight.javi.com.movienight.dialogs.MovieDialog;
 
 import android.graphics.Bitmap;
 import android.widget.TextView;

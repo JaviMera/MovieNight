@@ -2,13 +2,11 @@ package movienight.javi.com.movienight.ui.MainActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.Window;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +21,7 @@ import movienight.javi.com.movienight.asyntasks.PopularMoviesAsyncTask;
 import movienight.javi.com.movienight.asyntasks.PostersAsyncTask;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.dialogs.LoadingFilterDialog;
-import movienight.javi.com.movienight.dialogs.MovieDialogFragment;
+import movienight.javi.com.movienight.dialogs.MovieDialog.MovieDialogFragment;
 import movienight.javi.com.movienight.listeners.MoviePostersListener;
 import movienight.javi.com.movienight.listeners.MovieSelectedListener;
 import movienight.javi.com.movienight.listeners.MoviesAsyncTaskListener;
