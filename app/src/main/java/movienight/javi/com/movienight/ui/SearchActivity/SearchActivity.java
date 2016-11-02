@@ -28,7 +28,7 @@ import movienight.javi.com.movienight.adapters.FilterItemRecyclerAdapter;
 import movienight.javi.com.movienight.adapters.FilterSpinnerAdapter;
 import movienight.javi.com.movienight.asyntasks.MoviesFilterAsyncTask;
 import movienight.javi.com.movienight.asyntasks.PostersAsyncTask;
-import movienight.javi.com.movienight.dialogs.DaterangeFilterDialog;
+import movienight.javi.com.movienight.dialogs.DateRangeDialog.DateRangeDialogFragment;
 import movienight.javi.com.movienight.dialogs.GenresFragmentFilterDialog;
 import movienight.javi.com.movienight.dialogs.MovieDialog.MovieDialogFragment;
 import movienight.javi.com.movienight.dialogs.RateFilterDialog;
@@ -344,7 +344,7 @@ public class SearchActivity extends AppCompatActivity
 
                     case 2:
                         selectedItems = mFilters.get(FilterableItemKeys.DATE_RANGE);
-                        dialog = DaterangeFilterDialog.newInstance(selectedItems);
+                        dialog = DateRangeDialogFragment.newInstance(selectedItems);
                         dialog.show(getSupportFragmentManager(), "daterange_dialog");
                         break;
 
