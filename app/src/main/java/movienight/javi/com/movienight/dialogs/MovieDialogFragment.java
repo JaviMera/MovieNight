@@ -2,10 +2,14 @@ package movienight.javi.com.movienight.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,10 +31,11 @@ import movienight.javi.com.movienight.ui.ActivityExtras;
 /**
  * Created by Javi on 11/1/2016.
  */
-public class MovieDialogFragment extends DialogFragment {
+public class MovieDialogFragment extends DialogFragment implements MovieDialogFramgnetView {
 
     private Movie mMovie;
     private List<Genre> mMovieGenres;
+    private MovieDialogFragmentPresenter mPresenter;
 
     @BindView(R.id.movieTitleDialogTextView) TextView mTitleTextView;
     @BindView(R.id.movieOverviewDialogTextView) TextView mOverviewTextView;
@@ -68,6 +73,7 @@ public class MovieDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         Context context = getContext();
+        Resources resources = context.getResources();
 
         View view = LayoutInflater.from(context).inflate(R.layout.movie_dialog_layout, null);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
@@ -75,47 +81,107 @@ public class MovieDialogFragment extends DialogFragment {
 
         ButterKnife.bind(this, view);
 
-        String movieTitleFormat = context.getResources().getString(R.string.movie_title_dialog);
-        mTitleTextView.setText(String.format(movieTitleFormat, mMovie.getTitle(), mMovie.getYearRelease()));
+        mPresenter = new MovieDialogFragmentPresenter(this);
 
-        mOverviewTextView.setText(mMovie.getOverview());
+        mPresenter.setTextViewText(
+            mTitleTextView,
+            resources.getString(R.string.movie_title_dialog),
+            mMovie.getTitle(),
+            mMovie.getYearRelease()
+        );
 
-        mPosterImageView.setImageBitmap(mMovie.getPoster());
+        mPresenter.setTextViewText(
+            mOverviewTextView,
+            "%s",
+            mMovie.getOverview()
+        );
 
-        String ratingText = context.getResources().getString(R.string.movie_rating_text_dialog);
-        String ratingFormat = String.format(Locale.ENGLISH, ratingText, mMovie.getRating());
-        mRatingTextView.setText(ratingFormat);
+        mPresenter.setTextViewText(
+            mRatingTextView,
+            resources.getString(R.string.movie_rating_text_dialog),
+            mMovie.getRating()
+        );
 
-        String voteCountText = context.getResources().getString(R.string.movie_vote_count_text_dialog);
-        String voteCountFormat = String.format(Locale.ENGLISH, voteCountText, mMovie.getVoteCount());
-        mVoteCountTextView.setText(voteCountFormat);
+        mPresenter.setTextViewText(
+            mVoteCountTextView,
+            resources.getString(R.string.movie_vote_count_text_dialog),
+            mMovie.getVoteCount()
+        );
 
-        String genresDescription = "";
-        for(Genre genre : mMovieGenres) {
+        mPresenter.setPosterImageView(mMovie.getPoster());
+        mPresenter.setGenresDescriptionsTextViewText(mMovieGenres);
 
-            genresDescription += genre.getDescription() + "  ";
-        }
-
-        mGenresTextView.setText(genresDescription);
-
-        int year = Integer.parseInt(mMovie.getYearRelease());
-        int month = Integer.parseInt(mMovie.getMonthRelease());
-        int day = Integer.parseInt(mMovie.getDayRelease());
-
-        Calendar c = getCalendar(year, month, day);
-        String format = new SimpleDateFormat(ActivityExtras.MOVIE_DIALOG_RELEASE_DATE_FORMAT).format(c.getTime());
-        mReleaseDateTextView.setText(format);
+        mPresenter.setReleaseDateTextViewText(
+            mMovie.getYearRelease(),
+            mMovie.getMonthRelease(),
+            mMovie.getDayRelease()
+        );
 
         return dialogBuilder.create();
     }
 
-    private Calendar getCalendar(int year, int month, int day) {
+    @Override
+    public void setTextViewText(TextView view, String text, Object... params) {
+
+        String titleFormat = getStringFormat(text, params);
+        view.setText(titleFormat);
+    }
+
+    @Override
+    public void setPosterImageView(Bitmap poster) {
+
+        mPosterImageView.setImageBitmap(poster);
+    }
+
+    @Override
+    public void setGenresDescriptionsTextViewText(List<Genre> genres) {
+
+        String genresDescription = getGenresDescriptions(genres);
+        mGenresTextView.setText(genresDescription);
+    }
+
+    @Override
+    public void setReleaseDateTextViewText(String year, String month, String day) {
+
+        Calendar c = getCalendar(year, month, day);
+        String format = getReleaseDateFormat(c, ActivityExtras.MOVIE_DIALOG_RELEASE_DATE_FORMAT);
+        mReleaseDateTextView.setText(format);
+    }
+
+    private String getStringFormat(String text, Object... formatParameters) {
+
+        return String.format(Locale.ENGLISH, text, formatParameters);
+    }
+
+    private Calendar getCalendar(String year, String month, String day) {
+
+        int yearInt = Integer.parseInt(year);
+        int monthInt = Integer.parseInt(month);
+        int dayInt = Integer.parseInt(day);
 
         Calendar c = Calendar.getInstance();
-        c.set(Calendar.YEAR, year);
-        c.set(Calendar.MONTH, month);
-        c.set(Calendar.DAY_OF_MONTH, day);
+        c.set(Calendar.YEAR, yearInt);
+        c.set(Calendar.MONTH, monthInt);
+        c.set(Calendar.DAY_OF_MONTH, dayInt);
 
         return c;
     }
+
+    private String getGenresDescriptions(List<Genre> genres) {
+
+        String genresDescriptions = "";
+        for(Genre genre : genres) {
+
+            genresDescriptions += genre.getDescription() + "  ";
+        }
+
+        return genresDescriptions;
+    }
+
+    private String getReleaseDateFormat(Calendar c, String dateFormat) {
+
+        return new SimpleDateFormat(dateFormat)
+                .format(c.getTime());
+    }
+
 }
