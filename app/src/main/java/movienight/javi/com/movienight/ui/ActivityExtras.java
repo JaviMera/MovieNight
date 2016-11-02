@@ -12,8 +12,8 @@ public class ActivityExtras {
     public static final String SELECTED_DATE_RANGE_KEY = "selected_dates";
     public static final String SELECTED_RATE_KEY = "selected_rate";
     public static final String SELECTED_VOTE_COUNT_KEY = "selected_votes";
-    public static final String POSTER_RESOLUTION_500 = "w500";
     public static final String POSTER_RESOLUTION_342 = "w342";
     public static final String SELECTED_MOVIE_KEY = "selected_movie";
     public static final java.lang.String MOVIE_DIALOG_RELEASE_DATE_FORMAT = "MMMM dd, yyyy";
+    public static final String SORT_OPTIONS_KEY = "sort_options";
 }
