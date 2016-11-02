@@ -17,6 +17,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.model.Movie;
@@ -29,6 +31,14 @@ public class MovieDialogFragment extends DialogFragment {
 
     private Movie mMovie;
     private List<Genre> mMovieGenres;
+
+    @BindView(R.id.movieTitleDialogTextView) TextView mTitleTextView;
+    @BindView(R.id.movieOverviewDialogTextView) TextView mOverviewTextView;
+    @BindView(R.id.moviePosterDialogImageView) ImageView mPosterImageView;
+    @BindView(R.id.movieRatingDialogTextView) TextView mRatingTextView;
+    @BindView(R.id.movieVoteCountDialogTextView) TextView mVoteCountTextView;
+    @BindView(R.id.movieGenresDialogTextView) TextView mGenresTextView;
+    @BindView(R.id.movieReleaseDateDialogTextView) TextView mReleaseDateTextView;
 
     public static MovieDialogFragment newInstance(Movie movie, List<Genre> genres) {
 
@@ -63,47 +73,49 @@ public class MovieDialogFragment extends DialogFragment {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
         dialogBuilder.setView(view);
 
-        final TextView movieTitleTextView = (TextView) view.findViewById(R.id.movieTitleDialogTextView);
+        ButterKnife.bind(this, view);
+
         String movieTitleFormat = context.getResources().getString(R.string.movie_title_dialog);
-        movieTitleTextView.setText(String.format(movieTitleFormat, mMovie.getTitle(), mMovie.getYearRelease()));
+        mTitleTextView.setText(String.format(movieTitleFormat, mMovie.getTitle(), mMovie.getYearRelease()));
 
-        final TextView movieOverviewTextView = (TextView) view.findViewById(R.id.movieOverviewDialogTextView);
-        movieOverviewTextView.setText(mMovie.getOverview());
+        mOverviewTextView.setText(mMovie.getOverview());
 
-        final ImageView moviePosterImageView = (ImageView) view.findViewById(R.id.moviePosterDialogImageView);
-        moviePosterImageView.setImageBitmap(mMovie.getPoster());
+        mPosterImageView.setImageBitmap(mMovie.getPoster());
 
-        final TextView movieVoteCountTextView = (TextView) view.findViewById(R.id.movieVoteCountDialogTextView);
-        String voteCountText = context.getResources().getString(R.string.movie_vote_count_text_dialog);
-        String voteCountFormat = String.format(Locale.ENGLISH, voteCountText, mMovie.getVoteCount());
-        movieVoteCountTextView.setText(voteCountFormat);
-
-        final TextView movieRatingTextView = (TextView) view.findViewById(R.id.movieRatingDialogTextView);
         String ratingText = context.getResources().getString(R.string.movie_rating_text_dialog);
         String ratingFormat = String.format(Locale.ENGLISH, ratingText, mMovie.getRating());
-        movieRatingTextView.setText(ratingFormat);
+        mRatingTextView.setText(ratingFormat);
 
-        final TextView movieGenresTextView = (TextView) view.findViewById(R.id.movieGenresDialogTextView);
+        String voteCountText = context.getResources().getString(R.string.movie_vote_count_text_dialog);
+        String voteCountFormat = String.format(Locale.ENGLISH, voteCountText, mMovie.getVoteCount());
+        mVoteCountTextView.setText(voteCountFormat);
+
         String genresDescription = "";
         for(Genre genre : mMovieGenres) {
 
             genresDescription += genre.getDescription() + "  ";
         }
 
-        movieGenresTextView.setText(genresDescription);
+        mGenresTextView.setText(genresDescription);
 
-        final TextView movieReleaseDateTextView = (TextView) view.findViewById(R.id.movieReleaseDateDialogTextView);
         int year = Integer.parseInt(mMovie.getYearRelease());
         int month = Integer.parseInt(mMovie.getMonthRelease());
         int day = Integer.parseInt(mMovie.getDayRelease());
+
+        Calendar c = getCalendar(year, month, day);
+        String format = new SimpleDateFormat(ActivityExtras.MOVIE_DIALOG_RELEASE_DATE_FORMAT).format(c.getTime());
+        mReleaseDateTextView.setText(format);
+
+        return dialogBuilder.create();
+    }
+
+    private Calendar getCalendar(int year, int month, int day) {
 
         Calendar c = Calendar.getInstance();
         c.set(Calendar.YEAR, year);
         c.set(Calendar.MONTH, month);
         c.set(Calendar.DAY_OF_MONTH, day);
-        String format = new SimpleDateFormat(ActivityExtras.MOVIE_DIALOG_RELEASE_DATE_FORMAT).format(c.getTime());
-        movieReleaseDateTextView.setText(format);
 
-        return dialogBuilder.create();
+        return c;
     }
 }
