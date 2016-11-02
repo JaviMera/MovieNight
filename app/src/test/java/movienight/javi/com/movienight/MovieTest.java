@@ -20,6 +20,7 @@ public class MovieTest {
     private String mExpectedOverview = "After the re-emergence of the world's first mutant, world-destroyer Apocalypse, the X-Men must unite to defeat his extinction level plan.";
     private String mExpectedOriginalTitle = "X-Men: Apocalypse";
     private String mExpectedTitle = "X-Men: Apocalypse";
+    private String mExpectedDate = "1999-02-02";
     private double mExpectedPopularity = 13.733509;
     private int mExpectedVoteCount = 2067;
     private Double mExpectedRating = 6.12;
@@ -35,12 +36,13 @@ public class MovieTest {
             mExpectedOverview,
             mExpectedOriginalTitle,
             mExpectedTitle,
+            mExpectedDate,
             mExpectedPopularity,
             mExpectedVoteCount,
             mExpectedRating,
             mExpectedGenreIds,
             mExpectedPosterPath,
-                mExpectedBitmap
+            mExpectedBitmap
         );
     }
 

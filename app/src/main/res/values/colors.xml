@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#4B3F7A</color>
-    <color name="loading_text_color">#4B3F7A</color>
+    <color name="movie_extra_dark_color">#4B3F7A</color>
     <color name="movie_dark_purple">#7D66BA</color>
     <color name="activity_background_color">#F6F3FF</color>
     <color name="movie_normal_purple">#A384E3</color>

@@ -30,6 +30,7 @@ import movienight.javi.com.movienight.asyntasks.MoviesFilterAsyncTask;
 import movienight.javi.com.movienight.asyntasks.PostersAsyncTask;
 import movienight.javi.com.movienight.dialogs.DaterangeFilterDialog;
 import movienight.javi.com.movienight.dialogs.GenresFragmentFilterDialog;
+import movienight.javi.com.movienight.dialogs.MovieDialogFragment;
 import movienight.javi.com.movienight.dialogs.RateFilterDialog;
 import movienight.javi.com.movienight.dialogs.VoteCountFilterDialog;
 import movienight.javi.com.movienight.listeners.FilterItemAddedListener;
@@ -117,7 +118,20 @@ public class SearchActivity extends AppCompatActivity
     @Override
     public void onMovieSelectedListener(Movie movie) {
 
-        Toast.makeText(this, movie.getOverview(), Toast.LENGTH_SHORT).show();
+        List<Genre> movieGenres = new ArrayList<>();
+        for(int genreId : movie.getGenreIds()) {
+
+            for(Genre genre : mGenres) {
+
+                if(genre.getId().equals(genreId)) {
+
+                    movieGenres.add(genre);
+                }
+            }
+        }
+
+        MovieDialogFragment movieDialogFragment = MovieDialogFragment.newInstance(movie, movieGenres);
+        movieDialogFragment.show(getSupportFragmentManager(), "movie_dialog");
     }
 
     @Override

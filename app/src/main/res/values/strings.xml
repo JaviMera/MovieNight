@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Movie Night</string>
-    <string name="movie_night_title">Movie Night</string>
     <string name="loading_text">Loading...</string>
     <string name="start_release_date_text">Start Release Date:</string>
     <string name="end_release_date_text">End Release Date</string>
@@ -16,7 +15,9 @@
     <string name="dialog_button_text">done !</string>
     <string name="dialog_load_title_text">Movie Night</string>
     <string name="top_rated_movies_text">Weekly Top Rated Movies!</string>
-
+    <string name="movie_title_dialog">%1$s (%2$s)</string>
+    <string name="movie_rating_text_dialog">%.1f / 10</string>
+    <string name="movie_vote_count_text_dialog">%1$d votes</string>
     <string-array name="filter_options_array">
         <item>Filter by...</item>
         <item>Genre</item>
