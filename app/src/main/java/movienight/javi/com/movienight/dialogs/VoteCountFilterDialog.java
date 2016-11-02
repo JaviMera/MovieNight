@@ -14,8 +14,13 @@ import android.widget.EditText;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnTouch;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.model.FilterableItem;
+import movienight.javi.com.movienight.model.FilterableItemKeys;
 import movienight.javi.com.movienight.model.VoteCountFilterableItem;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 
@@ -23,9 +28,10 @@ import movienight.javi.com.movienight.ui.ActivityExtras;
  * Created by Javi on 10/24/2016.
  */
 
-public class VoteCountFilterDialog extends FilterDialogBase {
+public class VoteCountFilterDialog extends FilterDialogBase implements VoteDialogFragmentView{
 
     private Integer mVoteCount;
+    private VoteDialogFragmentPresenter mPresenter;
 
     public static VoteCountFilterDialog newInstance(List<FilterableItem> items) {
 
@@ -36,6 +42,8 @@ public class VoteCountFilterDialog extends FilterDialogBase {
 
         return dialog;
     }
+
+    @BindView(R.id.voteCountEditTextView) EditText mVoteEditText;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,24 +68,42 @@ public class VoteCountFilterDialog extends FilterDialogBase {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
         dialogBuilder.setView(view);
 
-        final EditText voteCountEditText = (EditText) view.findViewById(R.id.voteCountEditTextView);
-        voteCountEditText.setText(String.valueOf(mVoteCount));
-        final Button doneButton = (Button) view.findViewById(R.id.voteCountDoneButtonView);
+        ButterKnife.bind(this, view);
 
-        doneButton.setOnClickListener(new View.OnClickListener() {
+        mPresenter = new VoteDialogFragmentPresenter(this);
 
-            @Override
-            public void onClick(View v) {
-
-                Integer voteCount = Integer.parseInt(voteCountEditText.getText().toString());
-                mListener.onFilterItemCreated(4, new VoteCountFilterableItem(voteCount));
-                dismiss();
-            }
-        });
+        String countText = String.valueOf(mVoteCount);
+        mPresenter.setVoteEditText(countText);
 
         AlertDialog dialog = dialogBuilder.create();
         dialog.setOnKeyListener(onBackButtonPressed());
 
         return dialog;
+    }
+
+    @OnClick(R.id.voteCountEditTextView)
+    public void onEditTextClick(View view) {
+
+        mPresenter.setVoteEditText("");
+    }
+
+    @OnClick(R.id.voteCountDoneButtonView)
+    public void onDialogButtonClick(View view) {
+
+        String text = mVoteEditText.getText().toString();
+        Integer voteCount = Integer.parseInt(text);
+
+        mListener.onFilterItemCreated(
+            FilterableItemKeys.VOTE_COUNT,
+            new VoteCountFilterableItem(voteCount)
+        );
+
+        dismiss();
+    }
+
+    @Override
+    public void setVoteEditText(String text) {
+
+        mVoteEditText.setText(text);
     }
 }
