@@ -7,10 +7,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import movienight.javi.com.movienight.dialogs.VoteDialogFragmentPresenter;
-import movienight.javi.com.movienight.dialogs.VoteDialogFragmentView;
-
-import static org.junit.Assert.*;
+import movienight.javi.com.movienight.dialogs.VoteDialog.VoteDialogFragmentPresenter;
+import movienight.javi.com.movienight.dialogs.VoteDialog.VoteDialogFragmentView;
 
 /**
  * Created by Javi on 11/2/2016.

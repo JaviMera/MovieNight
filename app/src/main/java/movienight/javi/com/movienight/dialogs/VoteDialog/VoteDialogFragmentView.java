@@ -1,4 +1,4 @@
-package movienight.javi.com.movienight.dialogs;
+package movienight.javi.com.movienight.dialogs.VoteDialog;
 
 /**
  * Created by Javi on 11/2/2016.

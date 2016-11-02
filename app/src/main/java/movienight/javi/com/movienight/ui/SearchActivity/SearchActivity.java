@@ -32,7 +32,7 @@ import movienight.javi.com.movienight.dialogs.DateRangeDialog.DateRangeDialogFra
 import movienight.javi.com.movienight.dialogs.GenresDialog.GenresDialogFragment;
 import movienight.javi.com.movienight.dialogs.MovieDialog.MovieDialogFragment;
 import movienight.javi.com.movienight.dialogs.RateDialog.RateDialogFragment;
-import movienight.javi.com.movienight.dialogs.VoteCountFilterDialog;
+import movienight.javi.com.movienight.dialogs.VoteDialog.VoteCountFilterDialog;
 import movienight.javi.com.movienight.listeners.FilterItemAddedListener;
 import movienight.javi.com.movienight.listeners.FilterItemRemovedListener;
 import movienight.javi.com.movienight.listeners.MoviePostersListener;

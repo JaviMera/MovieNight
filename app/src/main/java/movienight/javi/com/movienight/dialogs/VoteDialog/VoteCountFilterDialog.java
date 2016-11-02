@@ -1,4 +1,4 @@
-package movienight.javi.com.movienight.dialogs;
+package movienight.javi.com.movienight.dialogs.VoteDialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 import java.util.ArrayList;
@@ -17,8 +16,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnTouch;
 import movienight.javi.com.movienight.R;
+import movienight.javi.com.movienight.dialogs.FilterDialogBase;
 import movienight.javi.com.movienight.model.FilterableItem;
 import movienight.javi.com.movienight.model.FilterableItemKeys;
 import movienight.javi.com.movienight.model.VoteCountFilterableItem;
