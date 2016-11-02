@@ -196,4 +196,86 @@
         <item name="android:layout_centerInParent">true</item>
         <item name="android:textColor">@color/movie_normal_purple</item>
     </style>
+
+    <!-- Movie Dialog Styles -->
+    <style name="MovieTextViewBase">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="TitleTextView" parent="MovieTextViewBase">
+        <item name="android:background">@color/movie_extra_dark_color</item>
+        <item name="android:textColor">@color/movie_white_color</item>
+        <item name="android:textSize">@dimen/movie_title_text_size</item>
+        <item name="android:padding">@dimen/movie_text_view_pad</item>
+    </style>
+
+    <style name="OverviewTextView" parent="MovieTextViewBase">
+        <item name="android:textColor">@color/movie_extra_dark_color</item>
+        <item name="android:textSize">@dimen/movie_overview_text_size</item>
+        <item name="android:padding">@dimen/movie_text_view_pad</item>
+    </style>
+
+    <style name="MovieRatingTextView" parent="MovieTextViewBase">
+        <item name="android:textSize">@dimen/movie_rating_text_size</item>
+        <item name="android:textColor">@color/movie_dark_purple</item>
+        <item name="android:paddingLeft">@dimen/movie_text_view_pad</item>
+        <item name="android:layout_gravity">left|center</item>
+    </style>
+
+    <style name="MovieVoteCountTextView" parent="MovieTextViewBase">
+        <item name="android:textSize">@dimen/movie_vote_count_text_size</item>
+        <item name="android:textColor">@color/movie_normal_purple</item>
+        <item name="android:paddingLeft">@dimen/movie_text_view_pad</item>
+        <item name="android:paddingTop">@dimen/movie_text_view_pad</item>
+        <item name="android:layout_gravity">left|center</item>
+    </style>
+
+    <style name="MovieGenreTitleTextView" parent="MovieTextViewBase">
+        <item name="android:text">@string/movie_genre_title_text</item>
+        <item name="android:textSize">@dimen/movie_genre_title_text_size</item>
+        <item name="android:textColor">@color/movie_extra_dark_color</item>
+        <item name="android:paddingLeft">@dimen/movie_text_view_pad</item>
+    </style>
+
+    <style name="MovieReleaseDateTitleTextView" parent="MovieTextViewBase">
+        <item name="android:text">@string/movie_release_date_title_text</item>
+        <item name="android:textSize">@dimen/movie_genre_title_text_size</item>
+        <item name="android:textColor">@color/movie_extra_dark_color</item>
+        <item name="android:paddingLeft">@dimen/movie_text_view_pad</item>
+    </style>
+
+    <style name="MovieGenreTextView" parent="MovieTextViewBase">
+        <item name="android:textSize">@dimen/movie_genre_text_size</item>
+        <item name="android:textColor">@color/movie_normal_purple</item>
+        <item name="android:padding">@dimen/movie_text_view_pad</item>
+    </style>
+
+    <style name="MovieReleaseDateTextView" parent="MovieTextViewBase">
+        <item name="android:textSize">@dimen/movie_genre_text_size</item>
+        <item name="android:textColor">@color/movie_normal_purple</item>
+        <item name="android:padding">@dimen/movie_text_view_pad</item>
+    </style>
+    <style name="LineSeparatorView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/line_separator_height</item>
+        <item name="android:background">@color/movie_dark_purple</item>
+        <item name="android:layout_margin">@dimen/line_separator_margin</item>
+    </style>
+
+    <style name="MovieDialogImageBase">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:adjustViewBounds">true</item>
+    </style>
+
+    <style name="MoviePosterImageView" parent="MovieDialogImageBase">
+        <item name="android:scaleType">fitStart</item>
+    </style>
+
+    <style name="MovieRateImageView" parent="MovieDialogImageBase">
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:src">@drawable/rating_star</item>
+        <item name="android:layout_centerInParent">true</item>
+    </style>
 </resources>

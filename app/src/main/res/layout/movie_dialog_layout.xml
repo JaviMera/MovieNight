@@ -6,37 +6,24 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:background="@color/activity_background_color">
 
         <TextView
             android:id="@+id/movieTitleDialogTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/movie_extra_dark_color"
             tools:text="This is where the title goes that and it can support multiple lines (releaseDate)"
-            android:textColor="@color/movie_white_color"
-            android:textSize="20sp"
-            android:padding="10dp"/>
+            style="@style/TitleTextView"/>
 
         <TextView
             android:id="@+id/movieOverviewDialogTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             tools:text="This is the overview of the movie and it might support multiple lines too."
-            android:textColor="@color/movie_extra_dark_color"
-            android:textSize="15sp"
-            android:padding="10dp"
-            />
+            style="@style/OverviewTextView"/>
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/movie_dark_purple"
-            android:layout_margin="10dp"/>
+            style="@style/LineSeparatorView"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -45,20 +32,11 @@
 
             <ImageView
                 android:id="@+id/moviePosterDialogImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="fitStart"
-                android:adjustViewBounds="true"/>
+                style="@style/MoviePosterImageView"/>
 
             <ImageView
                 android:id="@+id/starIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/rating_star"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:layout_centerInParent="true"
-                />
+                style="@style/MovieRateImageView" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -69,65 +47,33 @@
 
                 <TextView
                     android:id="@+id/movieRatingDialogTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     tools:text="Rating value"
-                    android:textSize="17sp"
-                    android:textColor="@color/movie_dark_purple"
-                    android:layout_marginLeft="10dp"
-                    android:layout_gravity="left|center"/>
+                    style="@style/MovieRatingTextView"/>
 
                 <TextView
                     android:id="@+id/movieVoteCountDialogTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     tools:text="Vote Count value"
-                    android:textSize="15sp"
-                    android:textColor="@color/movie_normal_purple"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_gravity="left|center"/>
+                    style="@style/MovieVoteCountTextView"/>
             </LinearLayout>
         </RelativeLayout>
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/movie_dark_purple"
-            android:layout_margin="10dp"/>
+            style="@style/LineSeparatorView"/>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Genre"
-            android:textColor="@color/movie_extra_dark_color"
-            android:textSize="15sp"
-            android:paddingLeft="10dp" />
+            style="@style/MovieGenreTitleTextView" />
 
         <TextView
             android:id="@+id/movieGenresDialogTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:padding="10dp"
             tools:text="Genre 1, Genre 2"
-            android:textColor="@color/movie_normal_purple"/>
+            style="@style/MovieGenreTextView"/>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Release Date"
-            android:textColor="@color/movie_extra_dark_color"
-            android:textSize="15sp"
-            android:paddingLeft="10dp" />
+            style="@style/MovieReleaseDateTitleTextView" />
 
         <TextView
             android:id="@+id/movieReleaseDateDialogTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:padding="10dp"
             tools:text="Nov 4, 2016"
-            android:textColor="@color/movie_normal_purple"/>
+            style="@style/MovieReleaseDateTextView"/>
     </LinearLayout>
 </ScrollView>

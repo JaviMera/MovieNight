@@ -19,6 +19,8 @@
     <string name="movie_rating_text_dialog">%.1f / 10</string>
     <string name="movie_vote_count_text_dialog">%1$d votes</string>
     <string name="rate_text_format_dialog">%.1f</string>
+    <string name="movie_genre_title_text">Genre</string>
+    <string name="movie_release_date_title_text">Release Date</string>
     <string-array name="filter_options_array">
         <item>Filter by...</item>
         <item>Genre</item>
