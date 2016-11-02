@@ -91,7 +91,7 @@ public class MainActivityPresenterTestUITest {
         onData(allOf(is(instanceOf(String.class)), is(expectedItem))).perform(click());
 
         // Assert
-        onView(withId(R.id.rateBarView)).check(matches(isDisplayed()));
+        onView(withId(R.id.ratingBarView)).check(matches(isDisplayed()));
 
         // Assert that the spinner goes back to showing filter by item
         onView(withId(R.id.rateDoneButtonView)).perform(click()); // close the genre dialog

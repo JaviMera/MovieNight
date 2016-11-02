@@ -16,13 +16,13 @@
             style="@style/RatingTextView"/>
 
         <TextView
-            android:id="@+id/ratingScoreTextView"
+            android:id="@+id/ratingTextView"
             style="@style/RatingScoreTextView"/>
 
     </LinearLayout>
 
     <RatingBar
-        android:id="@+id/rateBarView"
+        android:id="@+id/ratingBarView"
         style="@style/RateDialogRatingBarView"/>
 
     <Button

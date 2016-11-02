@@ -31,7 +31,7 @@ import movienight.javi.com.movienight.asyntasks.PostersAsyncTask;
 import movienight.javi.com.movienight.dialogs.DateRangeDialog.DateRangeDialogFragment;
 import movienight.javi.com.movienight.dialogs.GenresDialog.GenresDialogFragment;
 import movienight.javi.com.movienight.dialogs.MovieDialog.MovieDialogFragment;
-import movienight.javi.com.movienight.dialogs.RateFilterDialog;
+import movienight.javi.com.movienight.dialogs.RateDialog.RateDialogFragment;
 import movienight.javi.com.movienight.dialogs.VoteCountFilterDialog;
 import movienight.javi.com.movienight.listeners.FilterItemAddedListener;
 import movienight.javi.com.movienight.listeners.FilterItemRemovedListener;
@@ -350,7 +350,7 @@ public class SearchActivity extends AppCompatActivity
 
                     case 3:
                         selectedItems = mFilters.get(FilterableItemKeys.RATE);
-                        dialog = RateFilterDialog.newInstance(selectedItems);
+                        dialog = RateDialogFragment.newInstance(selectedItems);
                         dialog.show(getSupportFragmentManager(), "rate_dialog");
                         break;
 
