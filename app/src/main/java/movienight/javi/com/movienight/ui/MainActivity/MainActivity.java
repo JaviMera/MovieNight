@@ -23,6 +23,7 @@ import movienight.javi.com.movienight.asyntasks.PopularMoviesAsyncTask;
 import movienight.javi.com.movienight.asyntasks.PostersAsyncTask;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.dialogs.LoadingFilterDialog;
+import movienight.javi.com.movienight.dialogs.MovieDialogFragment;
 import movienight.javi.com.movienight.listeners.MoviePostersListener;
 import movienight.javi.com.movienight.listeners.MovieSelectedListener;
 import movienight.javi.com.movienight.listeners.MoviesAsyncTaskListener;
@@ -53,7 +54,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity
         mPresenter = new MainActivityPresenter(this);
 
         mPresenter.setTopMoviesRecyclerViewAdapter(new Movie[]{});
-        mPresenter.setTopMoviesRecyclerViewLayoutManager(2, GridLayoutManager.VERTICAL);
+        mPresenter.setTopMoviesRecyclerViewLayoutManager(3, GridLayoutManager.VERTICAL);
         mPresenter.setTopMoviesRecyclerViewSize(true);
 
         new GenreAsyncTask(getSupportFragmentManager(), this)
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity
             posterPaths[i] = movies[i].getPosterPath();
         }
 
-        new PostersAsyncTask(this, getSupportFragmentManager(), ActivityExtras.POSTER_RESOLUTION_500).execute(posterPaths);
+        new PostersAsyncTask(this, getSupportFragmentManager(), ActivityExtras.POSTER_RESOLUTION_342).execute(posterPaths);
     }
 
     @Override
@@ -100,6 +100,20 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onMovieSelectedListener(Movie movie) {
 
+        List<Genre> movieGenres = new ArrayList<>();
+        for(int genreId : movie.getGenreIds()) {
+
+            for(Genre genre : mGenres) {
+
+                if(genre.getId().equals(genreId)) {
+
+                    movieGenres.add(genre);
+                }
+            }
+        }
+
+        MovieDialogFragment dialog = MovieDialogFragment.newInstance(movie, movieGenres);
+        dialog.show(getSupportFragmentManager(), "movie_dialog");
     }
 
     @OnClick(R.id.findMoviesButtonView)
