@@ -29,7 +29,7 @@ import movienight.javi.com.movienight.adapters.FilterSpinnerAdapter;
 import movienight.javi.com.movienight.asyntasks.MoviesFilterAsyncTask;
 import movienight.javi.com.movienight.asyntasks.PostersAsyncTask;
 import movienight.javi.com.movienight.dialogs.DateRangeDialog.DateRangeDialogFragment;
-import movienight.javi.com.movienight.dialogs.GenresFragmentFilterDialog;
+import movienight.javi.com.movienight.dialogs.GenresDialog.GenresDialogFragment;
 import movienight.javi.com.movienight.dialogs.MovieDialog.MovieDialogFragment;
 import movienight.javi.com.movienight.dialogs.RateFilterDialog;
 import movienight.javi.com.movienight.dialogs.VoteCountFilterDialog;
@@ -338,7 +338,7 @@ public class SearchActivity extends AppCompatActivity
 
                     case FilterableItemKeys.GENRE:
                         selectedItems = mFilters.get(FilterableItemKeys.GENRE);
-                        dialog = GenresFragmentFilterDialog.newInstance(mGenres, selectedItems);
+                        dialog = GenresDialogFragment.newInstance(mGenres, selectedItems);
                         dialog.show(getSupportFragmentManager(), "genre_dialog");
                         break;
 

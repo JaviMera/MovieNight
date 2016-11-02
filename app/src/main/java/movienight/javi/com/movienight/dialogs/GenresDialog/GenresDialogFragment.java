@@ -1,4 +1,4 @@
-package movienight.javi.com.movienight.dialogs;
+package movienight.javi.com.movienight.dialogs.GenresDialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -10,13 +10,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.adapters.GenreRecyclerViewAdapter;
+import movienight.javi.com.movienight.dialogs.FilterDialogBase;
 import movienight.javi.com.movienight.model.FilterableItem;
 import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.model.GenreFilterableItem;
@@ -26,14 +29,16 @@ import movienight.javi.com.movienight.ui.ActivityExtras;
  * Created by Javi on 10/22/2016.
  */
 
-public class GenresFragmentFilterDialog extends FilterDialogBase {
+public class GenresDialogFragment extends FilterDialogBase implements GenresDialogFragmentView {
 
-    private RecyclerView mGenresRecyclerView;
     private List<Genre> mGenres;
+    private GenresDialogFragmentPresenter mPresenter;
 
-    public static GenresFragmentFilterDialog newInstance(List<Genre> genres, List<FilterableItem> selectedGenres) {
+    @BindView(R.id.genresRecyclerView) RecyclerView mRecyclerView;
 
-        GenresFragmentFilterDialog dialogFragment = new GenresFragmentFilterDialog();
+    public static GenresDialogFragment newInstance(List<Genre> genres, List<FilterableItem> selectedGenres) {
+
+        GenresDialogFragment dialogFragment = new GenresDialogFragment();
 
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(ActivityExtras.GENRES_KEY, (ArrayList)genres);
@@ -69,45 +74,59 @@ public class GenresFragmentFilterDialog extends FilterDialogBase {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         Context context = getActivity();
-        View dialogLayoutView = LayoutInflater.from(context).inflate(R.layout.genre_recycler_view_layout, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.genre_recycler_view_layout, null);
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
-        dialogBuilder.setView(dialogLayoutView);
+        dialogBuilder.setView(view);
 
-        mGenresRecyclerView = (RecyclerView) dialogLayoutView.findViewById(R.id.genresRecyclerView);
+        ButterKnife.bind(this, view);
 
-        final GenreRecyclerViewAdapter adapter = new GenreRecyclerViewAdapter(getContext(), mGenres);
-        mGenresRecyclerView.setAdapter(adapter);
+        mPresenter = new GenresDialogFragmentPresenter(this);
 
-        final Button genreButtonView = (Button) dialogLayoutView.findViewById(R.id.genresDoneButtonView);
-        genreButtonView.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                List<Genre> selectedGenres = getSelectedGenres();
-
-                FilterableItem[] newSelectedGenres = new FilterableItem[selectedGenres.size()];
-
-                for(int i = 0 ; i < selectedGenres.size() ; i++) {
-
-                    newSelectedGenres[i] = new GenreFilterableItem(selectedGenres.get(i));
-                }
-
-                mListener.onFilterItemCreated(1, newSelectedGenres);
-                dismiss();
-            }
-        });
-
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext());
-        mGenresRecyclerView.setLayoutManager(manager);
-
-        mGenresRecyclerView.setHasFixedSize(true);
+        mPresenter.setRecyclerAdapter(context, mGenres);
+        mPresenter.setRecyclerManager(context);
+        mPresenter.setRecyclerSize(true);
 
         AlertDialog dialog = dialogBuilder.create();
         dialog.setOnKeyListener(onBackButtonPressed());
 
         return dialog;
+    }
+
+    @OnClick(R.id.genresDoneButtonView)
+    public void onDialogButtonClick(View view) {
+
+        List<Genre> selectedGenres = getSelectedGenres();
+
+        FilterableItem[] newSelectedGenres = new FilterableItem[selectedGenres.size()];
+
+        for(int i = 0 ; i < selectedGenres.size() ; i++) {
+
+            newSelectedGenres[i] = new GenreFilterableItem(selectedGenres.get(i));
+        }
+
+        mListener.onFilterItemCreated(1, newSelectedGenres);
+        dismiss();
+    }
+
+    @Override
+    public void setRecyclerAdapter(Context context, List<Genre> genres) {
+
+        GenreRecyclerViewAdapter adapter = new GenreRecyclerViewAdapter(context, genres);
+        mRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void setRecyclerManager(Context context) {
+
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(context);
+        mRecyclerView.setLayoutManager(manager);
+    }
+
+    @Override
+    public void setRecyclerSize(boolean fixedSize) {
+
+        mRecyclerView.setHasFixedSize(fixedSize);
     }
 
     private List<Genre> getSelectedGenres() {
