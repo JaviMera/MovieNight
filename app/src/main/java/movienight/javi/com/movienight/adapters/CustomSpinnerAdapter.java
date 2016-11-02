@@ -19,12 +19,12 @@ import movienight.javi.com.movienight.R;
  * Created by Javi on 10/24/2016.
  */
 
-public class FilterSpinnerAdapter extends ArrayAdapter<String> {
+public class CustomSpinnerAdapter extends ArrayAdapter<String> {
 
     private Context mContext;
     private List<String> mFilterOptions;
 
-    public FilterSpinnerAdapter(Context context, List<String> filterOptions) {
+    public CustomSpinnerAdapter(Context context, List<String> filterOptions) {
         super(context, 0);
 
         mContext = context;

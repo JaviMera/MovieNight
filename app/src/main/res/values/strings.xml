@@ -32,6 +32,7 @@
     </string-array>
 
     <string-array name="sort_options_array">
+        <item>Sort by...</item>
         <item>Popularity</item>
         <item>Release Date</item>
         <item>Revenue</item>

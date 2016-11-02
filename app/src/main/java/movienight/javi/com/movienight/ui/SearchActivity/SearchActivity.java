@@ -25,7 +25,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import movienight.javi.com.movienight.adapters.FilterItemRecyclerAdapter;
-import movienight.javi.com.movienight.adapters.FilterSpinnerAdapter;
+import movienight.javi.com.movienight.adapters.CustomSpinnerAdapter;
 import movienight.javi.com.movienight.asyntasks.MoviesFilterAsyncTask;
 import movienight.javi.com.movienight.asyntasks.PostersAsyncTask;
 import movienight.javi.com.movienight.dialogs.DateRangeDialog.DateRangeDialogFragment;
@@ -70,6 +70,7 @@ public class SearchActivity extends AppCompatActivity
     @BindView(R.id.updateRecyclerViewProgressBar) ProgressBar mMoviesProgressBar;
     @BindView(R.id.filterMoviesSpinnerView) Spinner mFilterMovieSpinner;
     @BindView(R.id.filtersRecyclerView) RecyclerView mFiltersRecyclerView;
+    @BindView(R.id.sortBySpinnerView) Spinner mSortBySpinnerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +89,10 @@ public class SearchActivity extends AppCompatActivity
         String[] filterItems = getResources().getStringArray(R.array.filter_options_array);
         mPresenter.setFilterOptionsSpinnerViewAdapter(filterItems);
         mPresenter.setFilterSpinnerItemClickListener(spinnerItemClickListener());
+
+        String[] sortItems = getResources().getStringArray(R.array.sort_options_array);
+        CustomSpinnerAdapter adapter = new CustomSpinnerAdapter(this, new ArrayList<>(Arrays.asList(sortItems)));
+        mSortBySpinnerView.setAdapter(adapter);
 
         mPresenter.setFilterItemRecyclerViewAdapter(new FilterableItem[]{});
         mPresenter.setRecyclerViewManager(mFiltersRecyclerView, 1, LinearLayoutManager.HORIZONTAL);
@@ -197,7 +202,7 @@ public class SearchActivity extends AppCompatActivity
     @Override
     public void setFilterOptionsSpinnerViewAdapter(String[] items) {
 
-        FilterSpinnerAdapter spinnerAdapter = new FilterSpinnerAdapter(
+        CustomSpinnerAdapter spinnerAdapter = new CustomSpinnerAdapter(
             this
             , new LinkedList<>(Arrays.asList(items)));
 
