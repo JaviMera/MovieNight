@@ -89,6 +89,7 @@ public class GenresDialogFragment extends FilterDialogBase implements GenresDial
 
         AlertDialog dialog = dialogBuilder.create();
         dialog.setOnKeyListener(onBackButtonPressed());
+        dialog.setCanceledOnTouchOutside(true);
 
         return dialog;
     }

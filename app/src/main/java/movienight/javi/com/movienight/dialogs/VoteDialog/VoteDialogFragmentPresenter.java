@@ -7,7 +7,6 @@ package movienight.javi.com.movienight.dialogs.VoteDialog;
 public class VoteDialogFragmentPresenter {
 
     private VoteDialogFragmentView mView;
-
     public VoteDialogFragmentPresenter(VoteDialogFragmentView view) {
 
         mView = view;

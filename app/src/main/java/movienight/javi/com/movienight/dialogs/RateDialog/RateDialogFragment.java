@@ -98,6 +98,7 @@ public class RateDialogFragment extends FilterDialogBase implements RateDialogFr
 
         AlertDialog dialog = dialogBuilder.create();
         dialog.setOnKeyListener(onBackButtonPressed());
+        dialog.setCanceledOnTouchOutside(true);
 
         return dialog;
     }

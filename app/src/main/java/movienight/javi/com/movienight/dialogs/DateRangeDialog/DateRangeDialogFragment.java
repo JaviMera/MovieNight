@@ -70,6 +70,8 @@ public class DateRangeDialogFragment extends FilterDialogBase implements DateRan
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+        super.onCreateDialog(savedInstanceState);
+
         Context context = getActivity();
 
         View view = LayoutInflater.from(context).inflate(R.layout.date_range_dialog_layout, null);
@@ -85,6 +87,7 @@ public class DateRangeDialogFragment extends FilterDialogBase implements DateRan
 
         AlertDialog dialog = dialogBuilder.create();
         dialog.setOnKeyListener(onBackButtonPressed());
+        dialog.setCanceledOnTouchOutside(true);
 
         return dialog;
     }

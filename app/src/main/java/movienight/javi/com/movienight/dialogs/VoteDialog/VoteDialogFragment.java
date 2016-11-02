@@ -27,14 +27,14 @@ import movienight.javi.com.movienight.ui.ActivityExtras;
  * Created by Javi on 10/24/2016.
  */
 
-public class VoteCountFilterDialog extends FilterDialogBase implements VoteDialogFragmentView{
+public class VoteDialogFragment extends FilterDialogBase implements VoteDialogFragmentView{
 
     private Integer mVoteCount;
     private VoteDialogFragmentPresenter mPresenter;
 
-    public static VoteCountFilterDialog newInstance(List<FilterableItem> items) {
+    public static VoteDialogFragment newInstance(List<FilterableItem> items) {
 
-        VoteCountFilterDialog dialog = new VoteCountFilterDialog();
+        VoteDialogFragment dialog = new VoteDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(ActivityExtras.SELECTED_VOTE_COUNT_KEY, (ArrayList)items);
         dialog.setArguments(bundle);
@@ -76,6 +76,7 @@ public class VoteCountFilterDialog extends FilterDialogBase implements VoteDialo
 
         AlertDialog dialog = dialogBuilder.create();
         dialog.setOnKeyListener(onBackButtonPressed());
+        dialog.setCanceledOnTouchOutside(true);
 
         return dialog;
     }
