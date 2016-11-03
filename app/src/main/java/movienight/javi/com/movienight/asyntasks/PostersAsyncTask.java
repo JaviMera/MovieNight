@@ -2,6 +2,7 @@ package movienight.javi.com.movienight.asyntasks;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 
@@ -20,12 +21,14 @@ public class PostersAsyncTask extends AsyncTask<String, Void, Bitmap[]> {
     private FragmentManager mManager;
     private MoviePostersListener mListener;
     private String mPosterResolution;
+    private Bitmap mDefault;
 
-    public PostersAsyncTask(MoviePostersListener listener, FragmentManager manager, String posterResolution) {
+    public PostersAsyncTask(MoviePostersListener listener, FragmentManager manager, String posterResolution, Bitmap defaultBitmap) {
 
         mListener = listener;
         mManager = manager;
         mPosterResolution = posterResolution;
+        mDefault = defaultBitmap;
     }
 
     @Override
@@ -47,9 +50,16 @@ public class PostersAsyncTask extends AsyncTask<String, Void, Bitmap[]> {
         try {
             for(String path : posterPaths) {
 
-                URL imageurl = new URL("http://image.tmdb.org/t/p/" + mPosterResolution + "/" + path);
-                Bitmap bitmap = BitmapFactory.decodeStream(imageurl.openConnection().getInputStream());
-                posters.add(bitmap);
+                if(!path.isEmpty()) {
+
+                    URL imageurl = new URL("http://image.tmdb.org/t/p/" + mPosterResolution + "/" + path);
+                    Bitmap bitmap = BitmapFactory.decodeStream(imageurl.openConnection().getInputStream());
+                    posters.add(bitmap);
+                }
+                else {
+
+                    posters.add(mDefault);
+                }
             }
 
             return posters.toArray(new Bitmap[posters.size()]);

@@ -2,6 +2,7 @@ package movienight.javi.com.movienight.ui.MainActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -80,7 +81,16 @@ public class MainActivity extends AppCompatActivity
             posterPaths[i] = movies[i].getPosterPath();
         }
 
-        new PostersAsyncTask(this, getSupportFragmentManager(), ActivityExtras.POSTER_RESOLUTION_342).execute(posterPaths);
+        Bitmap defaultBitmap = BitmapFactory.decodeResource(
+            this.getResources(),
+            R.drawable.no_poster_image);
+
+        new PostersAsyncTask(
+                this,
+                getSupportFragmentManager(),
+                ActivityExtras.POSTER_RESOLUTION_342,
+                defaultBitmap
+            ).execute(posterPaths);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package movienight.javi.com.movienight.ui.SearchActivity;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -45,6 +46,16 @@ import movienight.javi.com.movienight.model.FilterableItem;
 import movienight.javi.com.movienight.model.FilterableItemKeys;
 import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.model.Movie;
+import movienight.javi.com.movienight.model.PopularityAscending;
+import movienight.javi.com.movienight.model.PopularityDescending;
+import movienight.javi.com.movienight.model.RatingAscending;
+import movienight.javi.com.movienight.model.RatingDescending;
+import movienight.javi.com.movienight.model.ReleaseDateAscending;
+import movienight.javi.com.movienight.model.ReleaseDateDescending;
+import movienight.javi.com.movienight.model.RevenueAscending;
+import movienight.javi.com.movienight.model.SortItemBase;
+import movienight.javi.com.movienight.model.VoteCountAscending;
+import movienight.javi.com.movienight.model.VoteCountDescending;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.urls.MovieUrl;
 import movienight.javi.com.movienight.urls.MovieUrlBuilder;
@@ -65,6 +76,8 @@ public class SearchActivity extends AppCompatActivity
     private SearchActivityPresenter mPresenter;
     private MovieUrl mUrl;
     private Map<Integer, List<FilterableItem>> mFilters;
+    private Map<Integer, SortItemBase> mSortItemsMap;
+    private SortItemBase mSortSelected;
 
     @BindView(R.id.moviesSearchRecyclerView) RecyclerView mMovieRecyclerView;
     @BindView(R.id.updateRecyclerViewProgressBar) ProgressBar mMoviesProgressBar;
@@ -82,6 +95,20 @@ public class SearchActivity extends AppCompatActivity
         mGenres = getIntent().getParcelableArrayListExtra(ActivityExtras.GENRES_KEY);
         mFilters = initializeFiltersMap();
 
+        mSortItemsMap = new LinkedHashMap<>();
+        mSortItemsMap.put(1, new PopularityAscending());
+        mSortItemsMap.put(2, new PopularityDescending());
+        mSortItemsMap.put(3, new ReleaseDateAscending());
+        mSortItemsMap.put(4, new ReleaseDateDescending());
+        mSortItemsMap.put(5, new RevenueAscending());
+        mSortItemsMap.put(6, new ReleaseDateDescending());
+        mSortItemsMap.put(7, new RatingAscending());
+        mSortItemsMap.put(8, new RatingDescending());
+        mSortItemsMap.put(9, new VoteCountAscending());
+        mSortItemsMap.put(10, new VoteCountDescending());
+
+        mSortSelected = mSortItemsMap.get(2);
+
         mCurrentPageNumber = 1;
         mMovies = new LinkedList<>();
         mPresenter = new SearchActivityPresenter(this);
@@ -94,6 +121,30 @@ public class SearchActivity extends AppCompatActivity
         CustomSpinnerAdapter adapter = new CustomSpinnerAdapter(this, new ArrayList<>(Arrays.asList(sortItems)));
         mSortBySpinnerView.setAdapter(adapter);
 
+        mSortBySpinnerView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                if(position > 0) {
+
+                    mSortSelected = mSortItemsMap.get(position);
+
+                    mMovies.clear();
+                    mCurrentPageNumber = 1;
+
+                    MovieRecyclerViewAdapter movieSearchAdapter = (MovieRecyclerViewAdapter)mMovieRecyclerView.getAdapter();
+                    movieSearchAdapter.removeData();
+
+                    requestMovies(mCurrentPageNumber);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         mPresenter.setFilterItemRecyclerViewAdapter(new FilterableItem[]{});
         mPresenter.setRecyclerViewManager(mFiltersRecyclerView, 1, LinearLayoutManager.HORIZONTAL);
         mPresenter.setRecyclerSize(mFiltersRecyclerView, true);
@@ -116,7 +167,9 @@ public class SearchActivity extends AppCompatActivity
             posterPaths.add(m.getPosterPath());
         }
 
-        new PostersAsyncTask(this, getSupportFragmentManager(), ActivityExtras.POSTER_RESOLUTION_342)
+        Bitmap defaultBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.no_poster_image);
+
+        new PostersAsyncTask(this, getSupportFragmentManager(), ActivityExtras.POSTER_RESOLUTION_342, defaultBitmap)
             .execute(posterPaths.toArray(new String[posterPaths.size()]));
     }
 
@@ -319,6 +372,8 @@ public class SearchActivity extends AppCompatActivity
             votesCount = (Integer)item.getValue()[0];
         }
 
+        String sortOption = mSortSelected.getName();
+
         return new MovieUrlBuilder()
                 .withPageNumber(pageNumber + "")
                 .withGenres(genresIds)
@@ -326,6 +381,7 @@ public class SearchActivity extends AppCompatActivity
                 .withEndReleaseDate(endDate)
                 .withRating(rateSelected == null ? "" : String.valueOf(rateSelected))
                 .withVoteCount(votesCount == null ? "" : String.valueOf(votesCount))
+                .sortBy(sortOption)
                 .createMovieUrl();
     }
 

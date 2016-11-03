@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -14,4 +14,12 @@
         android:scaleType="fitCenter"
         android:layout_margin="5dp"/>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/defaultNoImageTitleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="10dp"
+        android:textColor="@color/movie_extra_dark_color"/>
+</FrameLayout>

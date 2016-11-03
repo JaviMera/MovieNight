@@ -1,11 +1,15 @@
 package movienight.javi.com.movienight.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -66,18 +70,27 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
     public class MovieViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView mMoviePoster;
+        public TextView mDefaultNoImageTitleTextView;
 
         public MovieViewHolder(View itemView) {
 
             super(itemView);
 
             mMoviePoster = (ImageView) itemView.findViewById(R.id.moviePosterImageView);
+            mDefaultNoImageTitleTextView = (TextView) itemView.findViewById(R.id.defaultNoImageTitleTextView);
         }
 
         public void bindMovie(final Movie movie, final MovieSelectedListener listener) {
 
             if(null != movie){
+
+                if(movie.getPosterPath().isEmpty()) {
+
+                    mDefaultNoImageTitleTextView.setText(movie.getTitle());
+                }
+
                 mMoviePoster.setImageBitmap(movie.getPoster());
+
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

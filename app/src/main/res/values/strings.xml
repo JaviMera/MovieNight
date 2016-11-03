@@ -28,15 +28,19 @@
         <item>Release Date Range</item>
         <item>Rating</item>
         <item>Vote Count</item>
-        <item>Sort Order</item>
     </string-array>
 
     <string-array name="sort_options_array">
         <item>Sort by...</item>
-        <item>Popularity</item>
-        <item>Release Date</item>
-        <item>Revenue</item>
-        <item>Rating</item>
-        <item>Vote Count</item>
+        <item>Popularity Ascending</item>
+        <item>Popularity Descending</item>
+        <item>Release Date Ascending</item>
+        <item>Release Date Descending</item>
+        <item>Revenue Ascending</item>
+        <item>Revenue Descending</item>
+        <item>Rating Ascending</item>
+        <item>Rating Descending</item>
+        <item>Vote Count Ascending</item>
+        <item>Vote Count Descending</item>
     </string-array>
 </resources>
