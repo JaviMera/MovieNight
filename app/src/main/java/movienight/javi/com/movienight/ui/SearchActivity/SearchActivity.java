@@ -167,7 +167,10 @@ public class SearchActivity extends AppCompatActivity
             posterPaths.add(m.getPosterPath());
         }
 
-        Bitmap defaultBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.no_poster_image);
+        Bitmap defaultBitmap = BitmapFactory.decodeResource(
+            this.getResources(),
+            R.drawable.no_poster_image
+            );
 
         new PostersAsyncTask(this, getSupportFragmentManager(), ActivityExtras.POSTER_RESOLUTION_342, defaultBitmap)
             .execute(posterPaths.toArray(new String[posterPaths.size()]));
