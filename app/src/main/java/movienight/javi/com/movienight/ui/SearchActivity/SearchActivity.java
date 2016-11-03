@@ -41,21 +41,15 @@ import movienight.javi.com.movienight.listeners.MovieSelectedListener;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.adapters.MovieRecyclerViewAdapter;
 import movienight.javi.com.movienight.listeners.MoviesAsyncTaskListener;
+import movienight.javi.com.movienight.model.DialogContainer;
+import movienight.javi.com.movienight.model.FilterItemContainer;
 import movienight.javi.com.movienight.model.FilterItems.DateRangeFilterableItem;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItemKeys;
 import movienight.javi.com.movienight.model.FilterItems.Genre;
 import movienight.javi.com.movienight.model.Movie;
-import movienight.javi.com.movienight.model.SortItems.PopularityAscending;
-import movienight.javi.com.movienight.model.SortItems.PopularityDescending;
-import movienight.javi.com.movienight.model.SortItems.RatingAscending;
-import movienight.javi.com.movienight.model.SortItems.RatingDescending;
-import movienight.javi.com.movienight.model.SortItems.ReleaseDateAscending;
-import movienight.javi.com.movienight.model.SortItems.ReleaseDateDescending;
-import movienight.javi.com.movienight.model.SortItems.RevenueAscending;
+import movienight.javi.com.movienight.model.SortItemContainer;
 import movienight.javi.com.movienight.model.SortItems.SortItemBase;
-import movienight.javi.com.movienight.model.SortItems.VoteCountAscending;
-import movienight.javi.com.movienight.model.SortItems.VoteCountDescending;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.urls.MovieUrl;
 import movienight.javi.com.movienight.urls.MovieUrlBuilder;
@@ -75,8 +69,9 @@ public class SearchActivity extends AppCompatActivity
     private List<Genre> mGenres;
     private SearchActivityPresenter mPresenter;
     private MovieUrl mUrl;
-    private Map<Integer, List<FilterableItem>> mFilters;
-    private Map<Integer, SortItemBase> mSortItemsMap;
+    private DialogContainer mDialogContainer;
+    private FilterItemContainer mFilterItemContainer;
+    private SortItemContainer mSortItemContainer;
     private SortItemBase mSortSelected;
 
     @BindView(R.id.moviesSearchRecyclerView) RecyclerView mMovieRecyclerView;
@@ -94,12 +89,14 @@ public class SearchActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         mGenres = getIntent().getParcelableArrayListExtra(ActivityExtras.GENRES_KEY);
+        mDialogContainer = new DialogContainer(mGenres);
 
         mMovies = new LinkedHashMap<>();
-        mFilters = initializeFiltersMap();
 
-        mSortItemsMap = initializeSortOptionsMap();
-        mSortSelected = mSortItemsMap.get(2);
+        mFilterItemContainer = new FilterItemContainer();
+
+        mSortItemContainer = new SortItemContainer();
+        mSortSelected = mSortItemContainer.getDefault();
 
         mCurrentPageNumber = 1;
         mPresenter = new SearchActivityPresenter(this);
@@ -119,7 +116,7 @@ public class SearchActivity extends AppCompatActivity
 
                 if(position > 0) {
 
-                    mSortSelected = mSortItemsMap.get(position);
+                    mSortSelected = mSortItemContainer.get(position);
 
                     mMovies.clear();
                     mCurrentPageNumber = 1;
@@ -276,7 +273,7 @@ public class SearchActivity extends AppCompatActivity
     public void onFilterItemCreated(Integer key, FilterableItem... newItems) {
 
         mFilterMovieSpinner.setSelection(0);
-        mFilters.put(key, new ArrayList<>(Arrays.asList(newItems)));
+        mFilterItemContainer.put(key, new ArrayList<>(Arrays.asList(newItems)));
 
         // If the user pressed on the back button on any filter item dialog, then return from method
         // and don't request for movies
@@ -285,7 +282,7 @@ public class SearchActivity extends AppCompatActivity
         }
 
         FilterItemRecyclerAdapter adapter = (FilterItemRecyclerAdapter) mFiltersRecyclerView.getAdapter();
-        adapter.updateData(mFilters.values());
+        adapter.updateData(mFilterItemContainer.getAll());
 
         MovieRecyclerViewAdapter movieSearchAdapter = (MovieRecyclerViewAdapter)mMovieRecyclerView.getAdapter();
         movieSearchAdapter.removeData();
@@ -298,7 +295,7 @@ public class SearchActivity extends AppCompatActivity
     @Override
     public void onFilterItemDeleted(FilterableItem itemRemoved) {
 
-        for(List<FilterableItem> items : mFilters.values()) {
+        for(List<FilterableItem> items : mFilterItemContainer.getAll()) {
 
             if(items.contains(itemRemoved)) {
 
@@ -327,7 +324,7 @@ public class SearchActivity extends AppCompatActivity
     private MovieUrl createUrl(int pageNumber) {
 
         String genresIds = "";
-        List<FilterableItem> genreItems =mFilters.get(FilterableItemKeys.GENRE);
+        List<FilterableItem> genreItems = mFilterItemContainer.get(FilterableItemKeys.GENRE);
         for(int i = 0 ; i < genreItems.size() ; i++ ) {
 
             if(i == genreItems.size() - 1) {
@@ -341,7 +338,7 @@ public class SearchActivity extends AppCompatActivity
         SimpleDateFormat formatter = new SimpleDateFormat(ActivityExtras.RELEASE_DATE_FORMAT);
         String startDate = "";
         String endDate = "";
-        List<FilterableItem> datesSelected = mFilters.get(FilterableItemKeys.DATE_RANGE);
+        List<FilterableItem> datesSelected = mFilterItemContainer.get(FilterableItemKeys.DATE_RANGE);
 
         if(!datesSelected.isEmpty()) {
 
@@ -352,14 +349,14 @@ public class SearchActivity extends AppCompatActivity
 
         Float rateSelected = null;
 
-        for(FilterableItem item : mFilters.get(FilterableItemKeys.RATE)) {
+        for(FilterableItem item : mFilterItemContainer.get(FilterableItemKeys.RATE)) {
 
             rateSelected = (Float)item.getValue()[0];
         }
 
         Integer votesCount = null;
 
-        for(FilterableItem item : mFilters.get(FilterableItemKeys.VOTE_COUNT)) {
+        for(FilterableItem item : mFilterItemContainer.get(FilterableItemKeys.VOTE_COUNT)) {
 
             votesCount = (Integer)item.getValue()[0];
         }
@@ -384,34 +381,11 @@ public class SearchActivity extends AppCompatActivity
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                DialogFragment dialog;
-                List<FilterableItem> selectedItems;
+                if(position > 0) {
 
-                switch(position) {
-
-                    case FilterableItemKeys.GENRE:
-                        selectedItems = mFilters.get(FilterableItemKeys.GENRE);
-                        dialog = GenresDialogFragment.newInstance(mGenres, selectedItems);
-                        dialog.show(getSupportFragmentManager(), "genre_dialog");
-                        break;
-
-                    case 2:
-                        selectedItems = mFilters.get(FilterableItemKeys.DATE_RANGE);
-                        dialog = DateRangeDialogFragment.newInstance(selectedItems);
-                        dialog.show(getSupportFragmentManager(), "daterange_dialog");
-                        break;
-
-                    case 3:
-                        selectedItems = mFilters.get(FilterableItemKeys.RATE);
-                        dialog = RateDialogFragment.newInstance(selectedItems);
-                        dialog.show(getSupportFragmentManager(), "rate_dialog");
-                        break;
-
-                    case 4:
-                        selectedItems = mFilters.get(FilterableItemKeys.VOTE_COUNT);
-                        dialog = VoteDialogFragment.newInstance(selectedItems);
-                        dialog.show(getSupportFragmentManager(), "votecount_dialog");
-                        break;
+                    List<FilterableItem> selectedItems = mFilterItemContainer.get(position);
+                    DialogFragment dialog = mDialogContainer.getDialog(position, selectedItems);
+                    dialog.show(getSupportFragmentManager(), "dialog");
                 }
             }
 
@@ -452,37 +426,6 @@ public class SearchActivity extends AppCompatActivity
                     requestMovies(mCurrentPageNumber);
                 }
             }
-            }
-        };
-    }
-
-    private Map<Integer, List<FilterableItem>> initializeFiltersMap() {
-
-        return new LinkedHashMap<Integer, List<FilterableItem>>(){
-            {
-                put(-1, new ArrayList<FilterableItem>());
-                put(1, new ArrayList<FilterableItem>());
-                put(2, new ArrayList<FilterableItem>());
-                put(3, new ArrayList<FilterableItem>());
-                put(4, new ArrayList<FilterableItem>());
-            }
-        };
-    }
-
-    private Map<Integer, SortItemBase> initializeSortOptionsMap() {
-
-        return new LinkedHashMap<Integer, SortItemBase>() {
-            {
-                put(1, new PopularityAscending());
-                put(2, new PopularityDescending());
-                put(3, new ReleaseDateAscending());
-                put(4, new ReleaseDateDescending());
-                put(5, new RevenueAscending());
-                put(6, new ReleaseDateDescending());
-                put(7, new RatingAscending());
-                put(8, new RatingDescending());
-                put(9, new VoteCountAscending());
-                put(10, new VoteCountDescending());
             }
         };
     }

@@ -44,7 +44,7 @@ public class RateDialogFragment extends FilterDialogBase implements RateDialogFr
     @BindView(R.id.ratingTextView) TextView mScoreTextView;
     @BindView(R.id.ratingBarView) RatingBar mRatingBarView;
 
-    public static DialogFragment newInstance(List<FilterableItem> rateItems) {
+    public static RateDialogFragment newInstance(List<FilterableItem> rateItems) {
 
         RateDialogFragment dialog = new RateDialogFragment();
 
