@@ -102,14 +102,14 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
                     mDefaultNoImageTitleTextView.setText(movie.getTitle());
                 }
 
-                mMoviePoster.setImageBitmap(movie.getPoster());
-
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         listener.onMovieSelectedListener(movie);
                     }
                 });
+
+                mMoviePoster.setImageBitmap(movie.getPoster());
             }
         }
     }
