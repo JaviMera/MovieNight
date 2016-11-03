@@ -3,13 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/activity_background_color">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:background="@color/activity_background_color">
 
         <TextView
@@ -25,25 +25,27 @@
         <View
             style="@style/LineSeparatorView"/>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp">
 
             <ImageView
                 android:id="@+id/moviePosterDialogImageView"
-                style="@style/MoviePosterImageView"/>
+                style="@style/MoviePosterImageView"
+                tools:src="@drawable/no_poster_image"/>
 
             <ImageView
                 android:id="@+id/starIcon"
+                android:layout_gravity="center"
+                android:maxHeight="50dp"
                 style="@style/MovieRateImageView" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_toRightOf="@+id/starIcon"
-                android:layout_centerVertical="true">
+                android:layout_gravity="center">
 
                 <TextView
                     android:id="@+id/movieRatingDialogTextView"
@@ -55,7 +57,38 @@
                     tools:text="Vote Count value"
                     style="@style/MovieVoteCountTextView"/>
             </LinearLayout>
-        </RelativeLayout>
+        </LinearLayout>
+        <!--<RelativeLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="10dp">-->
+
+            <!--<ImageView-->
+                <!--android:id="@+id/moviePosterDialogImageView"-->
+                <!--style="@style/MoviePosterImageView"/>-->
+
+            <!--<ImageView-->
+                <!--android:id="@+id/starIcon"-->
+                <!--style="@style/MovieRateImageView" />-->
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="vertical"-->
+                <!--android:layout_toRightOf="@+id/starIcon"-->
+                <!--android:layout_centerVertical="true">-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/movieRatingDialogTextView"-->
+                    <!--tools:text="Rating value"-->
+                    <!--style="@style/MovieRatingTextView"/>-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/movieVoteCountDialogTextView"-->
+                    <!--tools:text="Vote Count value"-->
+                    <!--style="@style/MovieVoteCountTextView"/>-->
+            <!--</LinearLayout>-->
+        <!--</RelativeLayout>-->
 
         <View
             style="@style/LineSeparatorView"/>
