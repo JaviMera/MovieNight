@@ -141,8 +141,14 @@ public class MovieDialogFragment extends DialogFragment implements MovieDialogFr
     @Override
     public void setReleaseDateTextViewText(String year, String month, String day) {
 
-        Calendar c = getCalendar(year, month, day);
-        String format = getReleaseDateFormat(c, ActivityExtras.MOVIE_DIALOG_RELEASE_DATE_FORMAT);
+        String format = "Unknown";
+
+        if(!year.isEmpty() && !month.isEmpty() && !day.isEmpty()) {
+
+            Calendar c = getCalendar(year, month, day);
+            format = getReleaseDateFormat(c, ActivityExtras.MOVIE_DIALOG_RELEASE_DATE_FORMAT);
+        }
+
         mReleaseDateTextView.setText(format);
     }
 

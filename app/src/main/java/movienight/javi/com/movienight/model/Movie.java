@@ -194,16 +194,22 @@ public class Movie implements Parcelable{
 
     public String getYearRelease() {
 
-        return mReleaseDate.split("-")[0];
+        return mReleaseDate.isEmpty()
+            ? ""
+            :mReleaseDate.split("-")[0];
     }
 
     public String getMonthRelease() {
 
-        return mReleaseDate.split("-")[1];
+        return mReleaseDate.isEmpty()
+            ? ""
+            :mReleaseDate.split("-")[1];
     }
 
     public String getDayRelease() {
 
-        return mReleaseDate.split("-")[2];
+        return mReleaseDate.isEmpty()
+            ? ""
+            :mReleaseDate.split("-")[2];
     }
 }

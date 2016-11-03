@@ -125,4 +125,33 @@ public class MovieTest {
         // Assert
         Assert.assertEquals(mExpectedGenreIds, actualIds);
     }
+
+    @Test
+    public void emptyReleaseDateReturnsEmptyYearMonthDay() throws Exception {
+
+        // Arrange
+        mMovie = new Movie(
+            mExpectedId,
+            mExpectedOverview,
+            mExpectedOriginalTitle,
+            mExpectedTitle,
+            "",
+            mExpectedPopularity,
+            mExpectedVoteCount,
+            mExpectedRating,
+            mExpectedGenreIds,
+            mExpectedPosterPath,
+            mExpectedBitmap
+        );
+
+        // Act
+        String actualYear = mMovie.getYearRelease();
+        String actualMonth = mMovie.getMonthRelease();
+        String actualDay = mMovie.getDayRelease();
+
+        // Assert
+        Assert.assertTrue(actualYear.isEmpty());
+        Assert.assertTrue(actualMonth.isEmpty());
+        Assert.assertTrue(actualDay.isEmpty());
+    }
 }
