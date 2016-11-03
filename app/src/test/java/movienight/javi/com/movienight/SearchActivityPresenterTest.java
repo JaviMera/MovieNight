@@ -13,7 +13,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.LinkedList;
 import java.util.List;
 
-import movienight.javi.com.movienight.model.FilterableItem;
+import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
 import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.ui.SearchActivity.SearchActivityPresenter;
 import movienight.javi.com.movienight.ui.SearchActivity.SearchActivityView;

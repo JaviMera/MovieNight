@@ -1,4 +1,4 @@
-package movienight.javi.com.movienight.model;
+package movienight.javi.com.movienight.model.FilterItems;
 
 import android.os.Parcel;
 import android.os.Parcelable;

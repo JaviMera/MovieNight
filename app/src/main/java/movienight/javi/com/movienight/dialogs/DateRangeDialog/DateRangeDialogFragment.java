@@ -20,9 +20,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.dialogs.FilterDialogBase;
-import movienight.javi.com.movienight.model.DateRangeFilterableItem;
-import movienight.javi.com.movienight.model.FilterableItem;
-import movienight.javi.com.movienight.model.FilterableItemKeys;
+import movienight.javi.com.movienight.model.FilterItems.DateRangeFilterableItem;
+import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
+import movienight.javi.com.movienight.model.FilterItems.FilterableItemKeys;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 
 /**

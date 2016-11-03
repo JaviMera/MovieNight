@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import movienight.javi.com.movienight.R;
-import movienight.javi.com.movienight.model.Genre;
+import movienight.javi.com.movienight.model.FilterItems.Genre;
 
 /**
  * Created by Javi on 10/22/2016.

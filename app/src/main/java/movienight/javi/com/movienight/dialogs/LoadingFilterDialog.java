@@ -3,22 +3,15 @@ package movienight.javi.com.movienight.dialogs;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.graphics.drawable.DrawableWrapper;
-import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 
 import movienight.javi.com.movienight.R;
-import movienight.javi.com.movienight.model.NullFilterableItem;
 
 /**
  * Created by Javier on 10/30/2016.

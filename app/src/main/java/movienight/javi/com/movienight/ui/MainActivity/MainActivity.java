@@ -28,7 +28,7 @@ import movienight.javi.com.movienight.dialogs.MovieDialog.MovieDialogFragment;
 import movienight.javi.com.movienight.listeners.MoviePostersListener;
 import movienight.javi.com.movienight.listeners.MovieSelectedListener;
 import movienight.javi.com.movienight.listeners.MoviesAsyncTaskListener;
-import movienight.javi.com.movienight.model.Genre;
+import movienight.javi.com.movienight.model.FilterItems.Genre;
 import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.ui.AsyncTaskListener;

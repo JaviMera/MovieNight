@@ -12,7 +12,7 @@ import java.util.List;
 
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.listeners.FilterItemRemovedListener;
-import movienight.javi.com.movienight.model.FilterableItem;
+import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
 
 /**
  * Created by Javier on 10/26/2016.

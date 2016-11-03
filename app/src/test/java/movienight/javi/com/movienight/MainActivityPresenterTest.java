@@ -7,6 +7,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.List;
+
 import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.ui.MainActivity.MainActivityPresenter;
 import movienight.javi.com.movienight.ui.MainActivity.MainActivityView;
@@ -33,7 +35,7 @@ public class MainActivityPresenterTest {
     public void setTopMoviesRecyclerViewAdapter() throws Exception {
 
         // Arrange
-        Movie[] items = null;
+       List<Movie> items = null;
 
         // Act
         mPresenter.setTopMoviesRecyclerViewAdapter(items);
@@ -73,12 +75,12 @@ public class MainActivityPresenterTest {
     public void updateTopMoviesRecyclerViewAdapter() throws Exception {
 
         // Arrange
-        Movie[] movies = null;
+        List<Movie> items = null;
 
         // Act
-        mPresenter.updateMoviesRecyclerViewAdapter(movies);
+        mPresenter.updateMoviesRecyclerViewAdapter(items);
 
         // Assert
-        Mockito.verify(mView).updateMoviesRecyclerViewAdapter(movies);
+        Mockito.verify(mView).updateMoviesRecyclerViewAdapter(items);
     }
 }

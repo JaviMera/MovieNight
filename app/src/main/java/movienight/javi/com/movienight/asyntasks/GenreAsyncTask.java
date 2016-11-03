@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-import movienight.javi.com.movienight.model.Genre;
+import movienight.javi.com.movienight.model.FilterItems.Genre;
 import movienight.javi.com.movienight.model.jsonvalues.JSONGenre;
 import movienight.javi.com.movienight.ui.AsyncTaskListener;
 import movienight.javi.com.movienight.urls.AbstractUrl;

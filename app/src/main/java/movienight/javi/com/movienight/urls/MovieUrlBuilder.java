@@ -6,6 +6,7 @@ package movienight.javi.com.movienight.urls;
 
 public class MovieUrlBuilder {
 
+    private final String DEFAULT_SORT = "popularity.desc";
     private final String DEFAULT_PAGE = "1";
 
     private String mSort;
@@ -25,6 +26,7 @@ public class MovieUrlBuilder {
         mAdult = "false";
         mVideo = "true";
         mPage = DEFAULT_PAGE;
+        mSort = DEFAULT_SORT;
     }
 
     public MovieUrlBuilder withSortBy(String sortBy) {

@@ -14,7 +14,7 @@ import java.util.List;
 
 import movienight.javi.com.movienight.dialogs.MovieDialog.MovieDialogFragmentPresenter;
 import movienight.javi.com.movienight.dialogs.MovieDialog.MovieDialogFramgnetView;
-import movienight.javi.com.movienight.model.Genre;
+import movienight.javi.com.movienight.model.FilterItems.Genre;
 
 /**
  * Created by Javi on 11/1/2016.

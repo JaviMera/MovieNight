@@ -22,7 +22,7 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import movienight.javi.com.movienight.R;
-import movienight.javi.com.movienight.model.Genre;
+import movienight.javi.com.movienight.model.FilterItems.Genre;
 import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 

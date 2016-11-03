@@ -1,4 +1,4 @@
-package movienight.javi.com.movienight.model;
+package movienight.javi.com.movienight.model.FilterItems;
 
 /**
  * Created by Javier on 10/27/2016.

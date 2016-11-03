@@ -5,7 +5,7 @@ import android.widget.AdapterView;
 
 import java.util.List;
 
-import movienight.javi.com.movienight.model.FilterableItem;
+import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
 import movienight.javi.com.movienight.model.Movie;
 
 /**
