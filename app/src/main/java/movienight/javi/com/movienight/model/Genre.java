@@ -3,6 +3,9 @@ package movienight.javi.com.movienight.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Javi on 10/16/2016.
  */
@@ -11,6 +14,23 @@ public class Genre implements Parcelable{
     private Integer mId;
     private String mDescription;
     private int mChecked;
+
+    public static List<Genre> getSelectedGenres(int[] genreIds, List<Genre> genres) {
+
+        List<Genre> movieGenres = new ArrayList<>();
+        for(int genreId : genreIds) {
+
+            for(Genre genre : genres) {
+
+                if(genre.getId().equals(genreId)) {
+
+                    movieGenres.add(genre);
+                }
+            }
+        }
+
+        return movieGenres;
+    }
 
     public Genre(Integer id, String description) {
 

@@ -53,7 +53,6 @@ import movienight.javi.com.movienight.model.RatingDescending;
 import movienight.javi.com.movienight.model.ReleaseDateAscending;
 import movienight.javi.com.movienight.model.ReleaseDateDescending;
 import movienight.javi.com.movienight.model.RevenueAscending;
-import movienight.javi.com.movienight.model.SortItem;
 import movienight.javi.com.movienight.model.SortItemBase;
 import movienight.javi.com.movienight.model.VoteCountAscending;
 import movienight.javi.com.movienight.model.VoteCountDescending;
@@ -189,19 +188,11 @@ public class SearchActivity extends AppCompatActivity
     @Override
     public void onMovieSelectedListener(Movie movie) {
 
-        List<Genre> movieGenres = new ArrayList<>();
-        for(int genreId : movie.getGenreIds()) {
+        MovieDialogFragment movieDialogFragment = MovieDialogFragment.newInstance(
+            movie,
+            Genre.getSelectedGenres(movie.getGenreIds(), mGenres)
+        );
 
-            for(Genre genre : mGenres) {
-
-                if(genre.getId().equals(genreId)) {
-
-                    movieGenres.add(genre);
-                }
-            }
-        }
-
-        MovieDialogFragment movieDialogFragment = MovieDialogFragment.newInstance(movie, movieGenres);
         movieDialogFragment.show(getSupportFragmentManager(), "movie_dialog");
     }
 
@@ -446,21 +437,21 @@ public class SearchActivity extends AppCompatActivity
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 
-                LinearLayoutManager linearManager = (LinearLayoutManager)recyclerView.getLayoutManager();
+            LinearLayoutManager linearManager = (LinearLayoutManager)recyclerView.getLayoutManager();
 
-                // Check if the scroll happened when the adapter's data was cleared
-                // In such case, we don't want to call the endless scroll code.
-                if(linearManager.getItemCount() == 0)
-                    return;
+            // Check if the scroll happened when the adapter's data was cleared
+            // In such case, we don't want to call the endless scroll code.
+            if(linearManager.getItemCount() == 0)
+                return;
 
-                if(linearManager.getItemCount() == linearManager.findLastCompletelyVisibleItemPosition() + 1) {
+            if(linearManager.getItemCount() == linearManager.findLastCompletelyVisibleItemPosition() + 1) {
 
-                    if(mCurrentPageNumber < mTotalPages) {
+                if(mCurrentPageNumber < mTotalPages) {
 
-                        mCurrentPageNumber++;
-                        requestMovies(mCurrentPageNumber);
-                    }
+                    mCurrentPageNumber++;
+                    requestMovies(mCurrentPageNumber);
                 }
+            }
             }
         };
     }

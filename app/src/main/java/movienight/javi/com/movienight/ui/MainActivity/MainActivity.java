@@ -113,19 +113,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onMovieSelectedListener(Movie movie) {
 
-        List<Genre> movieGenres = new ArrayList<>();
-        for(int genreId : movie.getGenreIds()) {
+        MovieDialogFragment dialog = MovieDialogFragment.newInstance(
+            movie,
+            Genre.getSelectedGenres(movie.getGenreIds(), mGenres));
 
-            for(Genre genre : mGenres) {
-
-                if(genre.getId().equals(genreId)) {
-
-                    movieGenres.add(genre);
-                }
-            }
-        }
-
-        MovieDialogFragment dialog = MovieDialogFragment.newInstance(movie, movieGenres);
         dialog.show(getSupportFragmentManager(), "movie_dialog");
     }
 
