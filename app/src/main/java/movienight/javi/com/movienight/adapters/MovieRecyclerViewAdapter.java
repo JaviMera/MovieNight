@@ -37,7 +37,9 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
     public void updateData(List<Movie> movies) {
 
         mMovies.addAll(movies);
-        notifyDataSetChanged();
+
+        for(int i = mMovies.size() ; i < mMovies.size() + movies.size() ; i++)
+            notifyItemInserted(i);
     }
 
     public void removeData() {
@@ -80,37 +82,36 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
         }
     }
 
+    @Override
+    public long getItemId(int position) {
+
+        return mMovies.get(position).getId();
+    }
+
     public class MovieViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView mMoviePoster;
-        public TextView mDefaultNoImageTitleTextView;
+        public TextView mMovieTitleTextView;
 
         public MovieViewHolder(View itemView) {
 
             super(itemView);
 
             mMoviePoster = (ImageView) itemView.findViewById(R.id.moviePosterImageView);
-            mDefaultNoImageTitleTextView = (TextView) itemView.findViewById(R.id.defaultNoImageTitleTextView);
+            mMovieTitleTextView = (TextView) itemView.findViewById(R.id.movieItemTitleTextView);
         }
 
         public void bindMovie(final Movie movie, final MovieSelectedListener listener) {
 
-            if(null != movie){
-
-                if(movie.getPosterPath().isEmpty()) {
-
-                    mDefaultNoImageTitleTextView.setText(movie.getTitle());
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onMovieSelectedListener(movie);
                 }
+            });
 
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        listener.onMovieSelectedListener(movie);
-                    }
-                });
-
-                mMoviePoster.setImageBitmap(movie.getPoster());
-            }
+            mMovieTitleTextView.setText(movie.getTitle());
+            mMoviePoster.setImageBitmap(movie.getPoster());
         }
     }
 }
