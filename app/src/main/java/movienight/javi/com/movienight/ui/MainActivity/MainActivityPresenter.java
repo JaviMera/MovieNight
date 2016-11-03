@@ -1,5 +1,7 @@
 package movienight.javi.com.movienight.ui.MainActivity;
 
+import java.util.List;
+
 import movienight.javi.com.movienight.model.Movie;
 
 /**
@@ -15,7 +17,7 @@ public class MainActivityPresenter {
         mView = view;
     }
 
-    public void setTopMoviesRecyclerViewAdapter(Movie[] items) {
+    public void setTopMoviesRecyclerViewAdapter(List<Movie> items) {
 
         mView.setTopMoviesRecyclerViewAdapter(items);
     }
@@ -30,7 +32,7 @@ public class MainActivityPresenter {
         mView.setTopMoviesRecyclerViewSize(fixedSize);
     }
 
-    public void updateMoviesRecyclerViewAdapter(Movie[] movies) {
+    public void updateMoviesRecyclerViewAdapter(List<Movie> movies) {
 
         mView.updateMoviesRecyclerViewAdapter(movies);
     }

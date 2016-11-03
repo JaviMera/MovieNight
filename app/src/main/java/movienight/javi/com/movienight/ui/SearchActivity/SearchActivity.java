@@ -53,6 +53,7 @@ import movienight.javi.com.movienight.model.RatingDescending;
 import movienight.javi.com.movienight.model.ReleaseDateAscending;
 import movienight.javi.com.movienight.model.ReleaseDateDescending;
 import movienight.javi.com.movienight.model.RevenueAscending;
+import movienight.javi.com.movienight.model.SortItem;
 import movienight.javi.com.movienight.model.SortItemBase;
 import movienight.javi.com.movienight.model.VoteCountAscending;
 import movienight.javi.com.movienight.model.VoteCountDescending;
@@ -71,7 +72,7 @@ public class SearchActivity extends AppCompatActivity
 
     private Integer mTotalPages;
     private int mCurrentPageNumber;
-    private List<Movie> mMovies;
+    private Map<String, Movie> mMovies;
     private List<Genre> mGenres;
     private SearchActivityPresenter mPresenter;
     private MovieUrl mUrl;
@@ -85,6 +86,7 @@ public class SearchActivity extends AppCompatActivity
     @BindView(R.id.filtersRecyclerView) RecyclerView mFiltersRecyclerView;
     @BindView(R.id.sortBySpinnerView) Spinner mSortBySpinnerView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,24 +95,14 @@ public class SearchActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         mGenres = getIntent().getParcelableArrayListExtra(ActivityExtras.GENRES_KEY);
+
+        mMovies = new LinkedHashMap<>();
         mFilters = initializeFiltersMap();
 
-        mSortItemsMap = new LinkedHashMap<>();
-        mSortItemsMap.put(1, new PopularityAscending());
-        mSortItemsMap.put(2, new PopularityDescending());
-        mSortItemsMap.put(3, new ReleaseDateAscending());
-        mSortItemsMap.put(4, new ReleaseDateDescending());
-        mSortItemsMap.put(5, new RevenueAscending());
-        mSortItemsMap.put(6, new ReleaseDateDescending());
-        mSortItemsMap.put(7, new RatingAscending());
-        mSortItemsMap.put(8, new RatingDescending());
-        mSortItemsMap.put(9, new VoteCountAscending());
-        mSortItemsMap.put(10, new VoteCountDescending());
-
+        mSortItemsMap = initializeSortOptionsMap();
         mSortSelected = mSortItemsMap.get(2);
 
         mCurrentPageNumber = 1;
-        mMovies = new LinkedList<>();
         mPresenter = new SearchActivityPresenter(this);
 
         String[] filterItems = getResources().getStringArray(R.array.filter_options_array);
@@ -149,7 +141,7 @@ public class SearchActivity extends AppCompatActivity
         mPresenter.setRecyclerViewManager(mFiltersRecyclerView, 1, LinearLayoutManager.HORIZONTAL);
         mPresenter.setRecyclerSize(mFiltersRecyclerView, true);
 
-        mPresenter.setMoviesRecyclerViewAdapter(mMovies.toArray(new Movie[]{}));
+        mPresenter.setMoviesRecyclerViewAdapter(mMovies.values().toArray(new Movie[]{}));
         mPresenter.setRecyclerViewManager(mMovieRecyclerView, 3, LinearLayoutManager.VERTICAL);
         mPresenter.setRecyclerSize(mMovieRecyclerView, true);
         mPresenter.setMovieRecyclerScrollListener(scrollListener());
@@ -159,17 +151,22 @@ public class SearchActivity extends AppCompatActivity
     public void onCompleted(Integer totalPages, Movie[] movies) {
 
         mTotalPages = totalPages;
-        mMovies = new LinkedList<>(Arrays.asList(movies));
+        mMovies.clear();
+
+        for(Movie movie : movies) {
+
+            mMovies.put(movie.getPosterPath(), movie);
+        }
 
         mPresenter.setProgressBarVisibility(View.INVISIBLE);
-        mPresenter.updateRecyclerViewAdapter(mMovies);
+        mPresenter.updateRecyclerViewAdapter(new ArrayList<>(mMovies.values()));
 
         Bitmap defaultBitmap = BitmapFactory.decodeResource(
             this.getResources(),
             R.drawable.no_poster_image
             );
 
-        for(Movie movie : mMovies) {
+        for(Movie movie : mMovies.values()) {
 
             new PostersAsyncTask(
                 this,
@@ -183,17 +180,7 @@ public class SearchActivity extends AppCompatActivity
     @Override
     public void onPostersCompleted(String path, Bitmap poster) {
 
-        Movie updatedMovie = null;
-
-        for(Movie movie : mMovies) {
-
-            if(movie.getPosterPath().equals(path)) {
-
-                updatedMovie = movie;
-                break;
-            }
-        }
-
+        Movie updatedMovie = mMovies.get(path);
         updatedMovie.setPoster(poster);
         MovieRecyclerViewAdapter adapter = (MovieRecyclerViewAdapter) mMovieRecyclerView.getAdapter();
         adapter.updateMoviePoster(updatedMovie);
@@ -480,14 +467,32 @@ public class SearchActivity extends AppCompatActivity
 
     private Map<Integer, List<FilterableItem>> initializeFiltersMap() {
 
-            return new LinkedHashMap<Integer, List<FilterableItem>>(){
-                {
-                    put(-1, new ArrayList<FilterableItem>());
-                    put(1, new ArrayList<FilterableItem>());
-                    put(2, new ArrayList<FilterableItem>());
-                    put(3, new ArrayList<FilterableItem>());
-                    put(4, new ArrayList<FilterableItem>());
-                }
-            };
-        }
+        return new LinkedHashMap<Integer, List<FilterableItem>>(){
+            {
+                put(-1, new ArrayList<FilterableItem>());
+                put(1, new ArrayList<FilterableItem>());
+                put(2, new ArrayList<FilterableItem>());
+                put(3, new ArrayList<FilterableItem>());
+                put(4, new ArrayList<FilterableItem>());
+            }
+        };
+    }
+
+    private Map<Integer, SortItemBase> initializeSortOptionsMap() {
+
+        return new LinkedHashMap<Integer, SortItemBase>() {
+            {
+                put(1, new PopularityAscending());
+                put(2, new PopularityDescending());
+                put(3, new ReleaseDateAscending());
+                put(4, new ReleaseDateDescending());
+                put(5, new RevenueAscending());
+                put(6, new ReleaseDateDescending());
+                put(7, new RatingAscending());
+                put(8, new RatingDescending());
+                put(9, new VoteCountAscending());
+                put(10, new VoteCountDescending());
+            }
+        };
+    }
 }

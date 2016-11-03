@@ -11,7 +11,9 @@ import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity
         AsyncTaskListener<Genre>
     {
 
-    private Movie[] mMovies;
+    private Map<String, Movie> mMovies;
     private List<Genre> mGenres;
     private LoadingFilterDialog mDialog;
     private MainActivityPresenter mPresenter;
@@ -57,9 +59,10 @@ public class MainActivity extends AppCompatActivity
 
         ButterKnife.bind(this);
 
+        mMovies = new LinkedHashMap<>();
         mPresenter = new MainActivityPresenter(this);
 
-        mPresenter.setTopMoviesRecyclerViewAdapter(new Movie[]{});
+        mPresenter.setTopMoviesRecyclerViewAdapter(new ArrayList<Movie>(){});
         mPresenter.setTopMoviesRecyclerViewLayoutManager(3, GridLayoutManager.VERTICAL);
         mPresenter.setTopMoviesRecyclerViewSize(true);
 
@@ -73,16 +76,21 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onCompleted(Integer totalPages, Movie[] movies) {
 
-        mMovies = movies;
+        mMovies.clear();
 
-        mPresenter.updateMoviesRecyclerViewAdapter(mMovies);
+        for(Movie movie : movies) {
+
+            mMovies.put(movie.getPosterPath(), movie);
+        }
+
+        mPresenter.updateMoviesRecyclerViewAdapter(new ArrayList<>(mMovies.values()));
         mDialog.dismiss();
 
         Bitmap defaultBitmap = BitmapFactory.decodeResource(
             this.getResources(),
             R.drawable.no_poster_image);
 
-        for(Movie movie : mMovies) {
+        for(Movie movie : mMovies.values()) {
 
             new PostersAsyncTask(
                 this,
@@ -96,17 +104,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onPostersCompleted(String path, Bitmap poster) {
 
-        Movie updatedMovie = null;
-
-        for(Movie movie : mMovies) {
-
-            if(movie.getPosterPath().equals(path)) {
-
-                updatedMovie = movie;
-                break;
-            }
-        }
-
+        Movie updatedMovie = mMovies.get(path);
         updatedMovie.setPoster(poster);
         MovieRecyclerViewAdapter adapter = (MovieRecyclerViewAdapter) mMoviesRecyclerView.getAdapter();
         adapter.updateMoviePoster(updatedMovie);
@@ -151,11 +149,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void setTopMoviesRecyclerViewAdapter(Movie[] items) {
+    public void setTopMoviesRecyclerViewAdapter(List<Movie> items) {
 
         MovieRecyclerViewAdapter adapter = new MovieRecyclerViewAdapter(
             this,
-            new ArrayList(Arrays.asList(items)),
+            items,
             this);
 
         mMoviesRecyclerView.setAdapter(adapter);
@@ -180,9 +178,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void updateMoviesRecyclerViewAdapter(Movie[] movies) {
+    public void updateMoviesRecyclerViewAdapter(List<Movie> movies) {
 
         MovieRecyclerViewAdapter adapter = (MovieRecyclerViewAdapter) mMoviesRecyclerView.getAdapter();
-        adapter.updateData(new ArrayList(Arrays.asList(movies)));
+        adapter.updateData(movies);
     }
 }
