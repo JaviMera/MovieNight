@@ -2,6 +2,7 @@ package movienight.javi.com.movienight.ui.SearchActivity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,11 +30,7 @@ import movienight.javi.com.movienight.adapters.FilterItemRecyclerAdapter;
 import movienight.javi.com.movienight.adapters.CustomSpinnerAdapter;
 import movienight.javi.com.movienight.asyntasks.MoviesFilterAsyncTask;
 import movienight.javi.com.movienight.asyntasks.PostersAsyncTask;
-import movienight.javi.com.movienight.dialogs.DateRangeDialog.DateRangeDialogFragment;
-import movienight.javi.com.movienight.dialogs.GenresDialog.GenresDialogFragment;
 import movienight.javi.com.movienight.dialogs.MovieDialog.MovieDialogFragment;
-import movienight.javi.com.movienight.dialogs.RateDialog.RateDialogFragment;
-import movienight.javi.com.movienight.dialogs.VoteDialog.VoteDialogFragment;
 import movienight.javi.com.movienight.listeners.FilterItemAddedListener;
 import movienight.javi.com.movienight.listeners.FilterItemRemovedListener;
 import movienight.javi.com.movienight.listeners.MoviePostersListener;
@@ -73,6 +70,8 @@ public class SearchActivity extends AppCompatActivity
     private FilterItemContainer mFilterItemContainer;
     private SortItemContainer mSortItemContainer;
     private SortItemBase mSortSelected;
+    private AsyncTask mMovieAsyncTask;
+    private AsyncTask mPosterAsyncTask;
 
     @BindView(R.id.moviesSearchRecyclerView) RecyclerView mMovieRecyclerView;
     @BindView(R.id.updateRecyclerViewProgressBar) ProgressBar mMoviesProgressBar;
@@ -176,10 +175,13 @@ public class SearchActivity extends AppCompatActivity
     @Override
     public void onPostersCompleted(String path, Bitmap poster) {
 
-        Movie updatedMovie = mMovies.get(path);
-        updatedMovie.setPoster(poster);
-        MovieRecyclerViewAdapter adapter = (MovieRecyclerViewAdapter) mMovieRecyclerView.getAdapter();
-        adapter.updateMoviePoster(updatedMovie);
+        if(!mMovies.isEmpty()) {
+
+            Movie updatedMovie = mMovies.get(path);
+            updatedMovie.setPoster(poster);
+            MovieRecyclerViewAdapter adapter = (MovieRecyclerViewAdapter) mMovieRecyclerView.getAdapter();
+            adapter.updateMoviePoster(updatedMovie);
+        }
     }
 
     @Override
@@ -310,6 +312,12 @@ public class SearchActivity extends AppCompatActivity
         mCurrentPageNumber = 1;
         mMovies.clear();
 
+        if(mMovieAsyncTask.getStatus() == AsyncTask.Status.RUNNING) {
+
+            mMovieAsyncTask.cancel(true);
+            mPresenter.setProgressBarVisibility(View.INVISIBLE);
+        }
+
         FilterItemRecyclerAdapter filterItemAdapter = (FilterItemRecyclerAdapter)mFiltersRecyclerView.getAdapter();
         if(filterItemAdapter.getItemCount() == 0) {
 
@@ -401,7 +409,7 @@ public class SearchActivity extends AppCompatActivity
         mPresenter.setProgressBarVisibility(View.VISIBLE);
         mUrl = createUrl(pageNumber);
 
-        new MoviesFilterAsyncTask(this).execute(mUrl);
+        mMovieAsyncTask = new MoviesFilterAsyncTask(this).execute(mUrl);
     }
 
     private RecyclerView.OnScrollListener scrollListener() {
@@ -411,21 +419,23 @@ public class SearchActivity extends AppCompatActivity
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 
-            LinearLayoutManager linearManager = (LinearLayoutManager)recyclerView.getLayoutManager();
+                GridLayoutManager linearManager = (GridLayoutManager) recyclerView.getLayoutManager();
 
-            // Check if the scroll happened when the adapter's data was cleared
-            // In such case, we don't want to call the endless scroll code.
-            if(linearManager.getItemCount() == 0)
-                return;
+                int itemCount = linearManager.getItemCount();
+                // Check if the scroll happened when the adapter's data was cleared
+                // In such case, we don't want to call the endless scroll code.
+                if (itemCount == 0)
+                    return;
 
-            if(linearManager.getItemCount() == linearManager.findLastCompletelyVisibleItemPosition() + 1) {
+                int lastPositionVisible = linearManager.findLastCompletelyVisibleItemPosition();
+                if (itemCount == lastPositionVisible + 1) {
 
-                if(mCurrentPageNumber < mTotalPages) {
+                    if (mCurrentPageNumber < mTotalPages) {
 
-                    mCurrentPageNumber++;
-                    requestMovies(mCurrentPageNumber);
+                        mCurrentPageNumber++;
+                        requestMovies(mCurrentPageNumber);
+                    }
                 }
-            }
             }
         };
     }
