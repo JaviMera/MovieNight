@@ -16,11 +16,12 @@ import movienight.javi.com.movienight.listeners.MoviePostersListener;
  * Created by Javier on 10/27/2016.
  */
 
-public class PostersAsyncTask extends AsyncTask<String, Void, Bitmap[]> {
+public class PostersAsyncTask extends AsyncTask<String, Void, Bitmap> {
 
     private FragmentManager mManager;
     private MoviePostersListener mListener;
     private String mPosterResolution;
+    private String mPath;
     private Bitmap mDefault;
 
     public PostersAsyncTask(MoviePostersListener listener, FragmentManager manager, String posterResolution, Bitmap defaultBitmap) {
@@ -37,34 +38,29 @@ public class PostersAsyncTask extends AsyncTask<String, Void, Bitmap[]> {
     }
 
     @Override
-    protected void onPostExecute(Bitmap[] bitmaps) {
+    protected void onPostExecute(Bitmap bitmap) {
 
-        mListener.onPostersCompleted(bitmaps);
+        mListener.onPostersCompleted(mPath, bitmap);
     }
 
     @Override
-    protected Bitmap[] doInBackground(String... posterPaths) {
-
-        List<Bitmap> posters = new ArrayList<>();
+    protected Bitmap doInBackground(String... posterPaths) {
 
         try {
-            for(String path : posterPaths) {
+            mPath = posterPaths[0];
 
-                if(!path.isEmpty()) {
+            if(!mPath.isEmpty()) {
 
-                    URL imageurl = new URL("http://image.tmdb.org/t/p/" + mPosterResolution + "/" + path);
-                    Bitmap bitmap = BitmapFactory.decodeStream(imageurl.openConnection().getInputStream());
-                    posters.add(bitmap);
-                }
-                else {
+                URL imageurl = new URL("http://image.tmdb.org/t/p/" + mPosterResolution + "/" + mPath);
+                return BitmapFactory.decodeStream(imageurl.openConnection().getInputStream());
+            }
+            else {
 
-                    posters.add(mDefault);
-                }
+                return mDefault;
             }
 
-            return posters.toArray(new Bitmap[posters.size()]);
-
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
         }
 
         return null;

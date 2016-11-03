@@ -75,34 +75,41 @@ public class MainActivity extends AppCompatActivity
 
         mMovies = movies;
 
-        String[] posterPaths = new String[movies.length];
-        for(int i = 0 ; i < movies.length ; i++) {
-
-            posterPaths[i] = movies[i].getPosterPath();
-        }
+        mPresenter.updateMoviesRecyclerViewAdapter(mMovies);
+        mDialog.dismiss();
 
         Bitmap defaultBitmap = BitmapFactory.decodeResource(
             this.getResources(),
             R.drawable.no_poster_image);
 
-        new PostersAsyncTask(
+        for(Movie movie : mMovies) {
+
+            new PostersAsyncTask(
                 this,
                 getSupportFragmentManager(),
                 ActivityExtras.POSTER_RESOLUTION_342,
                 defaultBitmap
-            ).execute(posterPaths);
+            ).execute(movie.getPosterPath());
+        }
     }
 
     @Override
-    public void onPostersCompleted(Bitmap[] posters) {
+    public void onPostersCompleted(String path, Bitmap poster) {
 
-        for(int i = 0 ; i < mMovies.length ; i++) {
+        Movie updatedMovie = null;
 
-            mMovies[i].setPoster(posters[i]);
+        for(Movie movie : mMovies) {
+
+            if(movie.getPosterPath().equals(path)) {
+
+                updatedMovie = movie;
+                break;
+            }
         }
 
-        mPresenter.updateMoviesRecyclerViewAdapter(mMovies);
-        mDialog.dismiss();
+        updatedMovie.setPoster(poster);
+        MovieRecyclerViewAdapter adapter = (MovieRecyclerViewAdapter) mMoviesRecyclerView.getAdapter();
+        adapter.updateMoviePoster(updatedMovie);
     }
 
     @Override

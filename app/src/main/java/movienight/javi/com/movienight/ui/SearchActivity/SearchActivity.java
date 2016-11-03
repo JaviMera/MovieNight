@@ -160,20 +160,43 @@ public class SearchActivity extends AppCompatActivity
 
         mTotalPages = totalPages;
         mMovies = new LinkedList<>(Arrays.asList(movies));
-        List<String> posterPaths = new LinkedList<>();
 
-        for(Movie m : mMovies) {
-
-            posterPaths.add(m.getPosterPath());
-        }
+        mPresenter.setProgressBarVisibility(View.INVISIBLE);
+        mPresenter.updateRecyclerViewAdapter(mMovies);
 
         Bitmap defaultBitmap = BitmapFactory.decodeResource(
             this.getResources(),
             R.drawable.no_poster_image
             );
 
-        new PostersAsyncTask(this, getSupportFragmentManager(), ActivityExtras.POSTER_RESOLUTION_342, defaultBitmap)
-            .execute(posterPaths.toArray(new String[posterPaths.size()]));
+        for(Movie movie : mMovies) {
+
+            new PostersAsyncTask(
+                this,
+                getSupportFragmentManager(),
+                ActivityExtras.POSTER_RESOLUTION_342,
+                defaultBitmap
+            ).execute(movie.getPosterPath());
+        }
+    }
+
+    @Override
+    public void onPostersCompleted(String path, Bitmap poster) {
+
+        Movie updatedMovie = null;
+
+        for(Movie movie : mMovies) {
+
+            if(movie.getPosterPath().equals(path)) {
+
+                updatedMovie = movie;
+                break;
+            }
+        }
+
+        updatedMovie.setPoster(poster);
+        MovieRecyclerViewAdapter adapter = (MovieRecyclerViewAdapter) mMovieRecyclerView.getAdapter();
+        adapter.updateMoviePoster(updatedMovie);
     }
 
     @Override
@@ -269,18 +292,6 @@ public class SearchActivity extends AppCompatActivity
     public void setFilterSpinnerItemClickListener(AdapterView.OnItemSelectedListener listener) {
 
         mFilterMovieSpinner.setOnItemSelectedListener(listener);
-    }
-
-    @Override
-    public void onPostersCompleted(Bitmap[] posters) {
-
-        for(int i = 0 ; i < mMovies.size() ; i++) {
-
-            mMovies.get(i).setPoster(posters[i]);
-        }
-
-        mPresenter.updateRecyclerViewAdapter(mMovies);
-        mPresenter.setProgressBarVisibility(View.INVISIBLE);
     }
 
     @Override

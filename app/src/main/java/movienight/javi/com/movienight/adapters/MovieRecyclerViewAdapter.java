@@ -67,6 +67,19 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
         return mMovies.size();
     }
 
+    public void updateMoviePoster(Movie updatedMovie) {
+
+        for(Movie movie : mMovies) {
+
+            if(movie.getPosterPath().equals(updatedMovie.getPosterPath())) {
+
+                movie.setPoster(updatedMovie.getPoster());
+                notifyDataSetChanged();
+                break;
+            }
+        }
+    }
+
     public class MovieViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView mMoviePoster;

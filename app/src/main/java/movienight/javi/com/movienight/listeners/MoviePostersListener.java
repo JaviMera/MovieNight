@@ -8,5 +8,5 @@ import android.graphics.Bitmap;
 
 public interface MoviePostersListener {
 
-    void onPostersCompleted(Bitmap[] posters);
+    void onPostersCompleted(String path, Bitmap posters);
 }

@@ -58,37 +58,6 @@
                     style="@style/MovieVoteCountTextView"/>
             </LinearLayout>
         </LinearLayout>
-        <!--<RelativeLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_margin="10dp">-->
-
-            <!--<ImageView-->
-                <!--android:id="@+id/moviePosterDialogImageView"-->
-                <!--style="@style/MoviePosterImageView"/>-->
-
-            <!--<ImageView-->
-                <!--android:id="@+id/starIcon"-->
-                <!--style="@style/MovieRateImageView" />-->
-
-            <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:orientation="vertical"-->
-                <!--android:layout_toRightOf="@+id/starIcon"-->
-                <!--android:layout_centerVertical="true">-->
-
-                <!--<TextView-->
-                    <!--android:id="@+id/movieRatingDialogTextView"-->
-                    <!--tools:text="Rating value"-->
-                    <!--style="@style/MovieRatingTextView"/>-->
-
-                <!--<TextView-->
-                    <!--android:id="@+id/movieVoteCountDialogTextView"-->
-                    <!--tools:text="Vote Count value"-->
-                    <!--style="@style/MovieVoteCountTextView"/>-->
-            <!--</LinearLayout>-->
-        <!--</RelativeLayout>-->
 
         <View
             style="@style/LineSeparatorView"/>
