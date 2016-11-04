@@ -37,8 +37,6 @@ import movienight.javi.com.movienight.urls.MovieUrlBuilder;
 public class MovieFragment extends FilmFragment
     implements FilterItemAddedListener {
 
-    private List<Genre> mGenres;
-
     public static MovieFragment newInstance(List<Genre> genres, String[] sortItems) {
 
         MovieFragment fragment = new MovieFragment();
@@ -53,12 +51,13 @@ public class MovieFragment extends FilmFragment
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
         mGenres = getArguments().getParcelableArrayList(ActivityExtras.GENRES_KEY);
 
         String[] sortItems = getArguments().getStringArray(ActivityExtras.SORT_OPTIONS_KEY);
         mDialogContainer = new DialogContainer(mGenres, sortItems);
+
+        super.onCreate(savedInstanceState);
     }
 
     @Override

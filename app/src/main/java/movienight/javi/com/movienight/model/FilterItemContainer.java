@@ -24,6 +24,7 @@ public class FilterItemContainer {
         mFilterItemMap.put(2, new ArrayList<FilterableItem>());
         mFilterItemMap.put(3, new ArrayList<FilterableItem>());
         mFilterItemMap.put(4, new ArrayList<FilterableItem>());
+        mFilterItemMap.put(5, new ArrayList<FilterableItem>());
     }
 
     public void put(Integer key, List<FilterableItem> items) {
