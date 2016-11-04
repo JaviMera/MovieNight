@@ -3,6 +3,7 @@ package movienight.javi.com.movienight.model;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
 import movienight.javi.com.movienight.model.SortItems.PopularityAscending;
 import movienight.javi.com.movienight.model.SortItems.PopularityDescending;
 import movienight.javi.com.movienight.model.SortItems.RatingAscending;
@@ -22,7 +23,7 @@ public class SortItemContainer {
 
     private static Integer DEFAULT_SORT_ITEM = 2;
 
-    private Map<Integer, SortItemBase> mSortItemsMap;
+    private Map<Integer, FilterableItem> mSortItemsMap;
 
     public SortItemContainer() {
 
@@ -39,12 +40,12 @@ public class SortItemContainer {
         mSortItemsMap.put(10, new VoteCountDescending());
     }
 
-    public SortItemBase getDefault() {
+    public FilterableItem getDefault() {
 
         return mSortItemsMap.get(DEFAULT_SORT_ITEM);
     }
 
-    public SortItemBase get(Integer key) {
+    public FilterableItem get(Integer key) {
 
         return mSortItemsMap.get(key);
     }

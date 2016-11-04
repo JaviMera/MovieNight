@@ -19,6 +19,7 @@ import movienight.javi.com.movienight.asyntasks.MoviesFilterAsyncTask;
 import movienight.javi.com.movienight.listeners.FilterItemAddedListener;
 
 import movienight.javi.com.movienight.R;
+import movienight.javi.com.movienight.model.DialogContainer;
 import movienight.javi.com.movienight.model.FilterItems.DateRangeFilterableItem;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItemKeys;
@@ -36,15 +37,28 @@ import movienight.javi.com.movienight.urls.MovieUrlBuilder;
 public class MovieFragment extends FilmFragment
     implements FilterItemAddedListener {
 
-    private SortItemBase mSortSelected;
-    private SortItemContainer mSortItemContainer;
+    private List<Genre> mGenres;
+
+    public static MovieFragment newInstance(List<Genre> genres, String[] sortItems) {
+
+        MovieFragment fragment = new MovieFragment();
+        Bundle bundle = new Bundle();
+
+        bundle.putParcelableArrayList(ActivityExtras.GENRES_KEY, (ArrayList)genres);
+        bundle.putStringArray(ActivityExtras.SORT_OPTIONS_KEY, sortItems);
+        fragment.setArguments(bundle);
+
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mSortItemContainer = new SortItemContainer();
-        mSortSelected = mSortItemContainer.getDefault();
+        mGenres = getArguments().getParcelableArrayList(ActivityExtras.GENRES_KEY);
+
+        String[] sortItems = getArguments().getStringArray(ActivityExtras.SORT_OPTIONS_KEY);
+        mDialogContainer = new DialogContainer(mGenres, sortItems);
     }
 
     @Override
@@ -110,6 +124,7 @@ public class MovieFragment extends FilmFragment
 
         List<FilterableItem> selectedItems = mFilterItemContainer.get(position);
         DialogFragment dialog = mDialogContainer.getDialog(position, selectedItems);
+
         dialog.setTargetFragment(getTargetFragment(), 1);
         dialog.show(
                 mParentActivity.getSupportFragmentManager(),
@@ -160,7 +175,12 @@ public class MovieFragment extends FilmFragment
             votesCount = (Integer)item.getValue()[0];
         }
 
-        String sortOption = mSortSelected.getName();
+        String sortOption = "";
+
+        for(FilterableItem item : mFilterItemContainer.get(FilterableItemKeys.SORT)) {
+
+            sortOption = (String) item.getValue()[0];
+        }
 
         return new MovieUrlBuilder()
                 .withPageNumber(pageNumber + "")

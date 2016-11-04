@@ -22,16 +22,7 @@
     <string name="movie_genre_title_text">Genre</string>
     <string name="movie_release_date_title_text">Release Date</string>
 
-    <string-array name="filter_options_array">
-        <item>Filter by...</item>
-        <item>Genre</item>
-        <item>Release Date Range</item>
-        <item>Rating</item>
-        <item>Vote Count</item>
-    </string-array>
-
     <string-array name="sort_options_array">
-        <item>Sort by...</item>
         <item>Popularity Ascending</item>
         <item>Popularity Descending</item>
         <item>Release Date Ascending</item>

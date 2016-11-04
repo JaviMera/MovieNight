@@ -6,9 +6,14 @@ package movienight.javi.com.movienight.model.SortItems;
 
 public class PopularityDescending extends SortItemBase {
 
-
     public PopularityDescending() {
 
         super("popularity.desc");
+    }
+
+    @Override
+    public String toString() {
+
+        return "Popularity desc...";
     }
 }

@@ -10,4 +10,10 @@ public class RatingDescending extends SortItemBase {
 
         super("vote_average.desc");
     }
+
+    @Override
+    public String toString() {
+
+        return "Rating desc...";
+    }
 }

@@ -58,9 +58,9 @@ public abstract class FilmFragment extends Fragment implements
     protected FilmFragmentPresenter mPresenter;
     protected DialogContainer mDialogContainer;
     protected FilterItemContainer mFilterItemContainer;
+    protected List<Genre> mGenres;
 
     private Integer mTotalPages;
-    private List<Genre> mGenres;
     private AsyncTask mMovieAsyncTask;
 
     @BindView(R.id.moviesSearchRecyclerView) RecyclerView mMovieRecyclerView;
@@ -73,17 +73,6 @@ public abstract class FilmFragment extends Fragment implements
         // Required empty public constructor
     }
 
-    public static MovieFragment newInstance(List<Genre> genres) {
-
-        MovieFragment fragment = new MovieFragment();
-        Bundle bundle = new Bundle();
-
-        bundle.putParcelableArrayList(ActivityExtras.GENRES_KEY, (ArrayList)genres);
-        fragment.setArguments(bundle);
-
-        return fragment;
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -94,10 +83,6 @@ public abstract class FilmFragment extends Fragment implements
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mGenres = getArguments().getParcelableArrayList(ActivityExtras.GENRES_KEY);
-
-        mDialogContainer = new DialogContainer(mGenres);
 
         mFilms = new LinkedHashMap<>();
 
@@ -116,36 +101,9 @@ public abstract class FilmFragment extends Fragment implements
 
         View fragmentLayout = inflater.inflate(R.layout.fragment_film, container, false);
 
-
-
         ButterKnife.bind(this, fragmentLayout);
 
         mPresenter = new FilmFragmentPresenter(this);
-//        mSortBySpinnerView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//
-//                if(position > 0) {
-//
-//                    mSortSelected = mSortItemContainer.get(position);
-//
-//                    mFilms.clear();
-//                    mCurrentPageNumber = 1;
-//
-//                    MovieRecyclerViewAdapter movieSearchAdapter = (MovieRecyclerViewAdapter)mMovieRecyclerView.getAdapter();
-//                    movieSearchAdapter.removeData();
-//
-//                    requestFilms(mCurrentPageNumber);
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-
         mPresenter.setFilterItemRecyclerViewAdapter(new FilterableItem[]{});
         mPresenter.setRecyclerViewManager(mFiltersRecyclerView, 1, LinearLayoutManager.HORIZONTAL);
         mPresenter.setRecyclerSize(mFiltersRecyclerView, true);

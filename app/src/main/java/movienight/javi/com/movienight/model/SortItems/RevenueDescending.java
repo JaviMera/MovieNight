@@ -10,4 +10,10 @@ public class RevenueDescending extends SortItemBase {
 
         super("revenue.desc");
     }
+
+    @Override
+    public String toString() {
+
+        return "Revenue desc...";
+    }
 }

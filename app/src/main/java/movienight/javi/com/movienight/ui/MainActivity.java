@@ -119,7 +119,8 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.movieItemNavigationView:
 
-                fragment = MovieFragment.newInstance(mGenres);
+                String[] sortItems = getResources().getStringArray(R.array.sort_options_array);
+                fragment = MovieFragment.newInstance(mGenres, sortItems);
 
                 fragmentManager = getSupportFragmentManager();
                 fragmentManager

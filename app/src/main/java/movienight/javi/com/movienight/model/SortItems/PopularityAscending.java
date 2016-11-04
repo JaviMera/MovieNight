@@ -9,4 +9,10 @@ public class PopularityAscending extends SortItemBase {
     public PopularityAscending() {
         super("popularity.asc");
     }
+
+    @Override
+    public String toString() {
+
+        return "Popularity asc..";
+    }
 }

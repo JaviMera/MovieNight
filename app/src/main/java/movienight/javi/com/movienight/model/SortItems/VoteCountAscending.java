@@ -10,4 +10,10 @@ public class VoteCountAscending extends SortItemBase {
 
         super("vote_count.asc");
     }
+
+    @Override
+    public String toString() {
+
+        return "Vote Count asc...";
+    }
 }

@@ -11,4 +11,10 @@ public class ReleaseDateDescending extends SortItemBase {
 
         super("release_date.desc");
     }
+
+    @Override
+    public String toString() {
+
+        return "Release Date desc...";
+    }
 }

@@ -1,10 +1,12 @@
 package movienight.javi.com.movienight.model.SortItems;
 
+import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
+
 /**
  * Created by Javi on 11/2/2016.
  */
 
-public abstract class SortItemBase {
+public abstract class SortItemBase implements FilterableItem<String> {
 
     private final String mSortName;
 
@@ -16,5 +18,15 @@ public abstract class SortItemBase {
     public String getName() {
 
         return mSortName;
+    }
+
+    @Override
+    public String[] getValue() {
+        return new String[]{mSortName};
+    }
+
+    @Override
+    public void update(String newItem) {
+
     }
 }

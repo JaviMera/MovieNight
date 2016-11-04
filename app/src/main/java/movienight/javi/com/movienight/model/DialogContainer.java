@@ -8,6 +8,7 @@ import movienight.javi.com.movienight.dialogs.DateRangeDialog.DateRangeDialogFra
 import movienight.javi.com.movienight.dialogs.FilterDialogBase;
 import movienight.javi.com.movienight.dialogs.GenresDialog.GenresDialogFragment;
 import movienight.javi.com.movienight.dialogs.RateDialog.RateDialogFragment;
+import movienight.javi.com.movienight.dialogs.SortDialogFragment;
 import movienight.javi.com.movienight.dialogs.VoteDialog.VoteDialogFragment;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItemKeys;
@@ -20,10 +21,12 @@ import movienight.javi.com.movienight.model.FilterItems.Genre;
 public class DialogContainer {
 
     private List<Genre> mGenres;
+    private String[] mSortItems;
 
-    public DialogContainer(List<Genre> genres) {
+    public DialogContainer(List<Genre> genres, String[] items) {
 
         mGenres = genres;
+        mSortItems = items;
     }
 
     public FilterDialogBase getDialog(Integer key, List<FilterableItem> items) {
@@ -41,6 +44,9 @@ public class DialogContainer {
 
             case FilterableItemKeys.VOTE_COUNT:
                 return VoteDialogFragment.newInstance(items);
+
+            case FilterableItemKeys.SORT:
+                return SortDialogFragment.newInstance(mSortItems);
         }
 
         return null;
