@@ -1,4 +1,4 @@
-package movienight.javi.com.movienight.ui.SearchActivity;
+package movienight.javi.com.movienight.fragments;
 
 import android.support.v7.widget.RecyclerView;
 import android.widget.AdapterView;
@@ -12,7 +12,7 @@ import movienight.javi.com.movienight.model.Movie;
  * Created by Javi on 10/22/2016.
  */
 
-public interface SearchActivityView {
+public interface FilmFragmentView {
 
     void setMoviesRecyclerViewAdapter(Movie[] movies);
     void updateRecyclerAdapter(List<Movie> movies);

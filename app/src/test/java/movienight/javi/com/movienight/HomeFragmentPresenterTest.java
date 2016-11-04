@@ -10,25 +10,25 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.List;
 
 import movienight.javi.com.movienight.model.Movie;
-import movienight.javi.com.movienight.ui.MainActivity.MainActivityPresenter;
-import movienight.javi.com.movienight.ui.MainActivity.MainActivityView;
+import movienight.javi.com.movienight.fragments.HomeFragmentPresenter;
+import movienight.javi.com.movienight.fragments.HomeFragmentView;
 
 /**
  * Created by Javier on 10/31/2016.
  */
 
 @RunWith(MockitoJUnitRunner.class)
-public class MainActivityPresenterTest {
+public class HomeFragmentPresenterTest {
 
     @Mock
-    public MainActivityView mView;
+    public HomeFragmentView mView;
 
-    private MainActivityPresenter mPresenter;
+    private HomeFragmentPresenter mPresenter;
 
     @Before
     public void SetUp() throws Exception {
 
-        mPresenter = new MainActivityPresenter(mView);
+        mPresenter = new HomeFragmentPresenter(mView);
     }
 
     @Test

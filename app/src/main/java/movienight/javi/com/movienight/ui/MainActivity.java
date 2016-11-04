@@ -1,4 +1,4 @@
-package movienight.javi.com.movienight.ui.MainActivity;
+package movienight.javi.com.movienight.ui;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,16 +12,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import movienight.javi.com.movienight.R;
+import movienight.javi.com.movienight.asyntasks.GenreAsyncTask;
+import movienight.javi.com.movienight.fragments.FilmFragment;
 import movienight.javi.com.movienight.fragments.HomeFragment;
+import movienight.javi.com.movienight.model.FilterItems.Genre;
+import movienight.javi.com.movienight.ui.AsyncTaskListener;
+import movienight.javi.com.movienight.urls.GenreUrl;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements
+        NavigationView.OnNavigationItemSelectedListener,
+        AsyncTaskListener<Genre> {
 
     private ActionBarDrawerToggle mToggle;
+    private List<Genre> mGenres;
 
     @BindView(R.id.toolbar) Toolbar mToolBar;
     @BindView(R.id.navigationView) NavigationView mNavigationView;
@@ -48,29 +61,8 @@ public class MainActivity extends AppCompatActivity
         mDrawerLayout.addDrawerListener(mToggle);
         mNavigationView.setNavigationItemSelectedListener(this);
 
-        Fragment fragment = null;
-        Class fragmentClass = HomeFragment.class;
-
-        try{
-
-            fragment = (Fragment) fragmentClass.newInstance();
-
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager
-            .beginTransaction()
-            .replace(R.id.fragmentContainer, fragment)
-            .commit();
-
-        mNavigationView
-            .getMenu()
-            .getItem(0)
-            .setChecked(true);
+        new GenreAsyncTask(getSupportFragmentManager(), this)
+                .execute(new GenreUrl());
     }
 
     @Override
@@ -103,13 +95,31 @@ public class MainActivity extends AppCompatActivity
 
         item.setChecked(true);
 
+        Fragment fragment = null;
+        FragmentManager fragmentManager;
+
         switch(item.getItemId()) {
 
             case R.id.popularItemNavigationView:
+
+                fragment = HomeFragment.newInstance(mGenres);
+
+                fragmentManager = getSupportFragmentManager();
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragmentContainer, fragment)
+                        .commit();
                 break;
 
             case R.id.movieItemNavigationView:
 
+                fragment = FilmFragment.newInstance(mGenres);
+
+                fragmentManager = getSupportFragmentManager();
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragmentContainer, fragment)
+                        .commit();
                 break;
 
             case R.id.tvShowItemNavigationItem:
@@ -119,5 +129,15 @@ public class MainActivity extends AppCompatActivity
         mDrawerLayout.closeDrawer(GravityCompat.START);
 
         return true;
+    }
+
+    @Override
+    public void onTaskCompleted(Genre[] result) {
+
+        mGenres = new ArrayList<>(Arrays.asList(result));
+
+        onNavigationItemSelected(
+            mNavigationView.getMenu().getItem(0)
+        );
     }
 }

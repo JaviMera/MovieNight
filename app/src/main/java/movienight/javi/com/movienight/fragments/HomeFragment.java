@@ -1,7 +1,6 @@
 package movienight.javi.com.movienight.fragments;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +22,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.adapters.MovieRecyclerViewAdapter;
-import movienight.javi.com.movienight.asyntasks.GenreAsyncTask;
 import movienight.javi.com.movienight.asyntasks.PopularMoviesAsyncTask;
 import movienight.javi.com.movienight.asyntasks.PostersAsyncTask;
 import movienight.javi.com.movienight.dialogs.LoadingFilterDialog;
@@ -35,25 +32,21 @@ import movienight.javi.com.movienight.listeners.MoviesAsyncTaskListener;
 import movienight.javi.com.movienight.model.FilterItems.Genre;
 import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.ui.ActivityExtras;
-import movienight.javi.com.movienight.ui.AsyncTaskListener;
-import movienight.javi.com.movienight.ui.MainActivity.MainActivity;
-import movienight.javi.com.movienight.ui.MainActivity.MainActivityPresenter;
-import movienight.javi.com.movienight.ui.MainActivity.MainActivityView;
-import movienight.javi.com.movienight.urls.GenreUrl;
+import movienight.javi.com.movienight.ui.MainActivity;
 import movienight.javi.com.movienight.urls.PopularMoviesUrl;
 
 public class HomeFragment extends Fragment implements
-        MainActivityView,
+        HomeFragmentView,
         MovieSelectedListener,
         MoviesAsyncTaskListener,
-        MoviePostersListener,
-        AsyncTaskListener<Genre> {
+        MoviePostersListener
+    {
 
     private MainActivity mParentActivity;
     private Map<String, Movie> mMovies;
     private List<Genre> mGenres;
     private LoadingFilterDialog mDialog;
-    private MainActivityPresenter mPresenter;
+    private HomeFragmentPresenter mPresenter;
 
     @BindView(R.id.popularMoviesRecyclerView)
     RecyclerView mMoviesRecyclerView;
@@ -62,9 +55,13 @@ public class HomeFragment extends Fragment implements
         // Required empty public constructor
     }
 
-    public static HomeFragment newInstance() {
+    public static HomeFragment newInstance(List<Genre> genres) {
 
         HomeFragment fragment = new HomeFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(ActivityExtras.GENRES_KEY, (ArrayList)genres);
+        fragment.setArguments(bundle);
+
         return fragment;
     }
 
@@ -76,18 +73,20 @@ public class HomeFragment extends Fragment implements
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mMovies = new LinkedHashMap<>();
+        mGenres = getArguments().getParcelableArrayList(ActivityExtras.GENRES_KEY);
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mMovies = new LinkedHashMap<>();
-        mPresenter = new MainActivityPresenter(this);
-
-        mPresenter.setTopMoviesRecyclerViewAdapter(new ArrayList<Movie>(){});
-        mPresenter.setTopMoviesRecyclerViewLayoutManager(3, GridLayoutManager.VERTICAL);
-        mPresenter.setTopMoviesRecyclerViewSize(true);
-
-        new GenreAsyncTask(mParentActivity.getSupportFragmentManager(), this)
-                .execute(new GenreUrl());
+        PopularMoviesUrl url = new PopularMoviesUrl();
+        new PopularMoviesAsyncTask(this)
+                .execute(url);
 
         mDialog = LoadingFilterDialog.newInstance();
         mDialog.show(
@@ -99,10 +98,16 @@ public class HomeFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View fragmentLayout = inflater.inflate(R.layout.fragment_home, container, false);
 
         ButterKnife.bind(this, fragmentLayout);
+
+        mPresenter = new HomeFragmentPresenter(this);
+
+        mPresenter.setTopMoviesRecyclerViewAdapter(new ArrayList<Movie>(){});
+        mPresenter.setTopMoviesRecyclerViewLayoutManager(3, GridLayoutManager.VERTICAL);
+        mPresenter.setTopMoviesRecyclerViewSize(true);
 
         return fragmentLayout;
     }
@@ -155,16 +160,6 @@ public class HomeFragment extends Fragment implements
                     defaultBitmap
             ).execute(movie.getPosterPath());
         }
-    }
-
-    @Override
-    public void onTaskCompleted(Genre[] result) {
-
-        mGenres = new ArrayList<>(Arrays.asList(result));
-
-        PopularMoviesUrl url = new PopularMoviesUrl();
-        new PopularMoviesAsyncTask(this)
-                .execute(url);
     }
 
     @Override

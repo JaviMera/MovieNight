@@ -1,0 +1,53 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     tools:context="movienight.javi.com.movienight.fragments.FilmFragment">
+
+    <LinearLayout
+        android:id="@+id/activity_movies"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Spinner
+            android:id="@+id/filterMoviesSpinnerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/spinner_background"
+            android:layout_margin="15dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/filtersRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp" />
+
+        <Spinner
+            android:id="@+id/sortBySpinnerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/spinner_background"
+            android:layout_margin="15dp" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="6"
+            android:layout_margin="15dp">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/moviesSearchRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <ProgressBar
+                android:id="@+id/updateRecyclerViewProgressBar"
+                android:visibility="invisible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
+        </FrameLayout>
+    </LinearLayout>
+</FrameLayout>

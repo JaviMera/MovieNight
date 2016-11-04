@@ -15,25 +15,25 @@ import java.util.List;
 
 import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
 import movienight.javi.com.movienight.model.Movie;
-import movienight.javi.com.movienight.ui.SearchActivity.SearchActivityPresenter;
-import movienight.javi.com.movienight.ui.SearchActivity.SearchActivityView;
+import movienight.javi.com.movienight.fragments.FilmFragmentPresenter;
+import movienight.javi.com.movienight.fragments.FilmFragmentView;
 
 /**
  * Created by Javi on 10/22/2016.
  */
 
 @RunWith(MockitoJUnitRunner.class)
-public class SearchActivityPresenterTest {
+public class FilmFragmentPresenterTest {
 
-    private SearchActivityPresenter mPresenter;
+    private FilmFragmentPresenter mPresenter;
 
     @Mock
-    public SearchActivityView mView;
+    public FilmFragmentView mView;
 
     @Before
     public void SetUp() throws Exception {
 
-        mPresenter = new SearchActivityPresenter(mView);
+        mPresenter = new FilmFragmentPresenter(mView);
     }
 
     @Test

@@ -1,4 +1,4 @@
-package movienight.javi.com.movienight.ui.MainActivity;
+package movienight.javi.com.movienight.fragments;
 
 import java.util.List;
 
@@ -8,11 +8,11 @@ import movienight.javi.com.movienight.model.Movie;
  * Created by Javier on 10/31/2016.
  */
 
-public class MainActivityPresenter {
+public class HomeFragmentPresenter {
 
-    private MainActivityView mView;
+    private HomeFragmentView mView;
 
-    public MainActivityPresenter(MainActivityView view) {
+    public HomeFragmentPresenter(HomeFragmentView view) {
 
         mView = view;
     }
