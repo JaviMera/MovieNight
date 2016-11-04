@@ -3,14 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/popularItemNavigationView"
+            android:title="Popular"/>
+
         <item
             android:id="@+id/movieItemNavigationView"
-            android:checked="true"
             android:title="Movies"/>
 
         <item
             android:id="@+id/tvShowItemNavigationItem"
             android:checked="false"
-            android:title="Tv Shows" />
+            android:title="TV Shows" />
     </group>
 </menu>
