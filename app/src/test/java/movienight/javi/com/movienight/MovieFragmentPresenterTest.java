@@ -13,6 +13,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.LinkedList;
 import java.util.List;
 
+import movienight.javi.com.movienight.model.Film;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
 import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.fragments.FilmFragmentPresenter;
@@ -23,7 +24,7 @@ import movienight.javi.com.movienight.fragments.FilmFragmentView;
  */
 
 @RunWith(MockitoJUnitRunner.class)
-public class FilmFragmentPresenterTest {
+public class MovieFragmentPresenterTest {
 
     private FilmFragmentPresenter mPresenter;
 
@@ -93,7 +94,7 @@ public class FilmFragmentPresenterTest {
     public void updateRecyclerViewAdapter() throws Exception {
 
         // Arrange
-        List<Movie> movies = new LinkedList<>();
+        List<Film> movies = new LinkedList<>();
 
         // Act
         mPresenter.updateRecyclerViewAdapter(movies);

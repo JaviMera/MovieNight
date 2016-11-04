@@ -10,9 +10,9 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import movienight.javi.com.movienight.listeners.MoviesAsyncTaskListener;
+import movienight.javi.com.movienight.listeners.FilmAsyncTaskListener;
+import movienight.javi.com.movienight.model.Film;
 import movienight.javi.com.movienight.model.Movie;
-import movienight.javi.com.movienight.model.jsonvalues.JSONMovie;
 import movienight.javi.com.movienight.model.jsonvalues.JSONMovieDiscover;
 import movienight.javi.com.movienight.urls.AbstractUrl;
 import okhttp3.Call;
@@ -26,9 +26,9 @@ import okhttp3.Response;
 
 public class PopularMoviesAsyncTask extends AsyncTask<AbstractUrl, Void, Movie[]> {
 
-    private MoviesAsyncTaskListener mListener;
+    private FilmAsyncTaskListener mListener;
     private int mTotalPages;
-    public PopularMoviesAsyncTask(MoviesAsyncTaskListener listener) {
+    public PopularMoviesAsyncTask(FilmAsyncTaskListener listener) {
 
         mListener = listener;
     }
@@ -49,12 +49,12 @@ public class PopularMoviesAsyncTask extends AsyncTask<AbstractUrl, Void, Movie[]
             String jsonString = response.body().string();
             JSONObject jsonObject = new JSONObject(jsonString);
             JSONArray resultsArray = jsonObject.getJSONArray(JSONMovieDiscover.RESULTS_KEY);
-            List<Movie> movies = new LinkedList<>();
+            List<Film> movies = new LinkedList<>();
 
             for(int result = 0 ; result < resultsArray.length(); result++) {
 
                 JSONObject currentJSONObject = resultsArray.getJSONObject(result);
-                Movie newMovie = Movie.fromJSON(currentJSONObject);
+                Film newMovie = Movie.fromJSON(currentJSONObject);
 
                 movies.add(newMovie);
             }

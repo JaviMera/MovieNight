@@ -5,6 +5,7 @@ import android.widget.AdapterView;
 
 import java.util.List;
 
+import movienight.javi.com.movienight.model.Film;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
 import movienight.javi.com.movienight.model.Movie;
 
@@ -21,14 +22,14 @@ public class FilmFragmentPresenter {
         mView = view;
     }
 
-    public void updateRecyclerViewAdapter(List<Movie> movies) {
+    public void updateRecyclerViewAdapter(List<Film> films) {
 
-        mView.updateRecyclerAdapter(movies);
+        mView.updateRecyclerAdapter(films);
     }
 
-    public void setMoviesRecyclerViewAdapter(Movie[] movies) {
+    public void setMoviesRecyclerViewAdapter(Film[] films) {
 
-        mView.setMoviesRecyclerViewAdapter(movies);
+        mView.setMoviesRecyclerViewAdapter(films);
     }
 
     public void setProgressBarVisibility(int progressBarVisibility) {

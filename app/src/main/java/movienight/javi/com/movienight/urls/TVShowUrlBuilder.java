@@ -1,18 +1,21 @@
 package movienight.javi.com.movienight.urls;
 
 /**
- * Created by Javi on 10/21/2016.
+ * Created by Javi on 11/4/2016.
  */
 
-public class MovieUrlBuilder {
+public class TVShowUrlBuilder {
 
     private final String DEFAULT_SORT = "popularity.desc";
     private final String DEFAULT_PAGE = "1";
+    private final String DEFAULT_LANGUAGE = "en-US";
+    private final String DEFAULT_TIMZONE = "America/New_York";
+    private final String DEFAULT_FIRST_AIR_DATE = "false";
 
     private String mSort;
     private String mLanguage;
-    private String mAdult;
-    private String mVideo;
+    private String mTimezone;
+    private String mFirstAirDate;
     private String mPage;
     private String mGenreIds;
     private String mStartReleaseDate;
@@ -20,70 +23,70 @@ public class MovieUrlBuilder {
     private String mVoteCount;
     private String mRating;
 
-    public MovieUrlBuilder() {
+    public TVShowUrlBuilder() {
 
-        mLanguage = "en-US";
-        mAdult = "false";
-        mVideo = "true";
+        mLanguage = DEFAULT_LANGUAGE;
         mPage = DEFAULT_PAGE;
         mSort = DEFAULT_SORT;
+        mTimezone = DEFAULT_TIMZONE;
+        mFirstAirDate = DEFAULT_FIRST_AIR_DATE;
     }
 
-    public MovieUrlBuilder withPageNumber(String pageNumber) {
+    public TVShowUrlBuilder withPageNumber(String pageNumber) {
 
         mPage = pageNumber;
         return this;
     }
 
-    public MovieUrlBuilder withGenres(String ids) {
+    public TVShowUrlBuilder withGenres(String ids) {
 
         mGenreIds = ids;
         return this;
     }
 
-    public MovieUrlBuilder withStartReleaseDate(String date) {
+    public TVShowUrlBuilder withStartAirDate(String date) {
 
         mStartReleaseDate = date;
         return this;
     }
 
-    public MovieUrlBuilder withEndReleaseDate(String date) {
+    public TVShowUrlBuilder withEndAirDate(String date) {
 
         mEndReleaseDate = date;
         return this;
     }
 
-    public MovieUrlBuilder withVoteCount(String voteCount) {
+    public TVShowUrlBuilder withVoteCount(String voteCount) {
 
         mVoteCount = voteCount;
         return this;
     }
 
-    public MovieUrlBuilder withRating(String rating) {
+    public TVShowUrlBuilder withRating(String rating) {
 
         mRating = rating;
         return this;
     }
 
-    public MovieUrlBuilder sortBy(String sort) {
+    public TVShowUrlBuilder sortByt(String sortBy) {
 
-        mSort = sort;
+        mSort = sortBy;
         return this;
     }
 
-    public MovieUrl createMovieUrl() {
+    public TVShowUrl createTVShowUrl() {
 
-        return new MovieUrl(
+        return new TVShowUrl(
             mLanguage,
             mSort,
-            mAdult,
-            mVideo,
             mPage,
             mGenreIds,
             mStartReleaseDate,
             mEndReleaseDate,
             mVoteCount,
-            mRating
+            mRating,
+            mTimezone,
+            mFirstAirDate
         );
     }
 }

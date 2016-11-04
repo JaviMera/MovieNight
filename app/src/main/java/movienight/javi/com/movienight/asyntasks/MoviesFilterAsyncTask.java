@@ -1,6 +1,5 @@
 package movienight.javi.com.movienight.asyntasks;
 
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
 import org.json.JSONArray;
@@ -14,7 +13,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import movienight.javi.com.movienight.listeners.MoviesAsyncTaskListener;
+import movienight.javi.com.movienight.listeners.FilmAsyncTaskListener;
+import movienight.javi.com.movienight.model.Film;
 import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.model.Page;
 import movienight.javi.com.movienight.model.jsonvalues.JSONMovie;
@@ -34,10 +34,10 @@ import okhttp3.Response;
 
 public class MoviesFilterAsyncTask extends AsyncTask<AbstractUrl, Void, Page> {
 
-    private MoviesAsyncTaskListener mListener;
+    private FilmAsyncTaskListener mListener;
     private Integer mTotalPages;
 
-    public MoviesFilterAsyncTask(MoviesAsyncTaskListener listener) {
+    public MoviesFilterAsyncTask(FilmAsyncTaskListener listener) {
 
         mListener = listener;
     }
@@ -70,7 +70,7 @@ public class MoviesFilterAsyncTask extends AsyncTask<AbstractUrl, Void, Page> {
             mTotalPages = jsonObject.getInt(JSONMovieDiscover.TOTAL_PAGES_KEY);
 
             JSONArray resultsArray = jsonObject.getJSONArray(JSONMovieDiscover.RESULTS_KEY);
-            List<Movie> movies = new LinkedList<>();
+            List<Film> movies = new LinkedList<>();
 
             for(int result = 0 ; result < resultsArray.length(); result++) {
 
@@ -114,6 +114,6 @@ public class MoviesFilterAsyncTask extends AsyncTask<AbstractUrl, Void, Page> {
     @Override
     protected void onPostExecute(Page page) {
 
-        mListener.onCompleted(mTotalPages, page.getMovies());
+        mListener.onCompleted(mTotalPages, page.getFilms());
     }
 }

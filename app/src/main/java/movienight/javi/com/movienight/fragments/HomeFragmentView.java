@@ -2,6 +2,7 @@ package movienight.javi.com.movienight.fragments;
 
 import java.util.List;
 
+import movienight.javi.com.movienight.model.Film;
 import movienight.javi.com.movienight.model.Movie;
 
 /**
@@ -9,8 +10,8 @@ import movienight.javi.com.movienight.model.Movie;
  */
 
 public interface HomeFragmentView {
-    void setTopMoviesRecyclerViewAdapter(List<Movie> items);
+    void setTopMoviesRecyclerViewAdapter(List<Film> items);
     void setTopMoviesRecyclerViewLayoutManager(int numberOfColumns, int orientation);
     void setTopMoviesRecyclerViewSize(boolean fixedSize);
-    void updateMoviesRecyclerViewAdapter(List<Movie> movies);
+    void updateMoviesRecyclerViewAdapter(List<Film> movies);
 }

@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,10 +22,9 @@ import butterknife.ButterKnife;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.asyntasks.GenreAsyncTask;
 import movienight.javi.com.movienight.dialogs.LoadingFilterDialog;
-import movienight.javi.com.movienight.fragments.FilmFragment;
 import movienight.javi.com.movienight.fragments.HomeFragment;
+import movienight.javi.com.movienight.fragments.MovieFragment;
 import movienight.javi.com.movienight.model.FilterItems.Genre;
-import movienight.javi.com.movienight.ui.AsyncTaskListener;
 import movienight.javi.com.movienight.urls.GenreUrl;
 
 public class MainActivity extends AppCompatActivity
@@ -121,7 +119,7 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.movieItemNavigationView:
 
-                fragment = FilmFragment.newInstance(mGenres);
+                fragment = MovieFragment.newInstance(mGenres);
 
                 fragmentManager = getSupportFragmentManager();
                 fragmentManager

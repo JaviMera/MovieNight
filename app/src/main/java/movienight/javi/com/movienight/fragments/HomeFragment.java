@@ -24,11 +24,11 @@ import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.adapters.MovieRecyclerViewAdapter;
 import movienight.javi.com.movienight.asyntasks.PopularMoviesAsyncTask;
 import movienight.javi.com.movienight.asyntasks.PostersAsyncTask;
-import movienight.javi.com.movienight.dialogs.LoadingFilterDialog;
-import movienight.javi.com.movienight.dialogs.MovieDialog.MovieDialogFragment;
+import movienight.javi.com.movienight.dialogs.MovieDialog.FilmDialogFragment;
 import movienight.javi.com.movienight.listeners.MoviePostersListener;
-import movienight.javi.com.movienight.listeners.MovieSelectedListener;
-import movienight.javi.com.movienight.listeners.MoviesAsyncTaskListener;
+import movienight.javi.com.movienight.listeners.FilmSelectedListener;
+import movienight.javi.com.movienight.listeners.FilmAsyncTaskListener;
+import movienight.javi.com.movienight.model.Film;
 import movienight.javi.com.movienight.model.FilterItems.Genre;
 import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.ui.ActivityExtras;
@@ -37,13 +37,13 @@ import movienight.javi.com.movienight.urls.PopularMoviesUrl;
 
 public class HomeFragment extends Fragment implements
         HomeFragmentView,
-        MovieSelectedListener,
-        MoviesAsyncTaskListener,
+        FilmSelectedListener,
+        FilmAsyncTaskListener,
         MoviePostersListener
     {
 
     private MainActivity mParentActivity;
-    private Map<String, Movie> mMovies;
+    private Map<String, Film> mFilms;
     private List<Genre> mGenres;
     private HomeFragmentPresenter mPresenter;
 
@@ -75,7 +75,7 @@ public class HomeFragment extends Fragment implements
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mMovies = new LinkedHashMap<>();
+        mFilms = new LinkedHashMap<>();
         mGenres = getArguments().getParcelableArrayList(ActivityExtras.GENRES_KEY);
     }
 
@@ -98,7 +98,7 @@ public class HomeFragment extends Fragment implements
 
         mPresenter = new HomeFragmentPresenter(this);
 
-        mPresenter.setTopMoviesRecyclerViewAdapter(new ArrayList<Movie>(){});
+        mPresenter.setTopMoviesRecyclerViewAdapter(new ArrayList<Film>(){});
         mPresenter.setTopMoviesRecyclerViewLayoutManager(3, GridLayoutManager.VERTICAL);
         mPresenter.setTopMoviesRecyclerViewSize(true);
 
@@ -108,58 +108,18 @@ public class HomeFragment extends Fragment implements
     @Override
     public void onPostersCompleted(String path, Bitmap poster) {
 
-        Movie updatedMovie = mMovies.get(path);
+        Film updatedMovie = mFilms.get(path);
         updatedMovie.setPoster(poster);
         MovieRecyclerViewAdapter adapter = (MovieRecyclerViewAdapter) mMoviesRecyclerView.getAdapter();
         adapter.updateMoviePoster(updatedMovie);
     }
 
     @Override
-    public void onMovieSelectedListener(Movie movie) {
-
-        MovieDialogFragment dialog = MovieDialogFragment.newInstance(
-            movie,
-            Genre.getSelectedGenres(movie.getGenreIds(), mGenres));
-
-        dialog.show(
-            mParentActivity.getSupportFragmentManager(),
-            "movie_dialog"
-        );
-    }
-
-    @Override
-    public void onCompleted(Integer totalPages, Movie[] movies) {
-
-        mMovies.clear();
-
-        for(Movie movie : movies) {
-
-            mMovies.put(movie.getPosterPath(), movie);
-        }
-
-        mPresenter.updateMoviesRecyclerViewAdapter(new ArrayList<>(mMovies.values()));
-
-        Bitmap defaultBitmap = BitmapFactory.decodeResource(
-                this.getResources(),
-                R.drawable.no_poster_image);
-
-        for(Movie movie : mMovies.values()) {
-
-            new PostersAsyncTask(
-                    this,
-                    mParentActivity.getSupportFragmentManager(),
-                    ActivityExtras.POSTER_RESOLUTION_342,
-                    defaultBitmap
-            ).execute(movie.getPosterPath());
-        }
-    }
-
-    @Override
-    public void setTopMoviesRecyclerViewAdapter(List<Movie> items) {
+    public void setTopMoviesRecyclerViewAdapter(List<Film> films) {
 
         MovieRecyclerViewAdapter adapter = new MovieRecyclerViewAdapter(
                 mParentActivity,
-                items,
+                films,
                 this);
 
         mMoviesRecyclerView.setAdapter(adapter);
@@ -184,9 +144,49 @@ public class HomeFragment extends Fragment implements
     }
 
     @Override
-    public void updateMoviesRecyclerViewAdapter(List<Movie> movies) {
+    public void updateMoviesRecyclerViewAdapter(List<Film> films) {
 
         MovieRecyclerViewAdapter adapter = (MovieRecyclerViewAdapter) mMoviesRecyclerView.getAdapter();
-        adapter.updateData(movies);
+        adapter.updateData(films);
+    }
+
+    @Override
+    public void onCompleted(Integer totalPages, Film[] films) {
+
+        mFilms.clear();
+
+        for(Film film : films) {
+
+            mFilms.put(film.getPosterPath(), film);
+        }
+
+        mPresenter.updateMoviesRecyclerViewAdapter(new ArrayList<>(mFilms.values()));
+
+        Bitmap defaultBitmap = BitmapFactory.decodeResource(
+                this.getResources(),
+                R.drawable.no_poster_image);
+
+        for(Film film : mFilms.values()) {
+
+            new PostersAsyncTask(
+                    this,
+                    mParentActivity.getSupportFragmentManager(),
+                    ActivityExtras.POSTER_RESOLUTION_342,
+                    defaultBitmap
+            ).execute(film.getPosterPath());
+        }
+    }
+
+    @Override
+    public void onFilmSelectedItem(Film film) {
+
+        FilmDialogFragment dialog = FilmDialogFragment.newInstance(
+                film,
+                Genre.getSelectedGenres(film.getGenres(), mGenres));
+
+        dialog.show(
+                mParentActivity.getSupportFragmentManager(),
+                "movie_dialog"
+        );
     }
 }

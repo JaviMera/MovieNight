@@ -37,13 +37,14 @@ import movienight.javi.com.movienight.adapters.FilterItemRecyclerAdapter;
 import movienight.javi.com.movienight.adapters.MovieRecyclerViewAdapter;
 import movienight.javi.com.movienight.asyntasks.MoviesFilterAsyncTask;
 import movienight.javi.com.movienight.asyntasks.PostersAsyncTask;
-import movienight.javi.com.movienight.dialogs.MovieDialog.MovieDialogFragment;
+import movienight.javi.com.movienight.dialogs.MovieDialog.FilmDialogFragment;
 import movienight.javi.com.movienight.listeners.FilterItemAddedListener;
 import movienight.javi.com.movienight.listeners.FilterItemRemovedListener;
 import movienight.javi.com.movienight.listeners.MoviePostersListener;
-import movienight.javi.com.movienight.listeners.MovieSelectedListener;
-import movienight.javi.com.movienight.listeners.MoviesAsyncTaskListener;
+import movienight.javi.com.movienight.listeners.FilmSelectedListener;
+import movienight.javi.com.movienight.listeners.FilmAsyncTaskListener;
 import movienight.javi.com.movienight.model.DialogContainer;
+import movienight.javi.com.movienight.model.Film;
 import movienight.javi.com.movienight.model.FilterItemContainer;
 import movienight.javi.com.movienight.model.FilterItems.DateRangeFilterableItem;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
@@ -63,14 +64,15 @@ import movienight.javi.com.movienight.urls.MovieUrlBuilder;
 public class FilmFragment extends Fragment implements FilterItemAddedListener,
         FilterItemRemovedListener,
         FilmFragmentView,
-        MoviesAsyncTaskListener,
-        MovieSelectedListener,
+        FilmAsyncTaskListener,
+        FilmSelectedListener,
         MoviePostersListener {
 
     private MainActivity mParentActivity;
+
     private Integer mTotalPages;
     private int mCurrentPageNumber;
-    private Map<String, Movie> mMovies;
+    private Map<String, Film> mFilms;
     private List<Genre> mGenres;
     private FilmFragmentPresenter mPresenter;
     private MovieUrl mUrl;
@@ -92,9 +94,9 @@ public class FilmFragment extends Fragment implements FilterItemAddedListener,
         // Required empty public constructor
     }
 
-    public static FilmFragment newInstance(List<Genre> genres) {
+    public static MovieFragment newInstance(List<Genre> genres) {
 
-        FilmFragment fragment = new FilmFragment();
+        MovieFragment fragment = new MovieFragment();
         Bundle bundle = new Bundle();
 
         bundle.putParcelableArrayList(ActivityExtras.GENRES_KEY, (ArrayList)genres);
@@ -115,9 +117,10 @@ public class FilmFragment extends Fragment implements FilterItemAddedListener,
         super.onCreate(savedInstanceState);
 
         mGenres = getArguments().getParcelableArrayList(ActivityExtras.GENRES_KEY);
+
         mDialogContainer = new DialogContainer(mGenres);
 
-        mMovies = new LinkedHashMap<>();
+        mFilms = new LinkedHashMap<>();
 
         mFilterItemContainer = new FilterItemContainer();
 
@@ -127,6 +130,8 @@ public class FilmFragment extends Fragment implements FilterItemAddedListener,
         mCurrentPageNumber = 1;
 
         setTargetFragment(this, 1);
+
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -134,6 +139,8 @@ public class FilmFragment extends Fragment implements FilterItemAddedListener,
                              Bundle savedInstanceState) {
 
         View fragmentLayout = inflater.inflate(R.layout.fragment_film, container, false);
+
+
 
         ButterKnife.bind(this, fragmentLayout);
 
@@ -156,7 +163,7 @@ public class FilmFragment extends Fragment implements FilterItemAddedListener,
 
                     mSortSelected = mSortItemContainer.get(position);
 
-                    mMovies.clear();
+                    mFilms.clear();
                     mCurrentPageNumber = 1;
 
                     MovieRecyclerViewAdapter movieSearchAdapter = (MovieRecyclerViewAdapter)mMovieRecyclerView.getAdapter();
@@ -175,7 +182,7 @@ public class FilmFragment extends Fragment implements FilterItemAddedListener,
         mPresenter.setRecyclerViewManager(mFiltersRecyclerView, 1, LinearLayoutManager.HORIZONTAL);
         mPresenter.setRecyclerSize(mFiltersRecyclerView, true);
 
-        mPresenter.setMoviesRecyclerViewAdapter(mMovies.values().toArray(new Movie[]{}));
+        mPresenter.setMoviesRecyclerViewAdapter(mFilms.values().toArray(new Movie[]{}));
         mPresenter.setRecyclerViewManager(mMovieRecyclerView, 3, LinearLayoutManager.VERTICAL);
         mPresenter.setRecyclerSize(mMovieRecyclerView, true);
         mPresenter.setMovieRecyclerScrollListener(scrollListener());
@@ -201,7 +208,7 @@ public class FilmFragment extends Fragment implements FilterItemAddedListener,
         MovieRecyclerViewAdapter movieSearchAdapter = (MovieRecyclerViewAdapter)mMovieRecyclerView.getAdapter();
         movieSearchAdapter.removeData();
 
-        mMovies.clear();
+        mFilms.clear();
         mCurrentPageNumber = 1;
         requestMovies(mCurrentPageNumber);
     }
@@ -222,7 +229,7 @@ public class FilmFragment extends Fragment implements FilterItemAddedListener,
         movieSearchAdapter.removeData();
 
         mCurrentPageNumber = 1;
-        mMovies.clear();
+        mFilms.clear();
 
         if(mMovieAsyncTask.getStatus() == AsyncTask.Status.RUNNING) {
 
@@ -244,9 +251,9 @@ public class FilmFragment extends Fragment implements FilterItemAddedListener,
     @Override
     public void onPostersCompleted(String path, Bitmap poster) {
 
-        if(!mMovies.isEmpty()) {
+        if(!mFilms.isEmpty()) {
 
-            Movie updatedMovie = mMovies.get(path);
+            Film updatedMovie = mFilms.get(path);
             updatedMovie.setPoster(poster);
             MovieRecyclerViewAdapter adapter = (MovieRecyclerViewAdapter) mMovieRecyclerView.getAdapter();
             adapter.updateMoviePoster(updatedMovie);
@@ -254,64 +261,64 @@ public class FilmFragment extends Fragment implements FilterItemAddedListener,
     }
 
     @Override
-    public void onMovieSelectedListener(Movie movie) {
+    public void onFilmSelectedItem(Film film) {
 
-        MovieDialogFragment movieDialogFragment = MovieDialogFragment.newInstance(
-                movie,
-                Genre.getSelectedGenres(movie.getGenreIds(), mGenres)
+        FilmDialogFragment filmDialogFragment = FilmDialogFragment.newInstance(
+                film,
+                Genre.getSelectedGenres(film.getGenres(), mGenres)
         );
 
-        movieDialogFragment.show(
+        filmDialogFragment.show(
             mParentActivity.getSupportFragmentManager(),
             "movie_dialog");
     }
 
     @Override
-    public void onCompleted(Integer totalPages, Movie[] movies) {
+    public void onCompleted(Integer totalPages, Film[] films) {
 
         mTotalPages = totalPages;
-        mMovies.clear();
+        mFilms.clear();
 
-        for(Movie movie : movies) {
+        for(Film film : films) {
 
-            mMovies.put(movie.getPosterPath(), movie);
+            mFilms.put(film.getPosterPath(), film);
         }
 
         mPresenter.setProgressBarVisibility(View.INVISIBLE);
-        mPresenter.updateRecyclerViewAdapter(new ArrayList<>(mMovies.values()));
+        mPresenter.updateRecyclerViewAdapter(new ArrayList<>(mFilms.values()));
 
         Bitmap defaultBitmap = BitmapFactory.decodeResource(
                 this.getResources(),
                 R.drawable.no_poster_image
         );
 
-        for(Movie movie : mMovies.values()) {
+        for(Film film : mFilms.values()) {
 
             new PostersAsyncTask(
                     this,
                     mParentActivity.getSupportFragmentManager(),
                     ActivityExtras.POSTER_RESOLUTION_342,
                     defaultBitmap
-            ).execute(movie.getPosterPath());
+            ).execute(film.getPosterPath());
         }
     }
 
     @Override
-    public void setMoviesRecyclerViewAdapter(Movie[] movies) {
+    public void setMoviesRecyclerViewAdapter(Film[] films) {
 
         MovieRecyclerViewAdapter movieAdapter = new MovieRecyclerViewAdapter(
                 mParentActivity,
-                new LinkedList<>(Arrays.asList(movies)),
+                new LinkedList<>(Arrays.asList(films)),
                 this);
 
         mMovieRecyclerView.setAdapter(movieAdapter);
     }
 
     @Override
-    public void updateRecyclerAdapter(List<Movie> movies) {
+    public void updateRecyclerAdapter(List<Film> films) {
 
         MovieRecyclerViewAdapter movieAdapter = (MovieRecyclerViewAdapter)mMovieRecyclerView.getAdapter();
-        movieAdapter.updateData(movies);
+        movieAdapter.updateData(films);
     }
 
     @Override

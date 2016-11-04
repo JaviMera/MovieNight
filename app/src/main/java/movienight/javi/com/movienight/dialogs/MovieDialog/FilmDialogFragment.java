@@ -22,6 +22,7 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import movienight.javi.com.movienight.R;
+import movienight.javi.com.movienight.model.Film;
 import movienight.javi.com.movienight.model.FilterItems.Genre;
 import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.ui.ActivityExtras;
@@ -29,7 +30,7 @@ import movienight.javi.com.movienight.ui.ActivityExtras;
 /**
  * Created by Javi on 11/1/2016.
  */
-public class MovieDialogFragment extends DialogFragment implements MovieDialogFramgnetView {
+public class FilmDialogFragment extends DialogFragment implements MovieDialogFramgnetView {
 
     private Movie mMovie;
     private List<Genre> mMovieGenres;
@@ -43,12 +44,12 @@ public class MovieDialogFragment extends DialogFragment implements MovieDialogFr
     @BindView(R.id.movieGenresDialogTextView) TextView mGenresTextView;
     @BindView(R.id.movieReleaseDateDialogTextView) TextView mReleaseDateTextView;
 
-    public static MovieDialogFragment newInstance(Movie movie, List<Genre> genres) {
+    public static FilmDialogFragment newInstance(Film film, List<Genre> genres) {
 
-        MovieDialogFragment dialog = new MovieDialogFragment();
+        FilmDialogFragment dialog = new FilmDialogFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putParcelable(ActivityExtras.SELECTED_MOVIE_KEY, movie);
+        bundle.putParcelable(ActivityExtras.SELECTED_MOVIE_KEY, film);
         bundle.putParcelableArrayList(ActivityExtras.GENRES_KEY, (ArrayList)genres);
         dialog.setArguments(bundle);
 

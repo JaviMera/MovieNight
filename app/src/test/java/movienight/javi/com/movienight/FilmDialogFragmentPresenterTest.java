@@ -20,7 +20,7 @@ import movienight.javi.com.movienight.model.FilterItems.Genre;
  * Created by Javi on 11/1/2016.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class MovieDialogFragmentPresenterTest {
+public class FilmDialogFragmentPresenterTest {
 
     @Mock
     public MovieDialogFramgnetView mView;

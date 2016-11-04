@@ -13,7 +13,7 @@ import movienight.javi.com.movienight.model.jsonvalues.JSONMovie;
 /**
  * Created by Javi on 10/21/2016.
  */
-public class Movie implements Parcelable{
+public class Movie implements Film{
 
     private int mId;
     private String mOverview;
@@ -22,7 +22,7 @@ public class Movie implements Parcelable{
     private String mReleaseDate;
     private double mPopularity;
     private int mVoteCount;
-    private Double mRating;
+    private double mRating;
     private int[] mGenreIds;
     private String mPosterPath;
     private Bitmap mPoster;
@@ -57,7 +57,7 @@ public class Movie implements Parcelable{
         this(-1, "insert overview", "insert originalTitle", "insert title", "Insert year", 0.0, 0, 0.0, new int[]{}, "insert poster path", null);
     }
 
-    public static Movie fromJSON(JSONObject jsonObject) throws JSONException{
+    public static Film fromJSON(JSONObject jsonObject) throws JSONException{
 
         int movieId = jsonObject.getInt(JSONMovie.ID_KEY);
         String movieOverview = jsonObject.getString(JSONMovie.OVERVIEW_KEY);
@@ -126,6 +126,11 @@ public class Movie implements Parcelable{
         return mId;
     }
 
+    @Override
+    public String getName() {
+        return mTitle;
+    }
+
     public String getOverview() {
         return mOverview;
     }
@@ -140,7 +145,7 @@ public class Movie implements Parcelable{
 
     public String getReleaseDate() {return mReleaseDate;}
 
-    public Double getPopularity() {
+    public double getPopularity() {
         return mPopularity;
     }
 
@@ -149,11 +154,12 @@ public class Movie implements Parcelable{
         return mVoteCount;
     }
 
-    public Double getRating() {
+    public double getRating() {
         return mRating;
     }
 
-    public int[] getGenreIds() {
+    @Override
+    public int[] getGenres() {
 
         return mGenreIds;
     }

@@ -16,4 +16,5 @@ public class ActivityExtras {
     public static final String SELECTED_MOVIE_KEY = "selected_movie";
     public static final java.lang.String MOVIE_DIALOG_RELEASE_DATE_FORMAT = "MMMM dd, yyyy";
     public static final String SORT_OPTIONS_KEY = "sort_options";
+    public static final String FILM_CATEGORY = "film_category";
 }

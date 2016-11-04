@@ -5,6 +5,7 @@ import android.widget.AdapterView;
 
 import java.util.List;
 
+import movienight.javi.com.movienight.model.Film;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
 import movienight.javi.com.movienight.model.Movie;
 
@@ -14,8 +15,8 @@ import movienight.javi.com.movienight.model.Movie;
 
 public interface FilmFragmentView {
 
-    void setMoviesRecyclerViewAdapter(Movie[] movies);
-    void updateRecyclerAdapter(List<Movie> movies);
+    void setMoviesRecyclerViewAdapter(Film[] films);
+    void updateRecyclerAdapter(List<Film> films);
     void setProgressBarVisibility(int someVisibility);
     void setRecyclerViewManager(RecyclerView view, int numberOfColumns, int orientation);
     void setRecyclerSize(RecyclerView view, boolean fixedSize);
