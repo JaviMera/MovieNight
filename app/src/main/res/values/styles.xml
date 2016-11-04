@@ -4,7 +4,13 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/movie_extra_dark_color</item>
+        <item name="colorPrimaryDark">@color/movie_extra_dark_color</item>
         <item name="colorAccent">@color/movie_dark_purple</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <!-- Logo Image View -->
@@ -50,6 +56,7 @@
         <item name="android:textSize">@dimen/top_rated_movies_text_size</item>
         <item name="android:textStyle">bold</item>
     </style>
+
     <style name="FindMoviesButtonView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -256,6 +263,7 @@
         <item name="android:textColor">@color/movie_normal_purple</item>
         <item name="android:padding">@dimen/movie_text_view_pad</item>
     </style>
+
     <style name="LineSeparatorView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/line_separator_height</item>
