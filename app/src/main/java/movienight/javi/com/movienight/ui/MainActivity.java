@@ -22,6 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.asyntasks.GenreAsyncTask;
+import movienight.javi.com.movienight.dialogs.LoadingFilterDialog;
 import movienight.javi.com.movienight.fragments.FilmFragment;
 import movienight.javi.com.movienight.fragments.HomeFragment;
 import movienight.javi.com.movienight.model.FilterItems.Genre;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.toolbar) Toolbar mToolBar;
     @BindView(R.id.navigationView) NavigationView mNavigationView;
     @BindView(R.id.drawerLayout) DrawerLayout mDrawerLayout;
+    private LoadingFilterDialog mDialog;
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +65,12 @@ public class MainActivity extends AppCompatActivity
 
         new GenreAsyncTask(getSupportFragmentManager(), this)
                 .execute(new GenreUrl());
+
+        mDialog = LoadingFilterDialog.newInstance();
+        mDialog.show(
+            getSupportFragmentManager(),
+            "loading_dialog"
+        );
     }
 
     @Override
@@ -139,5 +147,7 @@ public class MainActivity extends AppCompatActivity
         onNavigationItemSelected(
             mNavigationView.getMenu().getItem(0)
         );
+
+        mDialog.dismiss();
     }
 }

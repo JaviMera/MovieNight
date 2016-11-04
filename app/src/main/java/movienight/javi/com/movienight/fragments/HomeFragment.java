@@ -45,7 +45,6 @@ public class HomeFragment extends Fragment implements
     private MainActivity mParentActivity;
     private Map<String, Movie> mMovies;
     private List<Genre> mGenres;
-    private LoadingFilterDialog mDialog;
     private HomeFragmentPresenter mPresenter;
 
     @BindView(R.id.popularMoviesRecyclerView)
@@ -87,12 +86,6 @@ public class HomeFragment extends Fragment implements
         PopularMoviesUrl url = new PopularMoviesUrl();
         new PopularMoviesAsyncTask(this)
                 .execute(url);
-
-        mDialog = LoadingFilterDialog.newInstance();
-        mDialog.show(
-            mParentActivity.getSupportFragmentManager(),
-            "loading_dialog"
-        );
     }
 
     @Override
@@ -145,7 +138,6 @@ public class HomeFragment extends Fragment implements
         }
 
         mPresenter.updateMoviesRecyclerViewAdapter(new ArrayList<>(mMovies.values()));
-        mDialog.dismiss();
 
         Bitmap defaultBitmap = BitmapFactory.decodeResource(
                 this.getResources(),
