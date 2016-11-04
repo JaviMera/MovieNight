@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity
         mPresenter = new MainActivityPresenter(this);
 
         mPresenter.setTopMoviesRecyclerViewAdapter(new ArrayList<Movie>(){});
-        mPresenter.setTopMoviesRecyclerViewLayoutManager(3, GridLayoutManager.VERTICAL);
+        mPresenter.setTopMoviesRecyclerViewLayoutManager(1, GridLayoutManager.HORIZONTAL);
         mPresenter.setTopMoviesRecyclerViewSize(true);
 
         new GenreAsyncTask(getSupportFragmentManager(), this)
