@@ -57,14 +57,4 @@ public class FilmFragmentPresenter {
 
         mView.setMovieRecyclerScrollListener(listener);
     }
-
-    public void setFilterOptionsSpinnerViewAdapter(String[] items) {
-
-        mView.setFilterOptionsSpinnerViewAdapter(items);
-    }
-
-    public void setFilterSpinnerItemClickListener(AdapterView.OnItemSelectedListener listener) {
-
-        mView.setFilterSpinnerItemClickListener(listener);
-    }
 }

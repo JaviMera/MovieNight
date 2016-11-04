@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,15 +14,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,13 +27,11 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import movienight.javi.com.movienight.R;
-import movienight.javi.com.movienight.adapters.CustomSpinnerAdapter;
 import movienight.javi.com.movienight.adapters.FilterItemRecyclerAdapter;
 import movienight.javi.com.movienight.adapters.MovieRecyclerViewAdapter;
 import movienight.javi.com.movienight.asyntasks.MoviesFilterAsyncTask;
 import movienight.javi.com.movienight.asyntasks.PostersAsyncTask;
 import movienight.javi.com.movienight.dialogs.MovieDialog.FilmDialogFragment;
-import movienight.javi.com.movienight.listeners.FilterItemAddedListener;
 import movienight.javi.com.movienight.listeners.FilterItemRemovedListener;
 import movienight.javi.com.movienight.listeners.MoviePostersListener;
 import movienight.javi.com.movienight.listeners.FilmSelectedListener;
@@ -46,49 +39,35 @@ import movienight.javi.com.movienight.listeners.FilmAsyncTaskListener;
 import movienight.javi.com.movienight.model.DialogContainer;
 import movienight.javi.com.movienight.model.Film;
 import movienight.javi.com.movienight.model.FilterItemContainer;
-import movienight.javi.com.movienight.model.FilterItems.DateRangeFilterableItem;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
-import movienight.javi.com.movienight.model.FilterItems.FilterableItemKeys;
 import movienight.javi.com.movienight.model.FilterItems.Genre;
-import movienight.javi.com.movienight.model.Movie;
-import movienight.javi.com.movienight.model.SortItemContainer;
-import movienight.javi.com.movienight.model.SortItems.SortItemBase;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.ui.MainActivity;
-import movienight.javi.com.movienight.urls.MovieUrl;
-import movienight.javi.com.movienight.urls.MovieUrlBuilder;
+import movienight.javi.com.movienight.urls.AbstractUrl;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class FilmFragment extends Fragment implements FilterItemAddedListener,
+public abstract class FilmFragment extends Fragment implements
         FilterItemRemovedListener,
         FilmFragmentView,
         FilmAsyncTaskListener,
         FilmSelectedListener,
         MoviePostersListener {
 
-    private MainActivity mParentActivity;
+    protected MainActivity mParentActivity;
+    protected int mCurrentPageNumber;
+    protected Map<String, Film> mFilms;
+    protected FilmFragmentPresenter mPresenter;
+    protected DialogContainer mDialogContainer;
+    protected FilterItemContainer mFilterItemContainer;
 
     private Integer mTotalPages;
-    private int mCurrentPageNumber;
-    private Map<String, Film> mFilms;
     private List<Genre> mGenres;
-    private FilmFragmentPresenter mPresenter;
-    private MovieUrl mUrl;
-    private DialogContainer mDialogContainer;
-    private FilterItemContainer mFilterItemContainer;
-    private SortItemContainer mSortItemContainer;
-    private SortItemBase mSortSelected;
     private AsyncTask mMovieAsyncTask;
 
     @BindView(R.id.moviesSearchRecyclerView) RecyclerView mMovieRecyclerView;
-    @BindView(R.id.updateRecyclerViewProgressBar)
-    ProgressBar mMoviesProgressBar;
-    @BindView(R.id.filterMoviesSpinnerView)
-    Spinner mFilterMovieSpinner;
+    @BindView(R.id.updateRecyclerViewProgressBar) ProgressBar mMoviesProgressBar;
     @BindView(R.id.filtersRecyclerView) RecyclerView mFiltersRecyclerView;
-    @BindView(R.id.sortBySpinnerView) Spinner mSortBySpinnerView;
+
+    protected abstract AbstractUrl createUrl(int pageNumber);
 
     public FilmFragment() {
         // Required empty public constructor
@@ -124,9 +103,6 @@ public class FilmFragment extends Fragment implements FilterItemAddedListener,
 
         mFilterItemContainer = new FilterItemContainer();
 
-        mSortItemContainer = new SortItemContainer();
-        mSortSelected = mSortItemContainer.getDefault();
-
         mCurrentPageNumber = 1;
 
         setTargetFragment(this, 1);
@@ -145,72 +121,41 @@ public class FilmFragment extends Fragment implements FilterItemAddedListener,
         ButterKnife.bind(this, fragmentLayout);
 
         mPresenter = new FilmFragmentPresenter(this);
+//        mSortBySpinnerView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//
+//                if(position > 0) {
+//
+//                    mSortSelected = mSortItemContainer.get(position);
+//
+//                    mFilms.clear();
+//                    mCurrentPageNumber = 1;
+//
+//                    MovieRecyclerViewAdapter movieSearchAdapter = (MovieRecyclerViewAdapter)mMovieRecyclerView.getAdapter();
+//                    movieSearchAdapter.removeData();
+//
+//                    requestFilms(mCurrentPageNumber);
+//                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
 
-        String[] filterItems = getResources().getStringArray(R.array.filter_options_array);
-        mPresenter.setFilterOptionsSpinnerViewAdapter(filterItems);
-        mPresenter.setFilterSpinnerItemClickListener(spinnerItemClickListener());
-
-        String[] sortItems = getResources().getStringArray(R.array.sort_options_array);
-        CustomSpinnerAdapter adapter = new CustomSpinnerAdapter(mParentActivity, new ArrayList<>(Arrays.asList(sortItems)));
-        mSortBySpinnerView.setAdapter(adapter);
-
-        mSortBySpinnerView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                if(position > 0) {
-
-                    mSortSelected = mSortItemContainer.get(position);
-
-                    mFilms.clear();
-                    mCurrentPageNumber = 1;
-
-                    MovieRecyclerViewAdapter movieSearchAdapter = (MovieRecyclerViewAdapter)mMovieRecyclerView.getAdapter();
-                    movieSearchAdapter.removeData();
-
-                    requestMovies(mCurrentPageNumber);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         mPresenter.setFilterItemRecyclerViewAdapter(new FilterableItem[]{});
         mPresenter.setRecyclerViewManager(mFiltersRecyclerView, 1, LinearLayoutManager.HORIZONTAL);
         mPresenter.setRecyclerSize(mFiltersRecyclerView, true);
 
-        mPresenter.setMoviesRecyclerViewAdapter(mFilms.values().toArray(new Movie[]{}));
+        mPresenter.setMoviesRecyclerViewAdapter(mFilms.values().toArray(new Film[]{}));
         mPresenter.setRecyclerViewManager(mMovieRecyclerView, 3, LinearLayoutManager.VERTICAL);
         mPresenter.setRecyclerSize(mMovieRecyclerView, true);
         mPresenter.setMovieRecyclerScrollListener(scrollListener());
 
         return fragmentLayout;
-    }
-
-    @Override
-    public void onFilterItemCreated(Integer key, FilterableItem... newItems) {
-
-        mFilterMovieSpinner.setSelection(0);
-        mFilterItemContainer.put(key, new ArrayList<>(Arrays.asList(newItems)));
-
-        // If the user pressed on the back button on any filter item dialog, then return from method
-        // and don't request for movies
-        if(key == -1) {
-            return;
-        }
-
-        FilterItemRecyclerAdapter adapter = (FilterItemRecyclerAdapter) mFiltersRecyclerView.getAdapter();
-        adapter.updateData(mFilterItemContainer.getAll());
-
-        MovieRecyclerViewAdapter movieSearchAdapter = (MovieRecyclerViewAdapter)mMovieRecyclerView.getAdapter();
-        movieSearchAdapter.removeData();
-
-        mFilms.clear();
-        mCurrentPageNumber = 1;
-        requestMovies(mCurrentPageNumber);
     }
 
     @Override
@@ -244,7 +189,7 @@ public class FilmFragment extends Fragment implements FilterItemAddedListener,
         }
         else {
 
-            requestMovies(mCurrentPageNumber);
+            requestFilms(mCurrentPageNumber);
         }
     }
 
@@ -364,108 +309,12 @@ public class FilmFragment extends Fragment implements FilterItemAddedListener,
         mMovieRecyclerView.addOnScrollListener(listener);
     }
 
-    @Override
-    public void setFilterOptionsSpinnerViewAdapter(String[] items) {
-
-        CustomSpinnerAdapter spinnerAdapter = new CustomSpinnerAdapter(
-                mParentActivity,
-                new LinkedList<>(Arrays.asList(items))
-    );
-
-        mFilterMovieSpinner.setAdapter(spinnerAdapter);
-    }
-
-    @Override
-    public void setFilterSpinnerItemClickListener(AdapterView.OnItemSelectedListener listener) {
-
-        mFilterMovieSpinner.setOnItemSelectedListener(listener);
-    }
-
-    private MovieUrl createUrl(int pageNumber) {
-
-        String genresIds = "";
-        List<FilterableItem> genreItems = mFilterItemContainer.get(FilterableItemKeys.GENRE);
-        for(int i = 0 ; i < genreItems.size() ; i++ ) {
-
-            if(i == genreItems.size() - 1) {
-                genresIds += ((Genre)genreItems.get(i).getValue()[0]).getId();
-            }
-            else {
-                genresIds += ((Genre)genreItems.get(i).getValue()[0]).getId() + ",";
-            }
-        }
-
-        SimpleDateFormat formatter = new SimpleDateFormat(ActivityExtras.RELEASE_DATE_FORMAT);
-        String startDate = "";
-        String endDate = "";
-        List<FilterableItem> datesSelected = mFilterItemContainer.get(FilterableItemKeys.DATE_RANGE);
-
-        if(!datesSelected.isEmpty()) {
-
-            Date[] dates = ((DateRangeFilterableItem)datesSelected.get(0)).getValue();
-            startDate = formatter.format(dates[0]);
-            endDate = formatter.format(dates[1]);
-        }
-
-        Float rateSelected = null;
-
-        for(FilterableItem item : mFilterItemContainer.get(FilterableItemKeys.RATE)) {
-
-            rateSelected = (Float)item.getValue()[0];
-        }
-
-        Integer votesCount = null;
-
-        for(FilterableItem item : mFilterItemContainer.get(FilterableItemKeys.VOTE_COUNT)) {
-
-            votesCount = (Integer)item.getValue()[0];
-        }
-
-        String sortOption = mSortSelected.getName();
-
-        return new MovieUrlBuilder()
-                .withPageNumber(pageNumber + "")
-                .withGenres(genresIds)
-                .withStartReleaseDate(startDate)
-                .withEndReleaseDate(endDate)
-                .withRating(rateSelected == null ? "" : String.valueOf(rateSelected))
-                .withVoteCount(votesCount == null ? "" : String.valueOf(votesCount))
-                .sortBy(sortOption)
-                .createMovieUrl();
-    }
-
-    private AdapterView.OnItemSelectedListener spinnerItemClickListener() {
-
-        return new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                if(position > 0) {
-
-                    List<FilterableItem> selectedItems = mFilterItemContainer.get(position);
-                    DialogFragment dialog = mDialogContainer.getDialog(position, selectedItems);
-                    dialog.setTargetFragment(getTargetFragment(), 1);
-                    dialog.show(
-                        mParentActivity.getSupportFragmentManager(),
-                        "dialog"
-                    );
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        };
-    }
-
-    private void requestMovies(int pageNumber) {
+    protected void requestFilms(int pageNumber) {
 
         mPresenter.setProgressBarVisibility(View.VISIBLE);
-        mUrl = createUrl(pageNumber);
+        AbstractUrl url = createUrl(pageNumber);
 
-        mMovieAsyncTask = new MoviesFilterAsyncTask(this).execute(mUrl);
+        mMovieAsyncTask = new MoviesFilterAsyncTask(this).execute(url);
     }
 
     private RecyclerView.OnScrollListener scrollListener() {
@@ -489,7 +338,7 @@ public class FilmFragment extends Fragment implements FilterItemAddedListener,
                     if (mCurrentPageNumber < mTotalPages) {
 
                         mCurrentPageNumber++;
-                        requestMovies(mCurrentPageNumber);
+                        requestFilms(mCurrentPageNumber);
                     }
                 }
             }

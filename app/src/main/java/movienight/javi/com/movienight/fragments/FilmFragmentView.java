@@ -22,6 +22,4 @@ public interface FilmFragmentView {
     void setRecyclerSize(RecyclerView view, boolean fixedSize);
     void setFilterItemRecyclerViewAdapter(FilterableItem[] items);
     void setMovieRecyclerScrollListener(RecyclerView.OnScrollListener listener);
-    void setFilterOptionsSpinnerViewAdapter(String[] items);
-    void setFilterSpinnerItemClickListener(AdapterView.OnItemSelectedListener listener);
 }
