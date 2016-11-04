@@ -47,6 +47,16 @@
         <item name="android:paddingLeft">@dimen/search_title_padding</item>
     </style>
 
+    <style name="PopularMoviesTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:text">@string/popular_movies_text</item>
+        <item name="android:textColor">@color/movie_dark_purple</item>
+        <item name="android:textSize">@dimen/top_rated_movies_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="TopRatedMoviesTextView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0dp</item>

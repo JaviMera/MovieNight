@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,26 +7,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/activity_background_color"
-    android:orientation="vertical"
     android:fitsSystemWindows="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ui.MainActivity.MainActivity"
-    tools:showIn="@layout/app_bar_layout"
-    >
+    tools:showIn="@layout/app_bar_layout">
 
-    <TextView
-        android:layout_marginLeft="15dp"
-        android:gravity="left|center"
-        style="@style/TopRatedMoviesTextView"
-        />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/popularMoviesRecyclerView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="7"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp"
         android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        />
+        android:layout_marginRight="15dp">
 
-</LinearLayout>
+        <TextView
+            android:gravity="left|center"
+            android:layout_marginLeft="5dp"
+            style="@style/PopularMoviesTextView"
+            />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/popularMoviesRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"/>
+    </LinearLayout>
+</ScrollView>

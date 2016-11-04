@@ -14,7 +14,7 @@
     <string name="empty_genre_text">no genres selected</string>
     <string name="dialog_button_text">done !</string>
     <string name="dialog_load_title_text">Movie Night</string>
-    <string name="top_rated_movies_text">Weekly Top Rated Movies!</string>
+    <string name="popular_movies_text">Weekly Popular Movies!</string>
     <string name="movie_title_dialog">%1$s (%2$s)</string>
     <string name="movie_rating_text_dialog">%.1f / 10</string>
     <string name="movie_vote_count_text_dialog">%1$d votes</string>
@@ -49,4 +49,5 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="top_rated_movies_text">Weekly Top Rated Movies!</string>
 </resources>
