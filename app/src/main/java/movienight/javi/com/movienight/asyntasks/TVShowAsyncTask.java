@@ -17,7 +17,7 @@ import movienight.javi.com.movienight.listeners.FilmAsyncTaskListener;
 import movienight.javi.com.movienight.model.FilmBase;
 import movienight.javi.com.movienight.model.Page;
 import movienight.javi.com.movienight.model.TVShow;
-import movienight.javi.com.movienight.model.jsonvalues.JSONMovieDiscover;
+import movienight.javi.com.movienight.model.jsonvalues.JSONFilmDiscover;
 import movienight.javi.com.movienight.model.jsonvalues.JSONTVShow;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.urls.AbstractUrl;
@@ -65,9 +65,9 @@ public class TVShowAsyncTask extends AsyncTask<AbstractUrl, Void, Page> {
             Response response = call.execute();
             String jsonString = response.body().string();
             JSONObject jsonObject = new JSONObject(jsonString);
-            mTotalPages = jsonObject.getInt(JSONMovieDiscover.TOTAL_PAGES_KEY);
+            mTotalPages = jsonObject.getInt(JSONFilmDiscover.TOTAL_PAGES_KEY);
 
-            JSONArray resultsArray = jsonObject.getJSONArray(JSONMovieDiscover.RESULTS_KEY);
+            JSONArray resultsArray = jsonObject.getJSONArray(JSONFilmDiscover.RESULTS_KEY);
             List<FilmBase> films = new LinkedList<>();
 
             for(int result = 0 ; result < resultsArray.length(); result++) {

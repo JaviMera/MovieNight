@@ -4,9 +4,9 @@
 
     <group android:checkableBehavior="single">
 
-        <item
-            android:id="@+id/popularItemNavigationView"
-            android:title="Popular"/>
+        <!--<item-->
+            <!--android:id="@+id/popularItemNavigationView"-->
+            <!--android:title="Popular"/>-->
 
         <item
             android:id="@+id/movieItemNavigationView"

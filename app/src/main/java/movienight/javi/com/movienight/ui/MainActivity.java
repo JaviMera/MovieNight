@@ -117,18 +117,19 @@ public class MainActivity extends AppCompatActivity implements
 
         switch(item.getItemId()) {
 
-            case R.id.popularItemNavigationView:
-
-                fragment = HomeFragment.newInstance(mMovieGenres);
-
-                mFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.fragmentContainer, fragment)
-                        .commit();
-                break;
+//            case R.id.popularItemNavigationView:
+//
+//                fragment = HomeFragment.newInstance(mMovieGenres);
+//
+//                mFragmentManager
+//                        .beginTransaction()
+//                        .replace(R.id.fragmentContainer, fragment)
+//                        .commit();
+//                break;
 
             case R.id.movieItemNavigationView:
 
+                mToolBar.setTitle("Movies");
                 fragment = MovieFragment.newInstance(mMovieGenres, mMovieSortItems);
 
                 mFragmentManager
@@ -139,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements
 
             case R.id.tvShowItemNavigationItem:
 
+                mToolBar.setTitle("TV Shows");
                 fragment = TVShowFragment.newInstance(mTVShowGenres, mTVShowSortItems);
 
                 mFragmentManager

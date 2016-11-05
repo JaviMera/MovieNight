@@ -22,7 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.adapters.MovieRecyclerViewAdapter;
-import movienight.javi.com.movienight.asyntasks.PopularMoviesAsyncTask;
+import movienight.javi.com.movienight.asyntasks.MoviePopularAsyncTask;
 import movienight.javi.com.movienight.asyntasks.PostersAsyncTask;
 import movienight.javi.com.movienight.dialogs.MovieDialog.FilmDialogFragment;
 import movienight.javi.com.movienight.listeners.MoviePostersListener;
@@ -32,7 +32,6 @@ import movienight.javi.com.movienight.model.FilmBase;
 import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.ui.MainActivity;
-import movienight.javi.com.movienight.urls.PopularMoviesUrl;
 
 public class HomeFragment extends Fragment implements
         HomeFragmentView,
@@ -82,9 +81,9 @@ public class HomeFragment extends Fragment implements
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        PopularMoviesUrl url = new PopularMoviesUrl();
-        new PopularMoviesAsyncTask(this)
-                .execute(url);
+//        PopularMoviesUrl url = new PopularMoviesUrl();
+//        new MoviePopularAsyncTask(this)
+//                .execute(url);
     }
 
     @Override

@@ -1,13 +1,11 @@
 package movienight.javi.com.movienight.fragments;
 
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,9 +30,11 @@ import butterknife.ButterKnife;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.adapters.FilterItemRecyclerAdapter;
 import movienight.javi.com.movienight.adapters.MovieRecyclerViewAdapter;
+import movienight.javi.com.movienight.asyntasks.MoviePopularAsyncTask;
 import movienight.javi.com.movienight.asyntasks.MoviesAsyncTask;
 import movienight.javi.com.movienight.asyntasks.PostersAsyncTask;
 import movienight.javi.com.movienight.asyntasks.TVShowAsyncTask;
+import movienight.javi.com.movienight.asyntasks.TVShowPopularAsyncTask;
 import movienight.javi.com.movienight.dialogs.FilterDialogBase;
 import movienight.javi.com.movienight.dialogs.MovieDialog.FilmDialogFragment;
 import movienight.javi.com.movienight.listeners.FilterItemAddedListener;
@@ -54,6 +54,8 @@ import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.ui.MainActivity;
 import movienight.javi.com.movienight.urls.AbstractUrl;
+import movienight.javi.com.movienight.urls.MoviePopularUrl;
+import movienight.javi.com.movienight.urls.TVShowPopularUrl;
 
 public abstract class FilmFragment extends Fragment implements
         FilterItemAddedListener,
@@ -70,6 +72,7 @@ public abstract class FilmFragment extends Fragment implements
     protected DialogContainer mDialogContainer;
     protected List<Genre> mGenres;
 
+    private boolean isFiltering;
     private FilterItemContainer mFilterItemContainer;
     private int mCurrentPageNumber;
     private Integer mTotalPages;
@@ -111,12 +114,22 @@ public abstract class FilmFragment extends Fragment implements
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        isFiltering = false;
         mFilms = new LinkedHashMap<>();
         mFilterItemContainer = new FilterItemContainer();
         mCurrentPageNumber = 1;
 
         setTargetFragment(this, 1);
         setHasOptionsMenu(true);
+
+        if(category == FilmCatetory.MOVIE) {
+
+            new MoviePopularAsyncTask(this).execute(new MoviePopularUrl(mCurrentPageNumber));
+        }
+        else if(category == FilmCatetory.TV_SHOW) {
+
+            new TVShowPopularAsyncTask(this).execute(new TVShowPopularUrl(mCurrentPageNumber));
+        }
     }
 
     @Override
@@ -142,6 +155,8 @@ public abstract class FilmFragment extends Fragment implements
 
     @Override
     public void onFilterItemCreated(Integer key, FilterableItem... newItems) {
+
+        isFiltering = true;
 
         //mFilterMovieSpinner.setSelection(0);
         mFilterItemContainer.put(key, new ArrayList<>(Arrays.asList(newItems)));
@@ -198,7 +213,7 @@ public abstract class FilmFragment extends Fragment implements
         FilterItemRecyclerAdapter filterItemAdapter = (FilterItemRecyclerAdapter)mFiltersRecyclerView.getAdapter();
         if(filterItemAdapter.getItemCount() == 0) {
 
-            Toast.makeText(mParentActivity, "No movies to request.", Toast.LENGTH_SHORT).show();
+            isFiltering = false;
         }
         else {
 
@@ -246,7 +261,7 @@ public abstract class FilmFragment extends Fragment implements
         mPresenter.updateRecyclerViewAdapter(new ArrayList<>(mFilms.values()));
 
         Bitmap defaultBitmap = BitmapFactory.decodeResource(
-                this.getResources(),
+                mParentActivity.getResources(),
                 R.drawable.no_poster_image
         );
 
@@ -326,38 +341,58 @@ public abstract class FilmFragment extends Fragment implements
 
         mPresenter.setProgressBarVisibility(View.VISIBLE);
 
-        List<FilterableItem> items = mFilterItemContainer.get(FilterableItemKeys.GENRE);
-        String genreIds = getFilterIds(items);
+        AbstractUrl url;
 
-        items = mFilterItemContainer.get(FilterableItemKeys.DATE_RANGE);
-        String[] dates = getFilterDates(items);
+        if(isFiltering) {
 
-        items = mFilterItemContainer.get(FilterableItemKeys.RATE);
-        String rate = getFilterRate(items);
+            List<FilterableItem> items = mFilterItemContainer.get(FilterableItemKeys.GENRE);
+            String genreIds = getFilterIds(items);
 
-        items = mFilterItemContainer.get(FilterableItemKeys.VOTE_COUNT);
-        String voteCount = getFilterVoteCount(items);
+            items = mFilterItemContainer.get(FilterableItemKeys.DATE_RANGE);
+            String[] dates = getFilterDates(items);
 
-        items = mFilterItemContainer.get(FilterableItemKeys.SORT);
-        String sort = getSort(items);
+            items = mFilterItemContainer.get(FilterableItemKeys.RATE);
+            String rate = getFilterRate(items);
 
-        AbstractUrl url = createUrl(
-            pageNumber,
-            genreIds,
-            dates[DateRange.START],
-            dates[DateRange.END],
-            rate,
-            voteCount,
-            sort
-        );
+            items = mFilterItemContainer.get(FilterableItemKeys.VOTE_COUNT);
+            String voteCount = getFilterVoteCount(items);
 
-        if(category == FilmCatetory.MOVIE){
+            items = mFilterItemContainer.get(FilterableItemKeys.SORT);
+            String sort = getSort(items);
 
-            mFilmAsyncTask = new MoviesAsyncTask(this).execute(url);
+            url = createUrl(
+                pageNumber,
+                genreIds,
+                dates[DateRange.START],
+                dates[DateRange.END],
+                rate,
+                voteCount,
+                sort
+            );
+
+            if(category == FilmCatetory.MOVIE){
+
+                mFilmAsyncTask = new MoviesAsyncTask(this).execute(url);
+            }
+            else if(category == FilmCatetory.TV_SHOW){
+
+                mFilmAsyncTask = new TVShowAsyncTask(this).execute(url);
+            }
         }
-        else if(category == FilmCatetory.TV_SHOW){
+        else {
 
-            mFilmAsyncTask = new TVShowAsyncTask(this).execute(url);
+            url = category == FilmCatetory.MOVIE
+                ? new MoviePopularUrl(mCurrentPageNumber)
+                : new TVShowPopularUrl(mCurrentPageNumber);
+
+            if(category == FilmCatetory.MOVIE) {
+
+                mFilmAsyncTask = new MoviePopularAsyncTask(this).execute(url);
+            }
+            else if(category == FilmCatetory.TV_SHOW) {
+
+                mFilmAsyncTask = new TVShowPopularAsyncTask(this).execute(url);
+            }
         }
     }
 

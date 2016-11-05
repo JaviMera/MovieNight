@@ -20,6 +20,7 @@ import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.urls.AbstractUrl;
 import movienight.javi.com.movienight.urls.MovieUrlBuilder;
+import movienight.javi.com.movienight.urls.TVShowUrlBuilder;
 
 /**
  * Created by Javi on 11/4/2016.
@@ -42,14 +43,13 @@ public class TVShowFragment extends FilmFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
-
         category = FilmCatetory.TV_SHOW;
         mGenres = getArguments().getParcelableArrayList(ActivityExtras.GENRES_KEY);
 
         String[] sortItems = getArguments().getStringArray(ActivityExtras.SORT_OPTIONS_KEY);
         mDialogContainer = new DialogContainer(mGenres, sortItems);
 
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -111,14 +111,14 @@ public class TVShowFragment extends FilmFragment {
         String sort
     )
     {
-        return new MovieUrlBuilder()
+        return new TVShowUrlBuilder()
             .withPageNumber(pageNumber + "")
             .withGenres(genreIds)
-            .withStartReleaseDate(startDate)
-            .withEndReleaseDate(endDate)
+            .withStartAirDate(startDate)
+            .withEndAirDate(endDate)
             .withRating(rating)
             .withVoteCount(voteCount)
             .sortBy(sort)
-            .createMovieUrl();
+            .createTVShowUrl();
     }
 }

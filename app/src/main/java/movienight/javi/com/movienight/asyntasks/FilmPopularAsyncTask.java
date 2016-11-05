@@ -12,8 +12,7 @@ import java.util.List;
 
 import movienight.javi.com.movienight.listeners.FilmAsyncTaskListener;
 import movienight.javi.com.movienight.model.FilmBase;
-import movienight.javi.com.movienight.model.Movie;
-import movienight.javi.com.movienight.model.jsonvalues.JSONMovieDiscover;
+import movienight.javi.com.movienight.model.jsonvalues.JSONFilmDiscover;
 import movienight.javi.com.movienight.urls.AbstractUrl;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
@@ -21,20 +20,23 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * Created by Javier on 10/25/2016.
+ * Created by Javi on 11/5/2016.
  */
 
-public class PopularMoviesAsyncTask extends AsyncTask<AbstractUrl, Void, Movie[]> {
+public abstract class FilmPopularAsyncTask extends AsyncTask<AbstractUrl, Void, FilmBase[]> {
 
     private FilmAsyncTaskListener mListener;
     private int mTotalPages;
-    public PopularMoviesAsyncTask(FilmAsyncTaskListener listener) {
+
+    protected abstract FilmBase createFilm(JSONObject jsonObject) throws JSONException;
+
+    public FilmPopularAsyncTask(FilmAsyncTaskListener listener) {
 
         mListener = listener;
     }
 
     @Override
-    protected Movie[] doInBackground(AbstractUrl... abstractUrls) {
+    protected FilmBase[] doInBackground(AbstractUrl... abstractUrls) {
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
@@ -43,26 +45,26 @@ public class PopularMoviesAsyncTask extends AsyncTask<AbstractUrl, Void, Movie[]
 
         Call call = client.newCall(request);
 
-        try
-        {
+        try {
             Response response = call.execute();
             String jsonString = response.body().string();
             JSONObject jsonObject = new JSONObject(jsonString);
-            JSONArray resultsArray = jsonObject.getJSONArray(JSONMovieDiscover.RESULTS_KEY);
+            JSONArray resultsArray = jsonObject.getJSONArray(JSONFilmDiscover.RESULTS_KEY);
+            mTotalPages = jsonObject.getInt(JSONFilmDiscover.TOTAL_PAGES_KEY);
+
             List<FilmBase> movies = new LinkedList<>();
 
-            for(int result = 0 ; result < resultsArray.length(); result++) {
+            for (int result = 0; result < resultsArray.length(); result++) {
 
                 JSONObject currentJSONObject = resultsArray.getJSONObject(result);
-                FilmBase newMovie = Movie.fromJSON(currentJSONObject);
+                FilmBase newMovie = createFilm(currentJSONObject);
 
                 movies.add(newMovie);
             }
 
-            mTotalPages = jsonObject.getInt("page");
-            return movies.toArray(new Movie[movies.size()]);
-        }
-        catch (IOException e) {
+            return movies.toArray(new FilmBase[movies.size()]);
+
+        } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -72,8 +74,8 @@ public class PopularMoviesAsyncTask extends AsyncTask<AbstractUrl, Void, Movie[]
     }
 
     @Override
-    protected void onPostExecute(Movie[] movies) {
+    protected void onPostExecute(FilmBase[] films) {
 
-        mListener.onCompleted(mTotalPages, movies);
+        mListener.onCompleted(mTotalPages, films);
     }
 }
