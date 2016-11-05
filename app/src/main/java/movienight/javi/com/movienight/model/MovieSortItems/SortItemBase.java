@@ -24,9 +24,4 @@ public abstract class SortItemBase implements FilterableItem<String> {
     public String[] getValue() {
         return new String[]{mSortName};
     }
-
-    @Override
-    public void update(String newItem) {
-
-    }
 }

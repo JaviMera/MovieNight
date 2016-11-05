@@ -53,11 +53,6 @@ public class DateRangeFilterableItem implements FilterableItem<Date>, Parcelable
     }
 
     @Override
-    public void update(Date newItem) {
-
-    }
-
-    @Override
     public int describeContents() {
         return 0;
     }

@@ -7,18 +7,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.model.DialogContainer;
 import movienight.javi.com.movienight.model.FilmCatetory;
-import movienight.javi.com.movienight.model.FilterItems.DateRangeFilterableItem;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItemKeys;
-import movienight.javi.com.movienight.model.FilterItems.Genre;
+import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.urls.AbstractUrl;
 import movienight.javi.com.movienight.urls.MovieUrlBuilder;
@@ -65,23 +62,23 @@ public class MovieFragment extends FilmFragment {
 
         switch(item.getItemId()) {
 
-            case R.id.filterByGenreItem:
+            case R.id.movieFilterGenreItem:
                 position = FilterableItemKeys.GENRE;
                 break;
 
-            case R.id.filterByReleaseDateItem:
+            case R.id.movieFilterReleaseDate:
                 position = FilterableItemKeys.DATE_RANGE;
                 break;
 
-            case R.id.filterByRatingItem:
+            case R.id.movieFilterRateItem:
                 position = FilterableItemKeys.RATE;
                 break;
 
-            case R.id.filterByVoteCountItem:
+            case R.id.movieFilterVoteCountItem:
                 position = FilterableItemKeys.VOTE_COUNT;
                 break;
 
-            case R.id.sortByItem:
+            case R.id.movieFilterSortItem:
                 position = FilterableItemKeys.SORT;
                 break;
         }
@@ -89,74 +86,36 @@ public class MovieFragment extends FilmFragment {
         if(position == -1)
             return super.onOptionsItemSelected(item);
 
-        List<FilterableItem> selectedItems = mFilterItemContainer.get(position);
-        DialogFragment dialog = mDialogContainer.getDialog(position, selectedItems);
+        DialogFragment dialog = getDialog(position);
 
         dialog.setTargetFragment(getTargetFragment(), 1);
         dialog.show(
-                mParentActivity.getSupportFragmentManager(),
-                "dialog"
+            mParentActivity.getSupportFragmentManager(),
+            "dialog"
         );
 
         return true;
     }
 
     @Override
-    protected AbstractUrl createUrl(int pageNumber) {
-
-        String genresIds = "";
-        List<FilterableItem> genreItems = mFilterItemContainer.get(FilterableItemKeys.GENRE);
-        for(int i = 0 ; i < genreItems.size() ; i++ ) {
-
-            if(i == genreItems.size() - 1) {
-                genresIds += ((Genre)genreItems.get(i).getValue()[0]).getId();
-            }
-            else {
-                genresIds += ((Genre)genreItems.get(i).getValue()[0]).getId() + ",";
-            }
-        }
-
-        SimpleDateFormat formatter = new SimpleDateFormat(ActivityExtras.RELEASE_DATE_FORMAT);
-        String startDate = "";
-        String endDate = "";
-        List<FilterableItem> datesSelected = mFilterItemContainer.get(FilterableItemKeys.DATE_RANGE);
-
-        if(!datesSelected.isEmpty()) {
-
-            Date[] dates = ((DateRangeFilterableItem)datesSelected.get(0)).getValue();
-            startDate = formatter.format(dates[0]);
-            endDate = formatter.format(dates[1]);
-        }
-
-        Float rateSelected = null;
-
-        for(FilterableItem item : mFilterItemContainer.get(FilterableItemKeys.RATE)) {
-
-            rateSelected = (Float)item.getValue()[0];
-        }
-
-        Integer votesCount = null;
-
-        for(FilterableItem item : mFilterItemContainer.get(FilterableItemKeys.VOTE_COUNT)) {
-
-            votesCount = (Integer)item.getValue()[0];
-        }
-
-        String sortOption = "";
-
-        for(FilterableItem item : mFilterItemContainer.get(FilterableItemKeys.SORT)) {
-
-            sortOption = (String) item.getValue()[0];
-        }
-
+    protected AbstractUrl createUrl(
+        int pageNumber,
+        String genreIds,
+        String startDate,
+        String endDate,
+        String rating,
+        String voteCount,
+        String sort
+    )
+    {
         return new MovieUrlBuilder()
-                .withPageNumber(pageNumber + "")
-                .withGenres(genresIds)
-                .withStartReleaseDate(startDate)
-                .withEndReleaseDate(endDate)
-                .withRating(rateSelected == null ? "" : String.valueOf(rateSelected))
-                .withVoteCount(votesCount == null ? "" : String.valueOf(votesCount))
-                .sortBy(sortOption)
-                .createMovieUrl();
+            .withPageNumber(pageNumber + "")
+            .withGenres(genreIds)
+            .withStartReleaseDate(startDate)
+            .withEndReleaseDate(endDate)
+            .withRating(rating)
+            .withVoteCount(voteCount)
+            .sortBy(sort)
+            .createMovieUrl();
     }
 }

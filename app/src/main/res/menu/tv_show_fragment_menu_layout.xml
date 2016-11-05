@@ -4,30 +4,30 @@
     xmlns:myapp="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/tvFilterByGenreItem"
+        android:id="@+id/tvFilterGenreItem"
         android:title="Filter by Genre"
         android:orderInCategory="100"
         myapp:showAsAction="never"/>
     <item
-        android:id="@+id/tvFilterByReleaseDateItem"
+        android:id="@+id/tvFilterAirDateItem"
         android:title="Filter by First Air Date"
         android:orderInCategory="101"
         myapp:showAsAction="never"/>
 
     <item
-        android:id="@+id/tvFilterByRatingItem"
+        android:id="@+id/tvFilterRatingItem"
         android:title="Filter by Rating"
         android:orderInCategory="102"
         myapp:showAsAction="never"/>
 
     <item
-        android:id="@+id/tvFilterByVoteCountItem"
+        android:id="@+id/tvFilterVoteCountItem"
         android:title="Filter by Vote Count"
         android:orderInCategory="103"
         myapp:showAsAction="never"/>
 
     <item
-        android:id="@+id/tvFiltertByItem"
+        android:id="@+id/tvFilterSortItem"
         android:title="Sort by..."
         android:orderInCategory="104"
         myapp:showAsAction="never"/>

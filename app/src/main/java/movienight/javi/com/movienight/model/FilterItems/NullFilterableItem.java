@@ -10,9 +10,4 @@ public class NullFilterableItem implements FilterableItem {
     public Object[] getValue() {
         return null;
     }
-
-    @Override
-    public void update(Object newItem) {
-
-    }
 }

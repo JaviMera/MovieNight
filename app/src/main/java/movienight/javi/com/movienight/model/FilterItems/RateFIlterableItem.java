@@ -45,12 +45,6 @@ public class RateFIlterableItem implements FilterableItem<Float>, Parcelable {
     }
 
     @Override
-    public void update(Float newRate) {
-
-        mRate = newRate;
-    }
-
-    @Override
     public int describeContents() {
         return 0;
     }

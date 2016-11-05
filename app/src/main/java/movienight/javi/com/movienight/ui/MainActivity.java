@@ -27,7 +27,7 @@ import movienight.javi.com.movienight.fragments.HomeFragment;
 import movienight.javi.com.movienight.fragments.MovieFragment;
 import movienight.javi.com.movienight.fragments.TVShowFragment;
 import movienight.javi.com.movienight.model.FilmCatetory;
-import movienight.javi.com.movienight.model.FilterItems.Genre;
+import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.urls.MovieGenreUrl;
 import movienight.javi.com.movienight.urls.TVShowGenreUrl;
 

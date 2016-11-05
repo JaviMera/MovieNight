@@ -1,7 +1,5 @@
 package movienight.javi.com.movienight.model;
 
-import android.app.DialogFragment;
-
 import java.util.List;
 
 import movienight.javi.com.movienight.dialogs.DateRangeDialog.DateRangeDialogFragment;
@@ -12,7 +10,6 @@ import movienight.javi.com.movienight.dialogs.SortDialogFragment;
 import movienight.javi.com.movienight.dialogs.VoteDialog.VoteDialogFragment;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItemKeys;
-import movienight.javi.com.movienight.model.FilterItems.Genre;
 
 /**
  * Created by Javi on 11/3/2016.

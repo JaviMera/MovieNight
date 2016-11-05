@@ -21,7 +21,7 @@ import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.adapters.GenreRecyclerViewAdapter;
 import movienight.javi.com.movienight.dialogs.FilterDialogBase;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
-import movienight.javi.com.movienight.model.FilterItems.Genre;
+import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.model.FilterItems.GenreFilterableItem;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 

@@ -46,12 +46,6 @@ public class VoteCountFilterableItem implements FilterableItem<Integer>, Parcela
     }
 
     @Override
-    public void update(Integer updatedVoteCount) {
-
-        mVoteCount = updatedVoteCount;
-    }
-
-    @Override
     public int describeContents() {
         return 0;
     }

@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,8 +18,10 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,17 +35,22 @@ import movienight.javi.com.movienight.adapters.MovieRecyclerViewAdapter;
 import movienight.javi.com.movienight.asyntasks.MoviesAsyncTask;
 import movienight.javi.com.movienight.asyntasks.PostersAsyncTask;
 import movienight.javi.com.movienight.asyntasks.TVShowAsyncTask;
+import movienight.javi.com.movienight.dialogs.FilterDialogBase;
 import movienight.javi.com.movienight.dialogs.MovieDialog.FilmDialogFragment;
 import movienight.javi.com.movienight.listeners.FilterItemAddedListener;
 import movienight.javi.com.movienight.listeners.FilterItemRemovedListener;
 import movienight.javi.com.movienight.listeners.MoviePostersListener;
 import movienight.javi.com.movienight.listeners.FilmSelectedListener;
 import movienight.javi.com.movienight.listeners.FilmAsyncTaskListener;
+import movienight.javi.com.movienight.model.DateRange;
 import movienight.javi.com.movienight.model.DialogContainer;
 import movienight.javi.com.movienight.model.FilmBase;
+import movienight.javi.com.movienight.model.FilmCatetory;
 import movienight.javi.com.movienight.model.FilterItemContainer;
+import movienight.javi.com.movienight.model.FilterItems.DateRangeFilterableItem;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
-import movienight.javi.com.movienight.model.FilterItems.Genre;
+import movienight.javi.com.movienight.model.FilterItems.FilterableItemKeys;
+import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.ui.MainActivity;
 import movienight.javi.com.movienight.urls.AbstractUrl;
@@ -57,17 +65,32 @@ public abstract class FilmFragment extends Fragment implements
 
     protected int category;
     protected MainActivity mParentActivity;
-    protected int mCurrentPageNumber;
     protected Map<String, FilmBase> mFilms;
     protected FilmFragmentPresenter mPresenter;
     protected DialogContainer mDialogContainer;
-    protected FilterItemContainer mFilterItemContainer;
     protected List<Genre> mGenres;
 
+    private FilterItemContainer mFilterItemContainer;
+    private int mCurrentPageNumber;
     private Integer mTotalPages;
     private AsyncTask mFilmAsyncTask;
 
-    protected abstract AbstractUrl createUrl(int pageNumber);
+    protected abstract AbstractUrl createUrl(
+        int pageNumber,
+        String genreIds,
+        String startDate,
+        String endDate,
+        String rating,
+        String voteCount,
+        String sort
+    );
+
+    protected FilterDialogBase getDialog(int position) {
+
+        List<FilterableItem> selectedItems = mFilterItemContainer.get(position);
+
+        return mDialogContainer.getDialog(position, selectedItems);
+    }
 
     @BindView(R.id.filmsRecyclerView) RecyclerView mFilmsRecyclerView;
     @BindView(R.id.updateRecyclerViewProgressBar) ProgressBar mMoviesProgressBar;
@@ -200,7 +223,7 @@ public abstract class FilmFragment extends Fragment implements
 
         FilmDialogFragment filmDialogFragment = FilmDialogFragment.newInstance(
                 film,
-                getGenres(film.getGenreIds())
+                Genre.getSelectedGenres(film.getGenreIds(), mGenres)
         );
 
         filmDialogFragment.show(
@@ -302,11 +325,38 @@ public abstract class FilmFragment extends Fragment implements
     protected void requestFilms(int pageNumber) {
 
         mPresenter.setProgressBarVisibility(View.VISIBLE);
-        AbstractUrl url = createUrl(pageNumber);
 
-        if(category == 0)
+        List<FilterableItem> items = mFilterItemContainer.get(FilterableItemKeys.GENRE);
+        String genreIds = getFilterIds(items);
+
+        items = mFilterItemContainer.get(FilterableItemKeys.DATE_RANGE);
+        String[] dates = getFilterDates(items);
+
+        items = mFilterItemContainer.get(FilterableItemKeys.RATE);
+        String rate = getFilterRate(items);
+
+        items = mFilterItemContainer.get(FilterableItemKeys.VOTE_COUNT);
+        String voteCount = getFilterVoteCount(items);
+
+        items = mFilterItemContainer.get(FilterableItemKeys.SORT);
+        String sort = getSort(items);
+
+        AbstractUrl url = createUrl(
+            pageNumber,
+            genreIds,
+            dates[DateRange.START],
+            dates[DateRange.END],
+            rate,
+            voteCount,
+            sort
+        );
+
+        if(category == FilmCatetory.MOVIE){
+
             mFilmAsyncTask = new MoviesAsyncTask(this).execute(url);
-        else if(category == 1){
+        }
+        else if(category == FilmCatetory.TV_SHOW){
+
             mFilmAsyncTask = new TVShowAsyncTask(this).execute(url);
         }
     }
@@ -339,22 +389,76 @@ public abstract class FilmFragment extends Fragment implements
         };
     }
 
-    private List<String> getGenres(int[] genreIds) {
+    private String getFilterIds(List<FilterableItem> items) {
 
-        List<String> genreDescriptions = new ArrayList<>();
+        String genresIds = "";
 
-        for(Integer id : genreIds) {
+        for(int i = 0 ; i < items.size() ; i++ ) {
 
-            for(Genre genre : mGenres) {
-
-                if(genre.getId().equals(id)) {
-
-                    genreDescriptions.add(genre.getDescription());
-                    break;
-                }
+            if(i == items.size() - 1) {
+                genresIds += ((Genre)items.get(i).getValue()[0]).getId();
+            }
+            else {
+                genresIds += ((Genre)items.get(i).getValue()[0]).getId() + ",";
             }
         }
 
-        return genreDescriptions;
+        return genresIds;
+    }
+
+    private String[] getFilterDates (List<FilterableItem> items) {
+
+        SimpleDateFormat formatter = new SimpleDateFormat(ActivityExtras.RELEASE_DATE_FORMAT);
+        String startDate = "";
+        String endDate = "";
+
+        if(!items.isEmpty()) {
+
+            Date[] dates = ((DateRangeFilterableItem)items.get(0)).getValue();
+            startDate = formatter.format(dates[DateRange.START]);
+            endDate = formatter.format(dates[DateRange.END]);
+        }
+
+        return new String[]{startDate, endDate};
+    }
+
+    private String getFilterRate(List<FilterableItem> items) {
+
+        Float rateSelected = null;
+
+        for(FilterableItem item : items) {
+
+            rateSelected = (Float)item.getValue()[0];
+        }
+
+        return rateSelected == null
+            ? ""
+            : String.valueOf(rateSelected);
+    }
+
+    private String getFilterVoteCount(List<FilterableItem> items) {
+
+        Integer votesCount = null;
+
+        for(FilterableItem item : mFilterItemContainer.get(FilterableItemKeys.VOTE_COUNT)) {
+
+            votesCount = (Integer)item.getValue()[0];
+        }
+
+        return votesCount == null
+            ? ""
+            : String.valueOf(votesCount);
+    }
+
+    private String getSort(List<FilterableItem> items) {
+
+        String sortOption = "";
+
+        for(FilterableItem item : mFilterItemContainer.get(FilterableItemKeys.SORT)) {
+
+            sortOption = (String) item.getValue()[0];
+        }
+
+        return sortOption;
     }
 }

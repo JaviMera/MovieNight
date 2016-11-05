@@ -1,7 +1,7 @@
 package movienight.javi.com.movienight.asyntasks;
 
 import movienight.javi.com.movienight.model.FilmCatetory;
-import movienight.javi.com.movienight.model.FilterItems.Genre;
+import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.ui.GenreListener;
 
 /**

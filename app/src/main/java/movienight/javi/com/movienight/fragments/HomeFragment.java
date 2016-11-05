@@ -29,7 +29,7 @@ import movienight.javi.com.movienight.listeners.MoviePostersListener;
 import movienight.javi.com.movienight.listeners.FilmSelectedListener;
 import movienight.javi.com.movienight.listeners.FilmAsyncTaskListener;
 import movienight.javi.com.movienight.model.FilmBase;
-import movienight.javi.com.movienight.model.FilterItems.Genre;
+import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.ui.MainActivity;
 import movienight.javi.com.movienight.urls.PopularMoviesUrl;
@@ -181,30 +181,11 @@ public class HomeFragment extends Fragment implements
 
         FilmDialogFragment dialog = FilmDialogFragment.newInstance(
                 film,
-                getGenres(film.getGenreIds()));
+                Genre.getSelectedGenres(film.getGenreIds(), mGenres));
 
         dialog.show(
                 mParentActivity.getSupportFragmentManager(),
                 "movie_dialog"
         );
-    }
-
-    private List<String> getGenres(int[] genreIds) {
-
-        List<String> genreDescriptions = new ArrayList<>();
-
-        for(Integer id : genreIds) {
-
-            for(Genre genre : mGenres) {
-
-                if(genre.getId().equals(id)) {
-
-                    genreDescriptions.add(genre.getDescription());
-                    break;
-                }
-            }
-        }
-
-        return genreDescriptions;
     }
 }

@@ -13,7 +13,7 @@ import java.util.List;
 
 import movienight.javi.com.movienight.dialogs.GenresDialog.GenresDialogFragmentPresenter;
 import movienight.javi.com.movienight.dialogs.GenresDialog.GenresDialogFragmentView;
-import movienight.javi.com.movienight.model.FilterItems.Genre;
+import movienight.javi.com.movienight.model.Genre;
 
 /**
  * Created by Javi on 11/2/2016.

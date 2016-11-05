@@ -3,6 +3,8 @@ package movienight.javi.com.movienight.model.FilterItems;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import movienight.javi.com.movienight.model.Genre;
+
 /**
  * Created by Javi on 10/24/2016.
  */
@@ -43,12 +45,6 @@ public class GenreFilterableItem implements FilterableItem<Genre>, Parcelable {
     public String toString() {
 
         return mSelectedGenre.getDescription();
-    }
-
-    @Override
-    public void update(Genre updatedGenre) {
-
-        mSelectedGenre.setChecked(updatedGenre.isChecked());
     }
 
     @Override

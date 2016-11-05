@@ -7,5 +7,4 @@ package movienight.javi.com.movienight.model.FilterItems;
 public interface FilterableItem<T> {
 
     T[] getValue();
-    void update(T newItem);
 }
