@@ -20,21 +20,27 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import movienight.javi.com.movienight.R;
-import movienight.javi.com.movienight.asyntasks.GenreAsyncTask;
+import movienight.javi.com.movienight.asyntasks.GenresAsyncTask;
 import movienight.javi.com.movienight.dialogs.LoadingFilterDialog;
 import movienight.javi.com.movienight.fragments.HomeFragment;
 import movienight.javi.com.movienight.fragments.MovieFragment;
 import movienight.javi.com.movienight.fragments.TVShowFragment;
+import movienight.javi.com.movienight.model.Film;
+import movienight.javi.com.movienight.model.FilmCatetory;
 import movienight.javi.com.movienight.model.FilterItems.Genre;
-import movienight.javi.com.movienight.model.GenreContainer;
-import movienight.javi.com.movienight.urls.GenreUrl;
+import movienight.javi.com.movienight.urls.MovieGenreUrl;
+import movienight.javi.com.movienight.urls.TVShowGenreUrl;
 
 public class MainActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener
+        NavigationView.OnNavigationItemSelectedListener,
+        GenreListener
     {
 
     private ActionBarDrawerToggle mToggle;
     private FragmentManager mFragmentManager;
+    private List<Genre> mMovieGenres;
+    private List<Genre> mTVShowGenres;
+    private int mGenresCount;
     private String[] mMovieSortItems;
     private String[] mTVShowSortItems;
 
@@ -72,6 +78,13 @@ public class MainActivity extends AppCompatActivity implements
         onNavigationItemSelected(
                 mNavigationView.getMenu().getItem(0)
         );
+
+        mGenresCount = 0;
+        new GenresAsyncTask(FilmCatetory.MOVIE, this).execute(new MovieGenreUrl());
+        new GenresAsyncTask(FilmCatetory.TV_SHOW, this).execute(new TVShowGenreUrl());
+
+        mDialog = LoadingFilterDialog.newInstance();
+        mDialog.show(mFragmentManager, "loading_dialog");
     }
 
     @Override
@@ -110,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements
 
             case R.id.popularItemNavigationView:
 
-                fragment = HomeFragment.newInstance();
+                fragment = HomeFragment.newInstance(mMovieGenres);
 
                 mFragmentManager
                         .beginTransaction()
@@ -120,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements
 
             case R.id.movieItemNavigationView:
 
-                fragment = MovieFragment.newInstance(mMovieSortItems);
+                fragment = MovieFragment.newInstance(mMovieGenres, mMovieSortItems);
 
                 mFragmentManager
                         .beginTransaction()
@@ -130,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements
 
             case R.id.tvShowItemNavigationItem:
 
-                fragment = TVShowFragment.newInstance(mTVShowSortItems);
+                fragment = TVShowFragment.newInstance(mTVShowGenres, mTVShowSortItems);
 
                 mFragmentManager
                         .beginTransaction()
@@ -143,4 +156,24 @@ public class MainActivity extends AppCompatActivity implements
 
         return true;
     }
-}
+
+        @Override
+        public void onTaskCompleted(Integer category, Genre[] result) {
+
+            if(category.equals(FilmCatetory.MOVIE)) {
+
+                mMovieGenres = new ArrayList<>(Arrays.asList(result));
+                mGenresCount++;
+            }
+            else if(category.equals(FilmCatetory.TV_SHOW)) {
+
+                mTVShowGenres = new ArrayList<>(Arrays.asList(result));
+                mGenresCount++;
+            }
+
+            if(mGenresCount == 2) {
+
+                mDialog.dismiss();
+            }
+        }
+    }

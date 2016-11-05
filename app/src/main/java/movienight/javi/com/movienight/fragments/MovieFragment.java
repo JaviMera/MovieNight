@@ -8,11 +8,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.model.DialogContainer;
+import movienight.javi.com.movienight.model.FilmCatetory;
 import movienight.javi.com.movienight.model.FilterItems.DateRangeFilterableItem;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItemKeys;
@@ -27,10 +29,11 @@ import movienight.javi.com.movienight.urls.MovieUrlBuilder;
 
 public class MovieFragment extends FilmFragment {
 
-    public static MovieFragment newInstance(String[] sortItems) {
+    public static MovieFragment newInstance(List<Genre> genres, String[] sortItems) {
 
         MovieFragment fragment = new MovieFragment();
         Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(ActivityExtras.GENRES_KEY, (ArrayList)genres);
         bundle.putStringArray(ActivityExtras.SORT_OPTIONS_KEY, sortItems);
         fragment.setArguments(bundle);
 
@@ -41,10 +44,11 @@ public class MovieFragment extends FilmFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        category = 0;
-        String[] sortItems = getArguments().getStringArray(ActivityExtras.SORT_OPTIONS_KEY);
-        mDialogContainer = new DialogContainer(sortItems);
+        category = FilmCatetory.MOVIE;
+        mGenres = getArguments().getParcelableArrayList(ActivityExtras.GENRES_KEY);
 
+        String[] sortItems = getArguments().getStringArray(ActivityExtras.SORT_OPTIONS_KEY);
+        mDialogContainer = new DialogContainer(mGenres, sortItems);
     }
 
     @Override

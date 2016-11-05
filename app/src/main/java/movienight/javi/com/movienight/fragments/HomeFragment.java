@@ -30,8 +30,6 @@ import movienight.javi.com.movienight.listeners.FilmSelectedListener;
 import movienight.javi.com.movienight.listeners.FilmAsyncTaskListener;
 import movienight.javi.com.movienight.model.Film;
 import movienight.javi.com.movienight.model.FilterItems.Genre;
-import movienight.javi.com.movienight.model.GenreContainer;
-import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.ui.MainActivity;
 import movienight.javi.com.movienight.urls.PopularMoviesUrl;
@@ -43,7 +41,7 @@ public class HomeFragment extends Fragment implements
         MoviePostersListener
     {
 
-    private GenreContainer mGenreContainer;
+    private List<Genre> mGenres;
     private MainActivity mParentActivity;
     private Map<String, Film> mFilms;
     private HomeFragmentPresenter mPresenter;
@@ -55,9 +53,13 @@ public class HomeFragment extends Fragment implements
         // Required empty public constructor
     }
 
-    public static HomeFragment newInstance() {
+    public static HomeFragment newInstance(List<Genre> genres) {
 
         HomeFragment fragment = new HomeFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(ActivityExtras.GENRES_KEY, (ArrayList)genres);
+
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -72,6 +74,7 @@ public class HomeFragment extends Fragment implements
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mGenres = getArguments().getParcelableArrayList(ActivityExtras.GENRES_KEY);
         mFilms = new LinkedHashMap<>();
     }
 
@@ -178,11 +181,30 @@ public class HomeFragment extends Fragment implements
 
         FilmDialogFragment dialog = FilmDialogFragment.newInstance(
                 film,
-                mGenreContainer.getGenres(film.getGenres()));
+                getGenres(film.getGenres()));
 
         dialog.show(
                 mParentActivity.getSupportFragmentManager(),
                 "movie_dialog"
         );
+    }
+
+    private List<String> getGenres(int[] genreIds) {
+
+        List<String> genreDescriptions = new ArrayList<>();
+
+        for(Integer id : genreIds) {
+
+            for(Genre genre : mGenres) {
+
+                if(genre.getId().equals(id)) {
+
+                    genreDescriptions.add(genre.getDescription());
+                    break;
+                }
+            }
+        }
+
+        return genreDescriptions;
     }
 }

@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import movienight.javi.com.movienight.model.FilterItems.Genre;
 import movienight.javi.com.movienight.model.jsonvalues.JSONGenre;
-import movienight.javi.com.movienight.ui.AsyncTaskListener;
+import movienight.javi.com.movienight.ui.GenreListener;
 import movienight.javi.com.movienight.urls.AbstractUrl;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
@@ -22,14 +22,15 @@ import okhttp3.Response;
  * Created by Javi on 10/19/2016.
  */
 
-public class GenreAsyncTask extends AsyncTask<AbstractUrl, Integer, Genre[]> {
+public class GenresAsyncTask extends AsyncTask<AbstractUrl, Integer, Genre[]> {
 
-    private AsyncTaskListener mListener;
-    private FragmentManager mFragmentManager;
+    private Integer mCategory;
+    private GenreListener mListener;
 
-    public GenreAsyncTask(FragmentManager fragmentManager, AsyncTaskListener delegate) {
-        mListener = delegate;
-        mFragmentManager = fragmentManager;
+    public GenresAsyncTask(Integer category, GenreListener listener) {
+
+        mCategory = category;
+        mListener = listener;
     }
 
     @Override
@@ -74,6 +75,6 @@ public class GenreAsyncTask extends AsyncTask<AbstractUrl, Integer, Genre[]> {
     @Override
     protected void onPostExecute(Genre[] genres) {
 
-        mListener.onTaskCompleted(genres);
+        mListener.onTaskCompleted(mCategory, genres);
     }
 }

@@ -42,7 +42,7 @@ import movienight.javi.com.movienight.model.DialogContainer;
 import movienight.javi.com.movienight.model.Film;
 import movienight.javi.com.movienight.model.FilterItemContainer;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
-import movienight.javi.com.movienight.model.GenreContainer;
+import movienight.javi.com.movienight.model.FilterItems.Genre;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.ui.MainActivity;
 import movienight.javi.com.movienight.urls.AbstractUrl;
@@ -62,7 +62,7 @@ public abstract class FilmFragment extends Fragment implements
     protected FilmFragmentPresenter mPresenter;
     protected DialogContainer mDialogContainer;
     protected FilterItemContainer mFilterItemContainer;
-    protected GenreContainer mGenreContainer;
+    protected List<Genre> mGenres;
 
     private Integer mTotalPages;
     private AsyncTask mFilmAsyncTask;
@@ -89,7 +89,6 @@ public abstract class FilmFragment extends Fragment implements
         super.onCreate(savedInstanceState);
 
         mFilms = new LinkedHashMap<>();
-        mGenreContainer = new GenreContainer();
         mFilterItemContainer = new FilterItemContainer();
         mCurrentPageNumber = 1;
 
@@ -201,7 +200,7 @@ public abstract class FilmFragment extends Fragment implements
 
         FilmDialogFragment filmDialogFragment = FilmDialogFragment.newInstance(
                 film,
-                mGenreContainer.getGenres(film.getGenres())
+                getGenres(film.getGenres())
         );
 
         filmDialogFragment.show(
@@ -338,5 +337,24 @@ public abstract class FilmFragment extends Fragment implements
                 }
             }
         };
+    }
+
+    private List<String> getGenres(int[] genreIds) {
+
+        List<String> genreDescriptions = new ArrayList<>();
+
+        for(Integer id : genreIds) {
+
+            for(Genre genre : mGenres) {
+
+                if(genre.getId().equals(id)) {
+
+                    genreDescriptions.add(genre.getDescription());
+                    break;
+                }
+            }
+        }
+
+        return genreDescriptions;
     }
 }

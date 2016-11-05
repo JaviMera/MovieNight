@@ -37,82 +37,8 @@ public class HomeFragmentPresenterTestUITest {
             new ActivityTestRule<MainActivity>(MainActivity.class);
 
     @Before
-    public void SetUp () throws Exception {
+    public void SetUp() throws Exception {
 
-        mFilterItems = activityRule.getActivity().getResources().getStringArray(R.array.filter_options_array);
-    }
-
-    @Test
-    public void genreSpinnerItemClickDisplaysGenreDialog() throws Exception {
-
-        // Arrange
-        String expectedItem = mFilterItems[1];
-
-        // Act
-        onView(withId(R.id.filterMoviesSpinnerView)).perform(click());
-        onData(allOf(is(instanceOf(String.class)), is(expectedItem))).perform(click());
-
-        // Assert
-        onView(withId(R.id.genresRecyclerView)).check(matches(isDisplayed()));
-        onView(withId(R.id.genresDoneButtonView)).check(matches(isDisplayed()));
-
-        // Assert that the spinner goes back to showing filter by item
-        onView(withId(R.id.genresDoneButtonView)).perform(click()); // close the genre dialog
-        onView(withId(R.id.filterMoviesSpinnerView)).check(matches(withSpinnerText(mFilterItems[0])));
-    }
-
-    @Test
-    public void dateRangeSpinnerItemClickDisplaysDateRangeDialog() throws Exception {
-
-        // Arrange
-        String expectedItem = mFilterItems[2];
-
-        // Act
-        onView(withId(R.id.filterMoviesSpinnerView)).perform(click());
-        onData(allOf(is(instanceOf(String.class)), is(expectedItem))).perform(click());
-
-        // Assert
-        onView(withId(R.id.startDateRangePickerView)).check(matches(isDisplayed()));
-        onView(withId(R.id.endDateRangePickerView)).check(matches(isDisplayed()));
-
-        // Assert that the spinner goes back to showing filter by item
-        onView(withId(R.id.dateRangeDoneButtonView)).perform(click()); // close the genre dialog
-        onView(withId(R.id.filterMoviesSpinnerView)).check(matches(withSpinnerText(mFilterItems[0])));
-    }
-
-    @Test
-    public void ratingSpinnerItemClickDisplaysDateRangeDialog() throws Exception {
-
-        // Arrange
-        String expectedItem = mFilterItems[3];
-
-        // Act
-        onView(withId(R.id.filterMoviesSpinnerView)).perform(click());
-        onData(allOf(is(instanceOf(String.class)), is(expectedItem))).perform(click());
-
-        // Assert
-        onView(withId(R.id.ratingBarView)).check(matches(isDisplayed()));
-
-        // Assert that the spinner goes back to showing filter by item
-        onView(withId(R.id.rateDoneButtonView)).perform(click()); // close the genre dialog
-        onView(withId(R.id.filterMoviesSpinnerView)).check(matches(withSpinnerText(mFilterItems[0])));
-    }
-
-    @Test
-    public void voteCountSpinnerItemClickDisplaysDateRangeDialog() throws Exception {
-
-        // Arrange
-        String expectedItem = mFilterItems[4];
-
-        // Act
-        onView(withId(R.id.filterMoviesSpinnerView)).perform(click());
-        onData(allOf(is(instanceOf(String.class)), is(expectedItem))).perform(click());
-
-        // Assert
-        onView(withId(R.id.voteCountEditTextView)).check(matches(isDisplayed()));
-
-        // Assert that the spinner goes back to showing filter by item
-        onView(withId(R.id.voteCountDoneButtonView)).perform(click()); // close the genre dialog
-        onView(withId(R.id.filterMoviesSpinnerView)).check(matches(withSpinnerText(mFilterItems[0])));
+//        mFilterItems = activityRule.getActivity().getResources().getStringArray(R.array.filter_options_array);
     }
 }

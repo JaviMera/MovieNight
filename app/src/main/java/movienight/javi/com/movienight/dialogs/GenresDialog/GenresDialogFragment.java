@@ -23,7 +23,6 @@ import movienight.javi.com.movienight.dialogs.FilterDialogBase;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
 import movienight.javi.com.movienight.model.FilterItems.Genre;
 import movienight.javi.com.movienight.model.FilterItems.GenreFilterableItem;
-import movienight.javi.com.movienight.model.GenreContainer;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 
 /**
@@ -37,11 +36,12 @@ public class GenresDialogFragment extends FilterDialogBase implements GenresDial
 
     @BindView(R.id.genresRecyclerView) RecyclerView mRecyclerView;
 
-    public static GenresDialogFragment newInstance(List<FilterableItem> selectedGenres) {
+    public static GenresDialogFragment newInstance(List<Genre> genres, List<FilterableItem> selectedGenres) {
 
         GenresDialogFragment dialogFragment = new GenresDialogFragment();
 
         Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(ActivityExtras.GENRES_KEY, (ArrayList)genres);
         bundle.putParcelableArrayList(ActivityExtras.SELECTED_GENRES_KEY, (ArrayList)selectedGenres);
         dialogFragment.setArguments(bundle);
 
@@ -52,7 +52,7 @@ public class GenresDialogFragment extends FilterDialogBase implements GenresDial
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mGenres = GenreContainer.getAll();
+        mGenres = getArguments().getParcelableArrayList(ActivityExtras.GENRES_KEY);
 
         for(Genre genre : mGenres) {
 

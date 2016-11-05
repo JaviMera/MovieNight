@@ -65,7 +65,7 @@ public class FilmDialogFragmentPresenterTest {
     public void setGenresDescriptionTextViewText() throws Exception {
 
         // Arrange
-        List<Genre> genres = null;
+        List<String> genres = null;
 
         // Act
         mPresenter.setGenresDescriptionsTextViewText(genres);

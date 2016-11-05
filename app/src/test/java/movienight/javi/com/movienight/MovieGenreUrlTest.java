@@ -5,13 +5,13 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import movienight.javi.com.movienight.urls.AbstractUrl;
-import movienight.javi.com.movienight.urls.GenreUrl;
+import movienight.javi.com.movienight.urls.MovieGenreUrl;
 
 /**
  * Created by Javi on 10/16/2016.
  */
 
-public class GenreUrlTest {
+public class MovieGenreUrlTest {
 
     private AbstractUrl mUrl;
 
@@ -20,7 +20,7 @@ public class GenreUrlTest {
 
         // Arrange
         String expectedUrl = "https://api.themoviedb.org/3/genre/movie/list?api_key=cc6069d3c0583db3ab20f687c76e9ffd&language=en-US";
-        mUrl = new GenreUrl();
+        mUrl = new MovieGenreUrl();
 
         // Act
         String actualUrl = mUrl.toString();

@@ -1,15 +1,12 @@
 package movienight.javi.com.movienight.urls;
 
 /**
- * Created by Javi on 10/16/2016.
+ * Created by Javi on 11/4/2016.
  */
-
-public class GenreUrl extends AbstractUrl {
+public class TVShowGenreUrl extends AbstractUrl{
 
     private final String mLanguage = "&language=en-US";
-    private final String mUrl = "https://api.themoviedb.org/3/genre/movie/list?api_key=";
-
-    public GenreUrl() {}
+    private final String mUrl = "https://api.themoviedb.org/3/genre/tv/list?api_key=";
 
     @Override
     public String toString() {
