@@ -75,10 +75,6 @@ public class MainActivity extends AppCompatActivity implements
         mMovieSortItems = getResources().getStringArray(R.array.movie_sort_options_array);
         mTVShowSortItems = getResources().getStringArray(R.array.tv_show_sort_options_array);
 
-        onNavigationItemSelected(
-                mNavigationView.getMenu().getItem(0)
-        );
-
         mGenresCount = 0;
         new GenresAsyncTask(FilmCatetory.MOVIE, this).execute(new MovieGenreUrl());
         new GenresAsyncTask(FilmCatetory.TV_SHOW, this).execute(new TVShowGenreUrl());
@@ -173,6 +169,9 @@ public class MainActivity extends AppCompatActivity implements
 
             if(mGenresCount == 2) {
 
+                onNavigationItemSelected(
+                        mNavigationView.getMenu().getItem(0)
+                );
                 mDialog.dismiss();
             }
         }
