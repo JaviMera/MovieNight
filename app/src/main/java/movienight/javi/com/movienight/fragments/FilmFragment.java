@@ -72,6 +72,7 @@ public abstract class FilmFragment extends Fragment implements
     protected DialogContainer mDialogContainer;
     protected List<Genre> mGenres;
 
+    private boolean isLoading;
     private boolean isFiltering;
     private FilterItemContainer mFilterItemContainer;
     private int mCurrentPageNumber;
@@ -114,6 +115,7 @@ public abstract class FilmFragment extends Fragment implements
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        isLoading = false;
         isFiltering = false;
         mFilms = new LinkedHashMap<>();
         mFilterItemContainer = new FilterItemContainer();
@@ -215,10 +217,8 @@ public abstract class FilmFragment extends Fragment implements
 
             isFiltering = false;
         }
-        else {
 
-            requestFilms(mCurrentPageNumber);
-        }
+        requestFilms(mCurrentPageNumber);
     }
 
     @Override
@@ -274,6 +274,8 @@ public abstract class FilmFragment extends Fragment implements
                     defaultBitmap
             ).execute(film.getPosterPath());
         }
+
+        isLoading = false;
     }
 
     @Override
@@ -406,6 +408,10 @@ public abstract class FilmFragment extends Fragment implements
                 GridLayoutManager linearManager = (GridLayoutManager) recyclerView.getLayoutManager();
 
                 int itemCount = linearManager.getItemCount();
+
+                if(isLoading)
+                    return;
+
                 // Check if the scroll happened when the adapter's data was cleared
                 // In such case, we don't want to call the endless scroll code.
                 if (itemCount == 0)
@@ -416,6 +422,7 @@ public abstract class FilmFragment extends Fragment implements
 
                     if (mCurrentPageNumber < mTotalPages) {
 
+                        isLoading = true;
                         mCurrentPageNumber++;
                         requestFilms(mCurrentPageNumber);
                     }
