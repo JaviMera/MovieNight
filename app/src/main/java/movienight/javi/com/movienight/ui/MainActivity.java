@@ -125,37 +125,39 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        item.setChecked(true);
+        if(!item.isChecked()) {
 
-        Fragment fragment = null;
+            item.setChecked(true);
 
-        switch(item.getItemId()) {
+            Fragment fragment = null;
 
-            case R.id.movieItemNavigationView:
+            switch(item.getItemId()) {
 
-                mToolBar.setTitle("Movies");
-                fragment = MovieFragment.newInstance(mMovieGenres, mMovieSortItems);
+                case R.id.movieItemNavigationView:
 
-                mFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.fragmentContainer, fragment)
-                        .commit();
-                break;
+                    mToolBar.setTitle("Movies");
+                    fragment = MovieFragment.newInstance(mMovieGenres, mMovieSortItems);
 
-            case R.id.tvShowItemNavigationItem:
+                    mFragmentManager
+                            .beginTransaction()
+                            .replace(R.id.fragmentContainer, fragment)
+                            .commit();
+                    break;
 
-                mToolBar.setTitle("TV Shows");
-                fragment = TVShowFragment.newInstance(mTVShowGenres, mTVShowSortItems);
+                case R.id.tvShowItemNavigationItem:
 
-                mFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.fragmentContainer, fragment)
-                        .commit();
-                break;
+                    mToolBar.setTitle("TV Shows");
+                    fragment = TVShowFragment.newInstance(mTVShowGenres, mTVShowSortItems);
+
+                    mFragmentManager
+                            .beginTransaction()
+                            .replace(R.id.fragmentContainer, fragment)
+                            .commit();
+                    break;
+            }
         }
 
         mDrawerLayout.closeDrawer(GravityCompat.START);
-
         return true;
     }
 
