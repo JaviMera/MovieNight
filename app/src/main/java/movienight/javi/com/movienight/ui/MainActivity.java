@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements
     {
 
     private ActionBarDrawerToggle mToggle;
-    private GenreContainer mGenreContainer;
+    private FragmentManager mFragmentManager;
     private String[] mMovieSortItems;
     private String[] mTVShowSortItems;
 
@@ -64,7 +64,8 @@ public class MainActivity extends AppCompatActivity implements
         mDrawerLayout.addDrawerListener(mToggle);
         mNavigationView.setNavigationItemSelectedListener(this);
 
-        mGenreContainer = new GenreContainer();
+        mFragmentManager = getSupportFragmentManager();
+
         mMovieSortItems = getResources().getStringArray(R.array.movie_sort_options_array);
         mTVShowSortItems = getResources().getStringArray(R.array.tv_show_sort_options_array);
 
@@ -104,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements
         item.setChecked(true);
 
         Fragment fragment = null;
-        FragmentManager fragmentManager;
 
         switch(item.getItemId()) {
 
@@ -112,8 +112,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 fragment = HomeFragment.newInstance();
 
-                fragmentManager = getSupportFragmentManager();
-                fragmentManager
+                mFragmentManager
                         .beginTransaction()
                         .replace(R.id.fragmentContainer, fragment)
                         .commit();
@@ -123,8 +122,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 fragment = MovieFragment.newInstance(mMovieSortItems);
 
-                fragmentManager = getSupportFragmentManager();
-                fragmentManager
+                mFragmentManager
                         .beginTransaction()
                         .replace(R.id.fragmentContainer, fragment)
                         .commit();
@@ -134,8 +132,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 fragment = TVShowFragment.newInstance(mTVShowSortItems);
 
-                fragmentManager = getSupportFragmentManager();
-                fragmentManager
+                mFragmentManager
                         .beginTransaction()
                         .replace(R.id.fragmentContainer, fragment)
                         .commit();

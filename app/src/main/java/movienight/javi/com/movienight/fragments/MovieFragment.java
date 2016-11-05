@@ -39,17 +39,16 @@ public class MovieFragment extends FilmFragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         category = 0;
         String[] sortItems = getArguments().getStringArray(ActivityExtras.SORT_OPTIONS_KEY);
         mDialogContainer = new DialogContainer(sortItems);
 
-        super.onCreate(savedInstanceState);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
 
         inflater.inflate(R.menu.movie_fragment_menu_layout, menu);
         super.onCreateOptionsMenu(menu, inflater);
@@ -84,7 +83,7 @@ public class MovieFragment extends FilmFragment {
         }
 
         if(position == -1)
-            return onOptionsItemSelected(item);
+            return super.onOptionsItemSelected(item);
 
         List<FilterableItem> selectedItems = mFilterItemContainer.get(position);
         DialogFragment dialog = mDialogContainer.getDialog(position, selectedItems);
