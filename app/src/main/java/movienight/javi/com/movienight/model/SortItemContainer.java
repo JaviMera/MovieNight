@@ -4,16 +4,17 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
-import movienight.javi.com.movienight.model.SortItems.PopularityAscending;
-import movienight.javi.com.movienight.model.SortItems.PopularityDescending;
-import movienight.javi.com.movienight.model.SortItems.RatingAscending;
-import movienight.javi.com.movienight.model.SortItems.RatingDescending;
-import movienight.javi.com.movienight.model.SortItems.ReleaseDateAscending;
-import movienight.javi.com.movienight.model.SortItems.ReleaseDateDescending;
-import movienight.javi.com.movienight.model.SortItems.RevenueAscending;
-import movienight.javi.com.movienight.model.SortItems.SortItemBase;
-import movienight.javi.com.movienight.model.SortItems.VoteCountAscending;
-import movienight.javi.com.movienight.model.SortItems.VoteCountDescending;
+import movienight.javi.com.movienight.model.MovieSortItems.FirstAirDateAscending;
+import movienight.javi.com.movienight.model.MovieSortItems.FirstAirDateDescending;
+import movienight.javi.com.movienight.model.MovieSortItems.PopularityAscending;
+import movienight.javi.com.movienight.model.MovieSortItems.PopularityDescending;
+import movienight.javi.com.movienight.model.MovieSortItems.RatingAscending;
+import movienight.javi.com.movienight.model.MovieSortItems.RatingDescending;
+import movienight.javi.com.movienight.model.MovieSortItems.ReleaseDateAscending;
+import movienight.javi.com.movienight.model.MovieSortItems.ReleaseDateDescending;
+import movienight.javi.com.movienight.model.MovieSortItems.RevenueAscending;
+import movienight.javi.com.movienight.model.MovieSortItems.VoteCountAscending;
+import movienight.javi.com.movienight.model.MovieSortItems.VoteCountDescending;
 
 /**
  * Created by Javi on 11/3/2016.
@@ -21,31 +22,26 @@ import movienight.javi.com.movienight.model.SortItems.VoteCountDescending;
 
 public class SortItemContainer {
 
-    private static Integer DEFAULT_SORT_ITEM = 2;
-
-    private Map<Integer, FilterableItem> mSortItemsMap;
+    private Map<String, FilterableItem> mSortItemsMap;
 
     public SortItemContainer() {
 
         mSortItemsMap = new LinkedHashMap<>();
-        mSortItemsMap.put(1, new PopularityAscending());
-        mSortItemsMap.put(2, new PopularityDescending());
-        mSortItemsMap.put(3, new ReleaseDateAscending());
-        mSortItemsMap.put(4, new ReleaseDateDescending());
-        mSortItemsMap.put(5, new RevenueAscending());
-        mSortItemsMap.put(6, new ReleaseDateDescending());
-        mSortItemsMap.put(7, new RatingAscending());
-        mSortItemsMap.put(8, new RatingDescending());
-        mSortItemsMap.put(9, new VoteCountAscending());
-        mSortItemsMap.put(10, new VoteCountDescending());
+        mSortItemsMap.put("Popularity Ascending", new PopularityAscending());
+        mSortItemsMap.put("Popularity Descending", new PopularityDescending());
+        mSortItemsMap.put("Release Date Ascending", new ReleaseDateAscending());
+        mSortItemsMap.put("Release Date Descending", new ReleaseDateDescending());
+        mSortItemsMap.put("Revenue Ascending", new RevenueAscending());
+        mSortItemsMap.put("Revenue Descending", new ReleaseDateDescending());
+        mSortItemsMap.put("Rating Ascending", new RatingAscending());
+        mSortItemsMap.put("Rating Descending", new RatingDescending());
+        mSortItemsMap.put("Vote Count Asending", new VoteCountAscending());
+        mSortItemsMap.put("Vote Count Descending", new VoteCountDescending());
+        mSortItemsMap.put("First Air Date Ascending", new FirstAirDateAscending());
+        mSortItemsMap.put("First Air Date Descending", new FirstAirDateDescending());
     }
 
-    public FilterableItem getDefault() {
-
-        return mSortItemsMap.get(DEFAULT_SORT_ITEM);
-    }
-
-    public FilterableItem get(Integer key) {
+    public FilterableItem get(String key) {
 
         return mSortItemsMap.get(key);
     }

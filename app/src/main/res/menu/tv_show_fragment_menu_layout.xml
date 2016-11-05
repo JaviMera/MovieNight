@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:myapp="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/tvFilterByGenreItem"
+        android:title="Filter by Genre"
+        android:orderInCategory="100"
+        myapp:showAsAction="never"/>
+    <item
+        android:id="@+id/tvFilterByReleaseDateItem"
+        android:title="Filter by First Air Date"
+        android:orderInCategory="101"
+        myapp:showAsAction="never"/>
+
+    <item
+        android:id="@+id/tvFilterByRatingItem"
+        android:title="Filter by Rating"
+        android:orderInCategory="102"
+        myapp:showAsAction="never"/>
+
+    <item
+        android:id="@+id/tvFilterByVoteCountItem"
+        android:title="Filter by Vote Count"
+        android:orderInCategory="103"
+        myapp:showAsAction="never"/>
+
+    <item
+        android:id="@+id/tvFiltertByItem"
+        android:title="Sort by..."
+        android:orderInCategory="104"
+        myapp:showAsAction="never"/>
+</menu>

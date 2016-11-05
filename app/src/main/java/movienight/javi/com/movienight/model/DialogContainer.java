@@ -20,12 +20,10 @@ import movienight.javi.com.movienight.model.FilterItems.Genre;
 
 public class DialogContainer {
 
-    private List<Genre> mGenres;
     private String[] mSortItems;
 
-    public DialogContainer(List<Genre> genres, String[] items) {
+    public DialogContainer(String[] items) {
 
-        mGenres = genres;
         mSortItems = items;
     }
 
@@ -34,7 +32,7 @@ public class DialogContainer {
         switch(key) {
 
             case FilterableItemKeys.GENRE:
-                return GenresDialogFragment.newInstance(mGenres, items);
+                return GenresDialogFragment.newInstance(items);
 
             case FilterableItemKeys.DATE_RANGE:
                 return DateRangeDialogFragment.newInstance(items);

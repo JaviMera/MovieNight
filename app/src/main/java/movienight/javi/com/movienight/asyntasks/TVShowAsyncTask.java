@@ -15,29 +15,29 @@ import java.util.List;
 
 import movienight.javi.com.movienight.listeners.FilmAsyncTaskListener;
 import movienight.javi.com.movienight.model.Film;
-import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.model.Page;
-import movienight.javi.com.movienight.model.jsonvalues.JSONMovie;
+import movienight.javi.com.movienight.model.TVShow;
+import movienight.javi.com.movienight.model.jsonvalues.JSONFilm;
 import movienight.javi.com.movienight.model.jsonvalues.JSONMovieDiscover;
+import movienight.javi.com.movienight.model.jsonvalues.JSONTVShow;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.urls.AbstractUrl;
 import movienight.javi.com.movienight.urls.MovieUrl;
+import movienight.javi.com.movienight.urls.TVShowUrl;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * Created by Javi on 10/21/2016.
+ * Created by Javi on 11/4/2016.
  */
-
-
-public class MoviesFilterAsyncTask extends AsyncTask<AbstractUrl, Void, Page> {
+public class TVShowAsyncTask extends AsyncTask<AbstractUrl, Void, Page> {
 
     private FilmAsyncTaskListener mListener;
     private Integer mTotalPages;
 
-    public MoviesFilterAsyncTask(FilmAsyncTaskListener listener) {
+    public TVShowAsyncTask(FilmAsyncTaskListener listener) {
 
         mListener = listener;
     }
@@ -45,7 +45,7 @@ public class MoviesFilterAsyncTask extends AsyncTask<AbstractUrl, Void, Page> {
     @Override
     protected Page doInBackground(AbstractUrl... params) {
 
-        MovieUrl url = (MovieUrl)params[0];
+        TVShowUrl url = (TVShowUrl)params[0];
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url.toString())
@@ -70,13 +70,13 @@ public class MoviesFilterAsyncTask extends AsyncTask<AbstractUrl, Void, Page> {
             mTotalPages = jsonObject.getInt(JSONMovieDiscover.TOTAL_PAGES_KEY);
 
             JSONArray resultsArray = jsonObject.getJSONArray(JSONMovieDiscover.RESULTS_KEY);
-            List<Film> movies = new LinkedList<>();
+            List<Film> films = new LinkedList<>();
 
             for(int result = 0 ; result < resultsArray.length(); result++) {
 
                 JSONObject currentJSONObject = resultsArray.getJSONObject(result);
 
-                String releaseDateJson = currentJSONObject.getString(JSONMovie.RELEASE_DATE_KEY);
+                String releaseDateJson = currentJSONObject.getString(JSONTVShow.RELEASE_DATE_KEY);
 
                 if(startDateRequest != null && endDateRequest != null) {
 
@@ -87,18 +87,18 @@ public class MoviesFilterAsyncTask extends AsyncTask<AbstractUrl, Void, Page> {
                         if ((releaseDate.compareTo(startDateRequest) == 0 || releaseDate.compareTo(endDateRequest) == 0)
                                 || (releaseDate.compareTo(startDateRequest) == 1 && releaseDate.compareTo(endDateRequest) == -1)) {
 
-                            movies.add(Movie.fromJSON(currentJSONObject));
+                            films.add(TVShow.fromJSON(currentJSONObject));
                         }
                     }
                 }
 
                 else
-                    movies.add(Movie.fromJSON(currentJSONObject));
+                    films.add(TVShow.fromJSON(currentJSONObject));
             }
 
             int pageNumber = jsonObject.getInt("page");
 
-            return new Page(pageNumber, movies.toArray(new Movie[movies.size()]));
+            return new Page(pageNumber, films.toArray(new Film[films.size()]));
         }
         catch (IOException e) {
             e.printStackTrace();

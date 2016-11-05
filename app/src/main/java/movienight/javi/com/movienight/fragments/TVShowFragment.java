@@ -19,28 +19,29 @@ import movienight.javi.com.movienight.model.FilterItems.FilterableItemKeys;
 import movienight.javi.com.movienight.model.FilterItems.Genre;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.urls.AbstractUrl;
-import movienight.javi.com.movienight.urls.MovieUrlBuilder;
+import movienight.javi.com.movienight.urls.TVShowUrlBuilder;
 
 /**
  * Created by Javi on 11/4/2016.
  */
 
-public class MovieFragment extends FilmFragment {
+public class TVShowFragment extends FilmFragment {
 
-    public static MovieFragment newInstance(String[] sortItems) {
+    public static TVShowFragment newInstance(String[] sortItems) {
 
-        MovieFragment fragment = new MovieFragment();
+        TVShowFragment fragment = new TVShowFragment();
+
         Bundle bundle = new Bundle();
         bundle.putStringArray(ActivityExtras.SORT_OPTIONS_KEY, sortItems);
-        fragment.setArguments(bundle);
 
+        fragment.setArguments(bundle);
         return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
-        category = 0;
+        category = 1;
         String[] sortItems = getArguments().getStringArray(ActivityExtras.SORT_OPTIONS_KEY);
         mDialogContainer = new DialogContainer(sortItems);
 
@@ -49,9 +50,10 @@ public class MovieFragment extends FilmFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
 
-        inflater.inflate(R.menu.movie_fragment_menu_layout, menu);
+        menu.clear();
+        inflater.inflate(R.menu.tv_show_fragment_menu_layout, menu);
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -62,23 +64,23 @@ public class MovieFragment extends FilmFragment {
 
         switch(item.getItemId()) {
 
-            case R.id.filterByGenreItem:
+            case R.id.tvFilterByGenreItem:
                 position = FilterableItemKeys.GENRE;
                 break;
 
-            case R.id.filterByReleaseDateItem:
+            case R.id.tvFilterByReleaseDateItem:
                 position = FilterableItemKeys.DATE_RANGE;
                 break;
 
-            case R.id.filterByRatingItem:
+            case R.id.tvFilterByRatingItem:
                 position = FilterableItemKeys.RATE;
                 break;
 
-            case R.id.filterByVoteCountItem:
+            case R.id.tvFilterByVoteCountItem:
                 position = FilterableItemKeys.VOTE_COUNT;
                 break;
 
-            case R.id.sortByItem:
+            case R.id.tvFiltertByItem:
                 position = FilterableItemKeys.SORT;
                 break;
         }
@@ -146,14 +148,14 @@ public class MovieFragment extends FilmFragment {
             sortOption = (String) item.getValue()[0];
         }
 
-        return new MovieUrlBuilder()
-                .withPageNumber(pageNumber + "")
-                .withGenres(genresIds)
-                .withStartReleaseDate(startDate)
-                .withEndReleaseDate(endDate)
-                .withRating(rateSelected == null ? "" : String.valueOf(rateSelected))
-                .withVoteCount(votesCount == null ? "" : String.valueOf(votesCount))
-                .sortBy(sortOption)
-                .createMovieUrl();
+        return new TVShowUrlBuilder()
+            .withPageNumber(pageNumber + "")
+            .withGenres(genresIds)
+            .withStartAirDate(startDate)
+            .withEndAirDate(endDate)
+            .withRating(rateSelected == null ? "" : String.valueOf(rateSelected))
+            .withVoteCount(votesCount == null ? "" : String.valueOf(votesCount))
+            .sortBy(sortOption)
+            .createTVShowUrl();
     }
 }

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.support.v4.app.DialogFragment;
 import android.view.KeyEvent;
 
+import movienight.javi.com.movienight.fragments.FilmFragment;
 import movienight.javi.com.movienight.fragments.MovieFragment;
 import movienight.javi.com.movienight.listeners.FilterItemAddedListener;
 import movienight.javi.com.movienight.model.FilterItems.NullFilterableItem;
@@ -20,7 +21,7 @@ public abstract class FilterDialogBase extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mListener = (MovieFragment)getTargetFragment();
+        mListener = (FilmFragment)getTargetFragment();
     }
 
     protected DialogInterface.OnKeyListener onBackButtonPressed() {

@@ -33,7 +33,7 @@ import movienight.javi.com.movienight.ui.ActivityExtras;
 public class FilmDialogFragment extends DialogFragment implements MovieDialogFramgnetView {
 
     private Movie mMovie;
-    private List<Genre> mMovieGenres;
+    private List<String> mMovieGenres;
     private MovieDialogFragmentPresenter mPresenter;
 
     @BindView(R.id.movieTitleDialogTextView) TextView mTitleTextView;
@@ -44,13 +44,13 @@ public class FilmDialogFragment extends DialogFragment implements MovieDialogFra
     @BindView(R.id.movieGenresDialogTextView) TextView mGenresTextView;
     @BindView(R.id.movieReleaseDateDialogTextView) TextView mReleaseDateTextView;
 
-    public static FilmDialogFragment newInstance(Film film, List<Genre> genres) {
+    public static FilmDialogFragment newInstance(Film film, List<String> genreDescriptions) {
 
         FilmDialogFragment dialog = new FilmDialogFragment();
 
         Bundle bundle = new Bundle();
         bundle.putParcelable(ActivityExtras.SELECTED_MOVIE_KEY, film);
-        bundle.putParcelableArrayList(ActivityExtras.GENRES_KEY, (ArrayList)genres);
+        bundle.putStringArrayList(ActivityExtras.GENRES_KEY, (ArrayList)genreDescriptions);
         dialog.setArguments(bundle);
 
         return dialog;
@@ -64,7 +64,7 @@ public class FilmDialogFragment extends DialogFragment implements MovieDialogFra
         mMovieGenres = new ArrayList<>();
 
         mMovie = getArguments().getParcelable(ActivityExtras.SELECTED_MOVIE_KEY);
-        mMovieGenres = getArguments().getParcelableArrayList(ActivityExtras.GENRES_KEY);
+        mMovieGenres = getArguments().getStringArrayList(ActivityExtras.GENRES_KEY);
     }
 
     @NonNull
@@ -85,7 +85,7 @@ public class FilmDialogFragment extends DialogFragment implements MovieDialogFra
         mPresenter.setTextViewText(
             mTitleTextView,
             resources.getString(R.string.movie_title_dialog),
-            mMovie.getTitle(),
+            mMovie.getName(),
             mMovie.getYearRelease()
         );
 
@@ -133,7 +133,7 @@ public class FilmDialogFragment extends DialogFragment implements MovieDialogFra
     }
 
     @Override
-    public void setGenresDescriptionsTextViewText(List<Genre> genres) {
+    public void setGenresDescriptionsTextViewText(List<String> genres) {
 
         String genresDescription = getGenresDescriptions(genres);
         mGenresTextView.setText(genresDescription);
@@ -172,12 +172,12 @@ public class FilmDialogFragment extends DialogFragment implements MovieDialogFra
         return c;
     }
 
-    private String getGenresDescriptions(List<Genre> genres) {
+    private String getGenresDescriptions(List<String> genres) {
 
         String genresDescriptions = "";
-        for(Genre genre : genres) {
+        for(String genre : genres) {
 
-            genresDescriptions += genre.getDescription() + "  ";
+            genresDescriptions += genre + "  ";
         }
 
         return genresDescriptions;

@@ -6,12 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
 import movienight.javi.com.movienight.R;
-import movienight.javi.com.movienight.listeners.FilterItemAddedListener;
 import movienight.javi.com.movienight.listeners.SortItemAddedListener;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItemKeys;
 import movienight.javi.com.movienight.model.SortItemContainer;
@@ -72,7 +70,10 @@ public class SortRecyclerViewAdapter extends RecyclerView.Adapter<SortRecyclerVi
                 @Override
                 public void onClick(View v) {
 
-                    mListener.onSortItemAdded(FilterableItemKeys.SORT, mContainer.get(position+1));
+                mListener.onSortItemAdded(
+                    FilterableItemKeys.SORT,
+                    mContainer.get(mSortTextView.getText().toString())
+                );
                 }
             });
             mSortTextView.setText(s);

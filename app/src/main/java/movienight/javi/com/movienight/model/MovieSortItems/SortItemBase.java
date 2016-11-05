@@ -1,4 +1,4 @@
-package movienight.javi.com.movienight.model.SortItems;
+package movienight.javi.com.movienight.model.MovieSortItems;
 
 import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
 

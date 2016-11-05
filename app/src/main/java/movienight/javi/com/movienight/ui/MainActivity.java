@@ -24,16 +24,19 @@ import movienight.javi.com.movienight.asyntasks.GenreAsyncTask;
 import movienight.javi.com.movienight.dialogs.LoadingFilterDialog;
 import movienight.javi.com.movienight.fragments.HomeFragment;
 import movienight.javi.com.movienight.fragments.MovieFragment;
+import movienight.javi.com.movienight.fragments.TVShowFragment;
 import movienight.javi.com.movienight.model.FilterItems.Genre;
+import movienight.javi.com.movienight.model.GenreContainer;
 import movienight.javi.com.movienight.urls.GenreUrl;
 
-public class MainActivity extends AppCompatActivity
-        implements
-        NavigationView.OnNavigationItemSelectedListener,
-        AsyncTaskListener<Genre> {
+public class MainActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener
+    {
 
     private ActionBarDrawerToggle mToggle;
-    private List<Genre> mGenres;
+    private GenreContainer mGenreContainer;
+    private String[] mMovieSortItems;
+    private String[] mTVShowSortItems;
 
     @BindView(R.id.toolbar) Toolbar mToolBar;
     @BindView(R.id.navigationView) NavigationView mNavigationView;
@@ -61,13 +64,12 @@ public class MainActivity extends AppCompatActivity
         mDrawerLayout.addDrawerListener(mToggle);
         mNavigationView.setNavigationItemSelectedListener(this);
 
-        new GenreAsyncTask(getSupportFragmentManager(), this)
-                .execute(new GenreUrl());
+        mGenreContainer = new GenreContainer();
+        mMovieSortItems = getResources().getStringArray(R.array.movie_sort_options_array);
+        mTVShowSortItems = getResources().getStringArray(R.array.tv_show_sort_options_array);
 
-        mDialog = LoadingFilterDialog.newInstance();
-        mDialog.show(
-            getSupportFragmentManager(),
-            "loading_dialog"
+        onNavigationItemSelected(
+                mNavigationView.getMenu().getItem(0)
         );
     }
 
@@ -108,7 +110,7 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.popularItemNavigationView:
 
-                fragment = HomeFragment.newInstance(mGenres);
+                fragment = HomeFragment.newInstance();
 
                 fragmentManager = getSupportFragmentManager();
                 fragmentManager
@@ -119,8 +121,7 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.movieItemNavigationView:
 
-                String[] sortItems = getResources().getStringArray(R.array.sort_options_array);
-                fragment = MovieFragment.newInstance(mGenres, sortItems);
+                fragment = MovieFragment.newInstance(mMovieSortItems);
 
                 fragmentManager = getSupportFragmentManager();
                 fragmentManager
@@ -130,23 +131,19 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.tvShowItemNavigationItem:
+
+                fragment = TVShowFragment.newInstance(mTVShowSortItems);
+
+                fragmentManager = getSupportFragmentManager();
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragmentContainer, fragment)
+                        .commit();
                 break;
         }
 
         mDrawerLayout.closeDrawer(GravityCompat.START);
 
         return true;
-    }
-
-    @Override
-    public void onTaskCompleted(Genre[] result) {
-
-        mGenres = new ArrayList<>(Arrays.asList(result));
-
-        onNavigationItemSelected(
-            mNavigationView.getMenu().getItem(0)
-        );
-
-        mDialog.dismiss();
     }
 }

@@ -15,6 +15,6 @@ public interface MovieDialogFramgnetView {
 
     void setTextViewText(TextView view, String text, Object... params);
     void setPosterImageView(Bitmap poster);
-    void setGenresDescriptionsTextViewText(List<Genre> genres);
+    void setGenresDescriptionsTextViewText(List<String> genres);
     void setReleaseDateTextViewText(String year, String month, String day);
 }

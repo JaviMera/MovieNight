@@ -8,18 +8,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import movienight.javi.com.movienight.model.jsonvalues.JSONFilm;
-import movienight.javi.com.movienight.model.jsonvalues.JSONMovie;
+import movienight.javi.com.movienight.model.jsonvalues.JSONTVShow;
 
 /**
- * Created by Javi on 10/21/2016.
+ * Created by Javi on 11/4/2016.
  */
-public class Movie implements Film{
+
+public class TVShow implements Film {
 
     private int mId;
     private String mOverview;
     private String mOriginalTitle;
-    private String mTitle;
-    private String mReleaseDate;
+    private String mName;
+    private String mAirDate;
     private double mPopularity;
     private int mVoteCount;
     private double mRating;
@@ -27,47 +28,29 @@ public class Movie implements Film{
     private String mPosterPath;
     private Bitmap mPoster;
 
-    protected Movie(Parcel in) {
-        mId = in.readInt();
-        mOverview = in.readString();
-        mOriginalTitle = in.readString();
-        mTitle = in.readString();
-        mReleaseDate = in.readString();
-        mPopularity = in.readDouble();
-        mVoteCount = in.readInt();
-        mGenreIds = in.createIntArray();
-        mPosterPath = in.readString();
-        mPoster = in.readParcelable(Bitmap.class.getClassLoader());
-    }
-
-    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+    public static final Creator<TVShow> CREATOR = new Creator<TVShow>() {
         @Override
-        public Movie createFromParcel(Parcel in) {
-            return new Movie(in);
+        public TVShow createFromParcel(Parcel in) {
+            return new TVShow(in);
         }
 
         @Override
-        public Movie[] newArray(int size) {
-            return new Movie[size];
+        public TVShow[] newArray(int size) {
+            return new TVShow[size];
         }
     };
-
-    public Movie() {
-
-        this(-1, "insert overview", "insert originalTitle", "insert title", "Insert year", 0.0, 0, 0.0, new int[]{}, "insert poster path", null);
-    }
 
     public static Film fromJSON(JSONObject jsonObject) throws JSONException{
 
         int movieId = jsonObject.getInt(JSONFilm.ID_KEY);
         String movieOverview = jsonObject.getString(JSONFilm.OVERVIEW_KEY);
-        String movieOriginalTitle = jsonObject.getString(JSONMovie.ORIGINAL_TITLE_KEY);
-        String movieTitle = jsonObject.getString(JSONMovie.TITLE_KEY);
-        String movieReleaseDate = jsonObject.getString(JSONMovie.RELEASE_DATE_KEY);
+        String movieOriginalTitle = jsonObject.getString(JSONTVShow.ORIGINAL_TITLE_KEY);
+        String movieTitle = jsonObject.getString(JSONTVShow.TITLE_KEY);
+        String tvShowAirDate = jsonObject.getString(JSONTVShow.RELEASE_DATE_KEY);
 
         String moviePosterPath = jsonObject.isNull(JSONFilm.POSTER_PATH_KEY)
-            ? ""
-            : jsonObject.getString(JSONFilm.POSTER_PATH_KEY);
+                ? ""
+                : jsonObject.getString(JSONFilm.POSTER_PATH_KEY);
 
         double moviePopularity = jsonObject.getDouble(JSONFilm.POPULARITY_KEY);
         int movieVotes = jsonObject.getInt(JSONFilm.VOTE_COUNT_KEY);
@@ -81,39 +64,39 @@ public class Movie implements Film{
             genreIds[g] = genreIdsArray.getInt(g);
         }
 
-        return new Movie(
-            movieId,
-            movieOverview,
-            movieOriginalTitle,
-            movieTitle,
-            movieReleaseDate,
-            moviePopularity,
-            movieVotes,
-            movieRating,
-            genreIds,
-            moviePosterPath,
-            null
+        return new TVShow(
+                movieId,
+                movieOverview,
+                movieOriginalTitle,
+                movieTitle,
+                tvShowAirDate,
+                moviePopularity,
+                movieVotes,
+                movieRating,
+                genreIds,
+                moviePosterPath,
+                null
         );
     }
 
-    public Movie(
-        int id,
-        String overview,
-        String originalTitle,
-        String title,
-        String releaseDate,
-        double popularity,
-        int voteCount,
-        double rating,
-        int[] genreIds,
-        String posterPath,
-        Bitmap poster)
+    public TVShow(
+            int id,
+            String overview,
+            String originalTitle,
+            String name,
+            String airDate,
+            double popularity,
+            int voteCount,
+            double rating,
+            int[] genreIds,
+            String posterPath,
+            Bitmap poster)
     {
         mId = id;
         mOverview = overview;
         mOriginalTitle = originalTitle;
-        mTitle = title;
-        mReleaseDate = releaseDate;
+        mName = name;
+        mAirDate = airDate;
         mPopularity = popularity;
         mVoteCount = voteCount;
         mRating = rating;
@@ -122,14 +105,30 @@ public class Movie implements Film{
         mPoster = poster;
     }
 
+    public TVShow(Parcel in) {
+
+        mId = in.readInt();
+        mOverview = in.readString();
+        mOriginalTitle = in.readString();
+        mName = in.readString();
+        mAirDate = in.readString();
+        mPopularity = in.readDouble();
+        mVoteCount = in.readInt();
+        mGenreIds = in.createIntArray();
+        mPosterPath = in.readString();
+        mPoster = in.readParcelable(Bitmap.class.getClassLoader());
+    }
+
     @Override
     public int getId() {
-        return mId;
+
+        return getId();
     }
 
     @Override
     public String getName() {
-        return mTitle;
+
+        return mName;
     }
 
     @Override
@@ -138,7 +137,9 @@ public class Movie implements Film{
     }
 
     @Override
-    public String getReleaseDate() {return mReleaseDate;}
+    public String getReleaseDate() {
+        return mAirDate;
+    }
 
     @Override
     public double getPopularity() {
@@ -147,7 +148,6 @@ public class Movie implements Film{
 
     @Override
     public int getVoteCount() {
-
         return mVoteCount;
     }
 
@@ -158,13 +158,16 @@ public class Movie implements Film{
 
     @Override
     public int[] getGenres() {
-
         return mGenreIds;
     }
 
     @Override
-    public Bitmap getPoster() {
+    public String getPosterPath() {
+        return mPosterPath;
+    }
 
+    @Override
+    public Bitmap getPoster() {
         return mPoster;
     }
 
@@ -175,23 +178,18 @@ public class Movie implements Film{
     }
 
     @Override
-    public String getPosterPath() {
-        return mPosterPath;
-    }
-
-
-    @Override
     public int describeContents() {
         return 0;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+
         dest.writeInt(mId);
         dest.writeString(mOverview);
         dest.writeString(mOriginalTitle);
-        dest.writeString(mTitle);
-        dest.writeString(mReleaseDate);
+        dest.writeString(mName);
+        dest.writeString(mAirDate);
         dest.writeDouble(mPopularity);
         dest.writeInt(mVoteCount);
         dest.writeIntArray(mGenreIds);
@@ -201,22 +199,22 @@ public class Movie implements Film{
 
     public String getYearRelease() {
 
-        return mReleaseDate.isEmpty()
-            ? ""
-            :mReleaseDate.split("-")[0];
+        return mAirDate.isEmpty()
+                ? ""
+                :mAirDate.split("-")[0];
     }
 
     public String getMonthRelease() {
 
-        return mReleaseDate.isEmpty()
-            ? ""
-            :mReleaseDate.split("-")[1];
+        return mAirDate.isEmpty()
+                ? ""
+                :mAirDate.split("-")[1];
     }
 
     public String getDayRelease() {
 
-        return mReleaseDate.isEmpty()
-            ? ""
-            :mReleaseDate.split("-")[2];
+        return mAirDate.isEmpty()
+                ? ""
+                :mAirDate.split("-")[2];
     }
 }

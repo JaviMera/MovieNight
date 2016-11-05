@@ -30,6 +30,7 @@ import movienight.javi.com.movienight.listeners.FilmSelectedListener;
 import movienight.javi.com.movienight.listeners.FilmAsyncTaskListener;
 import movienight.javi.com.movienight.model.Film;
 import movienight.javi.com.movienight.model.FilterItems.Genre;
+import movienight.javi.com.movienight.model.GenreContainer;
 import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.ui.MainActivity;
@@ -42,9 +43,9 @@ public class HomeFragment extends Fragment implements
         MoviePostersListener
     {
 
+    private GenreContainer mGenreContainer;
     private MainActivity mParentActivity;
     private Map<String, Film> mFilms;
-    private List<Genre> mGenres;
     private HomeFragmentPresenter mPresenter;
 
     @BindView(R.id.popularMoviesRecyclerView)
@@ -54,13 +55,9 @@ public class HomeFragment extends Fragment implements
         // Required empty public constructor
     }
 
-    public static HomeFragment newInstance(List<Genre> genres) {
+    public static HomeFragment newInstance() {
 
         HomeFragment fragment = new HomeFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList(ActivityExtras.GENRES_KEY, (ArrayList)genres);
-        fragment.setArguments(bundle);
-
         return fragment;
     }
 
@@ -76,7 +73,6 @@ public class HomeFragment extends Fragment implements
         super.onCreate(savedInstanceState);
 
         mFilms = new LinkedHashMap<>();
-        mGenres = getArguments().getParcelableArrayList(ActivityExtras.GENRES_KEY);
     }
 
     @Override
@@ -182,7 +178,7 @@ public class HomeFragment extends Fragment implements
 
         FilmDialogFragment dialog = FilmDialogFragment.newInstance(
                 film,
-                Genre.getSelectedGenres(film.getGenres(), mGenres));
+                mGenreContainer.getGenres(film.getGenres()));
 
         dialog.show(
                 mParentActivity.getSupportFragmentManager(),

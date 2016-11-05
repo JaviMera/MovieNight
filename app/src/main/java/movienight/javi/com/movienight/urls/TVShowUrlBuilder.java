@@ -68,7 +68,7 @@ public class TVShowUrlBuilder {
         return this;
     }
 
-    public TVShowUrlBuilder sortByt(String sortBy) {
+    public TVShowUrlBuilder sortBy(String sortBy) {
 
         mSort = sortBy;
         return this;

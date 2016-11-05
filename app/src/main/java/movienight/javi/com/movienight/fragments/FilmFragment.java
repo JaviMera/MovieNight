@@ -29,9 +29,11 @@ import butterknife.ButterKnife;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.adapters.FilterItemRecyclerAdapter;
 import movienight.javi.com.movienight.adapters.MovieRecyclerViewAdapter;
-import movienight.javi.com.movienight.asyntasks.MoviesFilterAsyncTask;
+import movienight.javi.com.movienight.asyntasks.MoviesAsyncTask;
 import movienight.javi.com.movienight.asyntasks.PostersAsyncTask;
+import movienight.javi.com.movienight.asyntasks.TVShowAsyncTask;
 import movienight.javi.com.movienight.dialogs.MovieDialog.FilmDialogFragment;
+import movienight.javi.com.movienight.listeners.FilterItemAddedListener;
 import movienight.javi.com.movienight.listeners.FilterItemRemovedListener;
 import movienight.javi.com.movienight.listeners.MoviePostersListener;
 import movienight.javi.com.movienight.listeners.FilmSelectedListener;
@@ -40,28 +42,30 @@ import movienight.javi.com.movienight.model.DialogContainer;
 import movienight.javi.com.movienight.model.Film;
 import movienight.javi.com.movienight.model.FilterItemContainer;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
-import movienight.javi.com.movienight.model.FilterItems.Genre;
+import movienight.javi.com.movienight.model.GenreContainer;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.ui.MainActivity;
 import movienight.javi.com.movienight.urls.AbstractUrl;
 
 public abstract class FilmFragment extends Fragment implements
+        FilterItemAddedListener,
         FilterItemRemovedListener,
         FilmFragmentView,
         FilmAsyncTaskListener,
         FilmSelectedListener,
         MoviePostersListener {
 
+    protected int category;
     protected MainActivity mParentActivity;
     protected int mCurrentPageNumber;
     protected Map<String, Film> mFilms;
     protected FilmFragmentPresenter mPresenter;
     protected DialogContainer mDialogContainer;
     protected FilterItemContainer mFilterItemContainer;
-    protected List<Genre> mGenres;
+    protected GenreContainer mGenreContainer;
 
     private Integer mTotalPages;
-    private AsyncTask mMovieAsyncTask;
+    private AsyncTask mFilmAsyncTask;
 
     @BindView(R.id.moviesSearchRecyclerView) RecyclerView mMovieRecyclerView;
     @BindView(R.id.updateRecyclerViewProgressBar) ProgressBar mMoviesProgressBar;
@@ -86,6 +90,7 @@ public abstract class FilmFragment extends Fragment implements
 
         mFilms = new LinkedHashMap<>();
 
+        mGenreContainer = new GenreContainer();
         mFilterItemContainer = new FilterItemContainer();
 
         mCurrentPageNumber = 1;
@@ -117,6 +122,37 @@ public abstract class FilmFragment extends Fragment implements
     }
 
     @Override
+    public void onFilterItemCreated(Integer key, FilterableItem... newItems) {
+
+        //mFilterMovieSpinner.setSelection(0);
+        mFilterItemContainer.put(key, new ArrayList<>(Arrays.asList(newItems)));
+
+        // If the user pressed on the back button on any filter item dialog, then return from method
+        // and don't request for movies
+        if(key == -1) {
+            return;
+        }
+
+        if(mFilmAsyncTask != null)
+            if(mFilmAsyncTask.getStatus() == AsyncTask.Status.RUNNING) {
+
+                mFilmAsyncTask.cancel(true);
+                mPresenter.setProgressBarVisibility(View.INVISIBLE);
+            }
+
+
+        FilterItemRecyclerAdapter adapter = (FilterItemRecyclerAdapter) mFiltersRecyclerView.getAdapter();
+        adapter.updateData(mFilterItemContainer.getAll());
+
+        MovieRecyclerViewAdapter movieSearchAdapter = (MovieRecyclerViewAdapter)mMovieRecyclerView.getAdapter();
+        movieSearchAdapter.removeData();
+
+        mFilms.clear();
+        mCurrentPageNumber = 1;
+        requestFilms(mCurrentPageNumber);
+    }
+
+    @Override
     public void onFilterItemDeleted(FilterableItem itemRemoved) {
 
         for(List<FilterableItem> items : mFilterItemContainer.getAll()) {
@@ -134,9 +170,9 @@ public abstract class FilmFragment extends Fragment implements
         mCurrentPageNumber = 1;
         mFilms.clear();
 
-        if(mMovieAsyncTask.getStatus() == AsyncTask.Status.RUNNING) {
+        if(mFilmAsyncTask.getStatus() == AsyncTask.Status.RUNNING) {
 
-            mMovieAsyncTask.cancel(true);
+            mFilmAsyncTask.cancel(true);
             mPresenter.setProgressBarVisibility(View.INVISIBLE);
         }
 
@@ -168,7 +204,7 @@ public abstract class FilmFragment extends Fragment implements
 
         FilmDialogFragment filmDialogFragment = FilmDialogFragment.newInstance(
                 film,
-                Genre.getSelectedGenres(film.getGenres(), mGenres)
+                mGenreContainer.getGenres(film.getGenres())
         );
 
         filmDialogFragment.show(
@@ -272,7 +308,11 @@ public abstract class FilmFragment extends Fragment implements
         mPresenter.setProgressBarVisibility(View.VISIBLE);
         AbstractUrl url = createUrl(pageNumber);
 
-        mMovieAsyncTask = new MoviesFilterAsyncTask(this).execute(url);
+        if(category == 0)
+            mFilmAsyncTask = new MoviesAsyncTask(this).execute(url);
+        else if(category == 1){
+            mFilmAsyncTask = new TVShowAsyncTask(this).execute(url);
+        }
     }
 
     private RecyclerView.OnScrollListener scrollListener() {

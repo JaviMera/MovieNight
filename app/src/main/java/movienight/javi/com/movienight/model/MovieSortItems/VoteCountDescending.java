@@ -1,4 +1,4 @@
-package movienight.javi.com.movienight.model.SortItems;
+package movienight.javi.com.movienight.model.MovieSortItems;
 
 /**
  * Created by Javi on 11/2/2016.

@@ -30,7 +30,7 @@ public class MovieDialogFragmentPresenter {
         mView.setPosterImageView(poster);
     }
 
-    public void setGenresDescriptionsTextViewText(List<Genre> genres) {
+    public void setGenresDescriptionsTextViewText(List<String> genres) {
 
         mView.setGenresDescriptionsTextViewText(genres);
     }
