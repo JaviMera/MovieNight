@@ -52,9 +52,7 @@ public class TVShowFragment extends FilmFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
-        menu.clear();
         inflater.inflate(R.menu.tv_show_fragment_menu_layout, menu);
-
         super.onCreateOptionsMenu(menu, inflater);
     }
 

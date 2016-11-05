@@ -197,6 +197,7 @@ public class TVShow implements Film {
         dest.writeParcelable(mPoster, flags);
     }
 
+    @Override
     public String getYearRelease() {
 
         return mAirDate.isEmpty()
@@ -204,6 +205,7 @@ public class TVShow implements Film {
                 :mAirDate.split("-")[0];
     }
 
+    @Override
     public String getMonthRelease() {
 
         return mAirDate.isEmpty()
@@ -211,6 +213,7 @@ public class TVShow implements Film {
                 :mAirDate.split("-")[1];
     }
 
+    @Override
     public String getDayRelease() {
 
         return mAirDate.isEmpty()

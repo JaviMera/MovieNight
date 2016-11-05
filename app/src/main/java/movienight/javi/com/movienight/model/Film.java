@@ -20,4 +20,7 @@ public interface Film extends Parcelable {
     String getPosterPath();
     Bitmap getPoster();
     void setPoster(Bitmap poster);
+    String getYearRelease();
+    String getMonthRelease();
+    String getDayRelease();
 }

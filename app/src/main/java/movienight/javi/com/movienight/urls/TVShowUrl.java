@@ -65,8 +65,8 @@ public class TVShowUrl extends AbstractUrl {
         request += mApiKeyParameter;
         request += "&" + language + "=" + mLanguage;
         request += "&" + sort + "=" + mSort;
-        request += "&" + page + "+" + mPage;
-        request += "&" + timezone + "+" + mTimezone;
+        request += "&" + page + "=" + mPage;
+        request += "&" + timezone + "=" + mTimezone;
         request += "&" + includeNullFirstAirDates + "=" + mFirstAirDates;
 
         return request;

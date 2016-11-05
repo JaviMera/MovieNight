@@ -49,7 +49,11 @@ public class GenreContainer {
 
         for(Integer id : genreIds) {
 
-            genreDescriptions.add(mGenresMap.get(id).getDescription());
+            Genre genre = mGenresMap.get(id);
+            if(genre != null) {
+
+                genreDescriptions.add(genre.getDescription());
+            }
         }
 
         return genreDescriptions;

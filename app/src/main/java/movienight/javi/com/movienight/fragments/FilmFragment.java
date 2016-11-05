@@ -67,7 +67,7 @@ public abstract class FilmFragment extends Fragment implements
     private Integer mTotalPages;
     private AsyncTask mFilmAsyncTask;
 
-    @BindView(R.id.moviesSearchRecyclerView) RecyclerView mMovieRecyclerView;
+    @BindView(R.id.filmsRecyclerView) RecyclerView mFilmsRecyclerView;
     @BindView(R.id.updateRecyclerViewProgressBar) ProgressBar mMoviesProgressBar;
     @BindView(R.id.filtersRecyclerView) RecyclerView mFiltersRecyclerView;
 
@@ -89,14 +89,11 @@ public abstract class FilmFragment extends Fragment implements
         super.onCreate(savedInstanceState);
 
         mFilms = new LinkedHashMap<>();
-
         mGenreContainer = new GenreContainer();
         mFilterItemContainer = new FilterItemContainer();
-
         mCurrentPageNumber = 1;
 
         setTargetFragment(this, 1);
-
         setHasOptionsMenu(true);
     }
 
@@ -114,8 +111,8 @@ public abstract class FilmFragment extends Fragment implements
         mPresenter.setRecyclerSize(mFiltersRecyclerView, true);
 
         mPresenter.setMoviesRecyclerViewAdapter(mFilms.values().toArray(new Film[]{}));
-        mPresenter.setRecyclerViewManager(mMovieRecyclerView, 3, LinearLayoutManager.VERTICAL);
-        mPresenter.setRecyclerSize(mMovieRecyclerView, true);
+        mPresenter.setRecyclerViewManager(mFilmsRecyclerView, 3, LinearLayoutManager.VERTICAL);
+        mPresenter.setRecyclerSize(mFilmsRecyclerView, true);
         mPresenter.setMovieRecyclerScrollListener(scrollListener());
 
         return fragmentLayout;
@@ -144,7 +141,7 @@ public abstract class FilmFragment extends Fragment implements
         FilterItemRecyclerAdapter adapter = (FilterItemRecyclerAdapter) mFiltersRecyclerView.getAdapter();
         adapter.updateData(mFilterItemContainer.getAll());
 
-        MovieRecyclerViewAdapter movieSearchAdapter = (MovieRecyclerViewAdapter)mMovieRecyclerView.getAdapter();
+        MovieRecyclerViewAdapter movieSearchAdapter = (MovieRecyclerViewAdapter) mFilmsRecyclerView.getAdapter();
         movieSearchAdapter.removeData();
 
         mFilms.clear();
@@ -164,7 +161,7 @@ public abstract class FilmFragment extends Fragment implements
             }
         }
 
-        MovieRecyclerViewAdapter movieSearchAdapter = (MovieRecyclerViewAdapter)mMovieRecyclerView.getAdapter();
+        MovieRecyclerViewAdapter movieSearchAdapter = (MovieRecyclerViewAdapter) mFilmsRecyclerView.getAdapter();
         movieSearchAdapter.removeData();
 
         mCurrentPageNumber = 1;
@@ -194,7 +191,7 @@ public abstract class FilmFragment extends Fragment implements
 
             Film updatedMovie = mFilms.get(path);
             updatedMovie.setPoster(poster);
-            MovieRecyclerViewAdapter adapter = (MovieRecyclerViewAdapter) mMovieRecyclerView.getAdapter();
+            MovieRecyclerViewAdapter adapter = (MovieRecyclerViewAdapter) mFilmsRecyclerView.getAdapter();
             adapter.updateMoviePoster(updatedMovie);
         }
     }
@@ -250,13 +247,13 @@ public abstract class FilmFragment extends Fragment implements
                 new LinkedList<>(Arrays.asList(films)),
                 this);
 
-        mMovieRecyclerView.setAdapter(movieAdapter);
+        mFilmsRecyclerView.setAdapter(movieAdapter);
     }
 
     @Override
     public void updateRecyclerAdapter(List<Film> films) {
 
-        MovieRecyclerViewAdapter movieAdapter = (MovieRecyclerViewAdapter)mMovieRecyclerView.getAdapter();
+        MovieRecyclerViewAdapter movieAdapter = (MovieRecyclerViewAdapter) mFilmsRecyclerView.getAdapter();
         movieAdapter.updateData(films);
     }
 
@@ -300,7 +297,7 @@ public abstract class FilmFragment extends Fragment implements
     @Override
     public void setMovieRecyclerScrollListener(RecyclerView.OnScrollListener listener) {
 
-        mMovieRecyclerView.addOnScrollListener(listener);
+        mFilmsRecyclerView.addOnScrollListener(listener);
     }
 
     protected void requestFilms(int pageNumber) {

@@ -23,7 +23,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.model.Film;
-import movienight.javi.com.movienight.model.FilterItems.Genre;
 import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 
@@ -32,7 +31,7 @@ import movienight.javi.com.movienight.ui.ActivityExtras;
  */
 public class FilmDialogFragment extends DialogFragment implements MovieDialogFramgnetView {
 
-    private Movie mMovie;
+    private Film mFilm;
     private List<String> mMovieGenres;
     private MovieDialogFragmentPresenter mPresenter;
 
@@ -60,10 +59,8 @@ public class FilmDialogFragment extends DialogFragment implements MovieDialogFra
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mMovie = new Movie();
         mMovieGenres = new ArrayList<>();
-
-        mMovie = getArguments().getParcelable(ActivityExtras.SELECTED_MOVIE_KEY);
+        mFilm = getArguments().getParcelable(ActivityExtras.SELECTED_MOVIE_KEY);
         mMovieGenres = getArguments().getStringArrayList(ActivityExtras.GENRES_KEY);
     }
 
@@ -85,35 +82,35 @@ public class FilmDialogFragment extends DialogFragment implements MovieDialogFra
         mPresenter.setTextViewText(
             mTitleTextView,
             resources.getString(R.string.movie_title_dialog),
-            mMovie.getName(),
-            mMovie.getYearRelease()
+            mFilm.getName(),
+            mFilm.getYearRelease()
         );
 
         mPresenter.setTextViewText(
             mOverviewTextView,
             "%s",
-            mMovie.getOverview()
+            mFilm.getOverview()
         );
 
         mPresenter.setTextViewText(
             mRatingTextView,
             resources.getString(R.string.movie_rating_text_dialog),
-            mMovie.getRating()
+            mFilm.getRating()
         );
 
         mPresenter.setTextViewText(
             mVoteCountTextView,
             resources.getString(R.string.movie_vote_count_text_dialog),
-            mMovie.getVoteCount()
+            mFilm.getVoteCount()
         );
 
-        mPresenter.setPosterImageView(mMovie.getPoster());
+        mPresenter.setPosterImageView(mFilm.getPoster());
         mPresenter.setGenresDescriptionsTextViewText(mMovieGenres);
 
         mPresenter.setReleaseDateTextViewText(
-            mMovie.getYearRelease(),
-            mMovie.getMonthRelease(),
-            mMovie.getDayRelease()
+            mFilm.getYearRelease(),
+            mFilm.getMonthRelease(),
+            mFilm.getDayRelease()
         );
 
         return dialogBuilder.create();

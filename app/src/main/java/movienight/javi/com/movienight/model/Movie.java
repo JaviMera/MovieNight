@@ -199,6 +199,7 @@ public class Movie implements Film{
         dest.writeParcelable(mPoster, flags);
     }
 
+    @Override
     public String getYearRelease() {
 
         return mReleaseDate.isEmpty()
@@ -206,6 +207,7 @@ public class Movie implements Film{
             :mReleaseDate.split("-")[0];
     }
 
+    @Override
     public String getMonthRelease() {
 
         return mReleaseDate.isEmpty()
@@ -213,6 +215,7 @@ public class Movie implements Film{
             :mReleaseDate.split("-")[1];
     }
 
+    @Override
     public String getDayRelease() {
 
         return mReleaseDate.isEmpty()
