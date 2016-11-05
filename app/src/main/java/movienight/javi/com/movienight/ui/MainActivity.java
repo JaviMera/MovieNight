@@ -23,7 +23,6 @@ import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.asyntasks.MovieGenresAsyncTask;
 import movienight.javi.com.movienight.asyntasks.TVShowGenresAsyncTask;
 import movienight.javi.com.movienight.dialogs.LoadingFilterDialog;
-import movienight.javi.com.movienight.fragments.HomeFragment;
 import movienight.javi.com.movienight.fragments.MovieFragment;
 import movienight.javi.com.movienight.fragments.TVShowFragment;
 import movienight.javi.com.movienight.model.FilmCatetory;
@@ -116,16 +115,6 @@ public class MainActivity extends AppCompatActivity implements
         Fragment fragment = null;
 
         switch(item.getItemId()) {
-
-//            case R.id.popularItemNavigationView:
-//
-//                fragment = HomeFragment.newInstance(mMovieGenres);
-//
-//                mFragmentManager
-//                        .beginTransaction()
-//                        .replace(R.id.fragmentContainer, fragment)
-//                        .commit();
-//                break;
 
             case R.id.movieItemNavigationView:
 
