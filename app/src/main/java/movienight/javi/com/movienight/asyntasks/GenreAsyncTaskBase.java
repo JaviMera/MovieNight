@@ -1,7 +1,6 @@
 package movienight.javi.com.movienight.asyntasks;
 
 import android.os.AsyncTask;
-import android.support.v4.app.FragmentManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,17 +18,14 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * Created by Javi on 10/19/2016.
+ * Created by Javi on 11/5/2016.
  */
 
-public class GenresAsyncTask extends AsyncTask<AbstractUrl, Integer, Genre[]> {
+public abstract class GenreAsyncTaskBase extends AsyncTask<AbstractUrl, Integer, Genre[]> {
 
-    private Integer mCategory;
-    private GenreListener mListener;
+    protected GenreListener mListener;
 
-    public GenresAsyncTask(Integer category, GenreListener listener) {
-
-        mCategory = category;
+    protected GenreAsyncTaskBase(GenreListener listener) {
         mListener = listener;
     }
 
@@ -43,8 +39,7 @@ public class GenresAsyncTask extends AsyncTask<AbstractUrl, Integer, Genre[]> {
 
         Call call = client.newCall(request);
 
-        try
-        {
+        try {
             Response response = call.execute();
             String jsonString = response.body().string();
 
@@ -52,7 +47,7 @@ public class GenresAsyncTask extends AsyncTask<AbstractUrl, Integer, Genre[]> {
             JSONArray dataArray = genresObject.getJSONArray(JSONGenre.OBJECT_KEY);
             Genre[] genres = new Genre[dataArray.length()];
 
-            for(int i = 0 ; i < dataArray.length() ; i++) {
+            for (int i = 0; i < dataArray.length(); i++) {
 
                 Integer genreId = dataArray.getJSONObject(i).getInt(JSONGenre.ID_KEY);
                 String genreDesc = dataArray.getJSONObject(i).getString(JSONGenre.NAME_KEY);
@@ -61,20 +56,11 @@ public class GenresAsyncTask extends AsyncTask<AbstractUrl, Integer, Genre[]> {
             }
 
             return genres;
-        }
-        catch (IOException e)
-        {
-        }
-        catch (JSONException e)
-        {
+        } catch (IOException e) {
+        } catch (JSONException e) {
         }
 
         return null;
     }
-
-    @Override
-    protected void onPostExecute(Genre[] genres) {
-
-        mListener.onTaskCompleted(mCategory, genres);
-    }
 }
+

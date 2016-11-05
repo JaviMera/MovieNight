@@ -20,12 +20,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import movienight.javi.com.movienight.R;
-import movienight.javi.com.movienight.asyntasks.GenresAsyncTask;
+import movienight.javi.com.movienight.asyntasks.MovieGenresAsyncTask;
+import movienight.javi.com.movienight.asyntasks.TVShowGenresAsyncTask;
 import movienight.javi.com.movienight.dialogs.LoadingFilterDialog;
 import movienight.javi.com.movienight.fragments.HomeFragment;
 import movienight.javi.com.movienight.fragments.MovieFragment;
 import movienight.javi.com.movienight.fragments.TVShowFragment;
-import movienight.javi.com.movienight.model.Film;
 import movienight.javi.com.movienight.model.FilmCatetory;
 import movienight.javi.com.movienight.model.FilterItems.Genre;
 import movienight.javi.com.movienight.urls.MovieGenreUrl;
@@ -76,8 +76,8 @@ public class MainActivity extends AppCompatActivity implements
         mTVShowSortItems = getResources().getStringArray(R.array.tv_show_sort_options_array);
 
         mGenresCount = 0;
-        new GenresAsyncTask(FilmCatetory.MOVIE, this).execute(new MovieGenreUrl());
-        new GenresAsyncTask(FilmCatetory.TV_SHOW, this).execute(new TVShowGenreUrl());
+        new MovieGenresAsyncTask(this).execute(new MovieGenreUrl());
+        new TVShowGenresAsyncTask(this).execute(new TVShowGenreUrl());
 
         mDialog = LoadingFilterDialog.newInstance();
         mDialog.show(mFragmentManager, "loading_dialog");
