@@ -39,7 +39,7 @@ import movienight.javi.com.movienight.listeners.MoviePostersListener;
 import movienight.javi.com.movienight.listeners.FilmSelectedListener;
 import movienight.javi.com.movienight.listeners.FilmAsyncTaskListener;
 import movienight.javi.com.movienight.model.DialogContainer;
-import movienight.javi.com.movienight.model.Film;
+import movienight.javi.com.movienight.model.FilmBase;
 import movienight.javi.com.movienight.model.FilterItemContainer;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
 import movienight.javi.com.movienight.model.FilterItems.Genre;
@@ -58,7 +58,7 @@ public abstract class FilmFragment extends Fragment implements
     protected int category;
     protected MainActivity mParentActivity;
     protected int mCurrentPageNumber;
-    protected Map<String, Film> mFilms;
+    protected Map<String, FilmBase> mFilms;
     protected FilmFragmentPresenter mPresenter;
     protected DialogContainer mDialogContainer;
     protected FilterItemContainer mFilterItemContainer;
@@ -67,11 +67,11 @@ public abstract class FilmFragment extends Fragment implements
     private Integer mTotalPages;
     private AsyncTask mFilmAsyncTask;
 
+    protected abstract AbstractUrl createUrl(int pageNumber);
+
     @BindView(R.id.filmsRecyclerView) RecyclerView mFilmsRecyclerView;
     @BindView(R.id.updateRecyclerViewProgressBar) ProgressBar mMoviesProgressBar;
     @BindView(R.id.filtersRecyclerView) RecyclerView mFiltersRecyclerView;
-
-    protected abstract AbstractUrl createUrl(int pageNumber);
 
     public FilmFragment() {
         // Required empty public constructor
@@ -109,7 +109,7 @@ public abstract class FilmFragment extends Fragment implements
         mPresenter.setRecyclerViewManager(mFiltersRecyclerView, 1, LinearLayoutManager.HORIZONTAL);
         mPresenter.setRecyclerSize(mFiltersRecyclerView, true);
 
-        mPresenter.setMoviesRecyclerViewAdapter(mFilms.values().toArray(new Film[]{}));
+        mPresenter.setMoviesRecyclerViewAdapter(mFilms.values().toArray(new FilmBase[]{}));
         mPresenter.setRecyclerViewManager(mFilmsRecyclerView, 3, LinearLayoutManager.VERTICAL);
         mPresenter.setRecyclerSize(mFilmsRecyclerView, true);
         mPresenter.setMovieRecyclerScrollListener(scrollListener());
@@ -188,7 +188,7 @@ public abstract class FilmFragment extends Fragment implements
 
         if(!mFilms.isEmpty()) {
 
-            Film updatedMovie = mFilms.get(path);
+            FilmBase updatedMovie = mFilms.get(path);
             updatedMovie.setPoster(poster);
             MovieRecyclerViewAdapter adapter = (MovieRecyclerViewAdapter) mFilmsRecyclerView.getAdapter();
             adapter.updateMoviePoster(updatedMovie);
@@ -196,11 +196,11 @@ public abstract class FilmFragment extends Fragment implements
     }
 
     @Override
-    public void onFilmSelectedItem(Film film) {
+    public void onFilmSelectedItem(FilmBase film) {
 
         FilmDialogFragment filmDialogFragment = FilmDialogFragment.newInstance(
                 film,
-                getGenres(film.getGenres())
+                getGenres(film.getGenreIds())
         );
 
         filmDialogFragment.show(
@@ -209,12 +209,12 @@ public abstract class FilmFragment extends Fragment implements
     }
 
     @Override
-    public void onCompleted(Integer totalPages, Film[] films) {
+    public void onCompleted(Integer totalPages, FilmBase[] films) {
 
         mTotalPages = totalPages;
         mFilms.clear();
 
-        for(Film film : films) {
+        for(FilmBase film : films) {
 
             mFilms.put(film.getPosterPath(), film);
         }
@@ -227,7 +227,7 @@ public abstract class FilmFragment extends Fragment implements
                 R.drawable.no_poster_image
         );
 
-        for(Film film : mFilms.values()) {
+        for(FilmBase film : mFilms.values()) {
 
             new PostersAsyncTask(
                     this,
@@ -239,7 +239,7 @@ public abstract class FilmFragment extends Fragment implements
     }
 
     @Override
-    public void setMoviesRecyclerViewAdapter(Film[] films) {
+    public void setMoviesRecyclerViewAdapter(FilmBase[] films) {
 
         MovieRecyclerViewAdapter movieAdapter = new MovieRecyclerViewAdapter(
                 mParentActivity,
@@ -250,7 +250,7 @@ public abstract class FilmFragment extends Fragment implements
     }
 
     @Override
-    public void updateRecyclerAdapter(List<Film> films) {
+    public void updateRecyclerAdapter(List<FilmBase> films) {
 
         MovieRecyclerViewAdapter movieAdapter = (MovieRecyclerViewAdapter) mFilmsRecyclerView.getAdapter();
         movieAdapter.updateData(films);

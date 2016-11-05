@@ -13,31 +13,10 @@ import movienight.javi.com.movienight.model.jsonvalues.JSONMovie;
 /**
  * Created by Javi on 10/21/2016.
  */
-public class Movie implements Film{
+public class Movie extends FilmBase {
 
-    private int mId;
-    private String mOverview;
-    private String mOriginalTitle;
-    private String mTitle;
-    private String mReleaseDate;
-    private double mPopularity;
-    private int mVoteCount;
-    private double mRating;
-    private int[] mGenreIds;
-    private String mPosterPath;
-    private Bitmap mPoster;
-
-    protected Movie(Parcel in) {
-        mId = in.readInt();
-        mOverview = in.readString();
-        mOriginalTitle = in.readString();
-        mTitle = in.readString();
-        mReleaseDate = in.readString();
-        mPopularity = in.readDouble();
-        mVoteCount = in.readInt();
-        mGenreIds = in.createIntArray();
-        mPosterPath = in.readString();
-        mPoster = in.readParcelable(Bitmap.class.getClassLoader());
+    public Movie(Parcel in) {
+        super(in);
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -52,16 +31,10 @@ public class Movie implements Film{
         }
     };
 
-    public Movie() {
-
-        this(-1, "insert overview", "insert originalTitle", "insert title", "Insert year", 0.0, 0, 0.0, new int[]{}, "insert poster path", null);
-    }
-
-    public static Film fromJSON(JSONObject jsonObject) throws JSONException{
+    public static FilmBase fromJSON(JSONObject jsonObject) throws JSONException{
 
         int movieId = jsonObject.getInt(JSONFilm.ID_KEY);
         String movieOverview = jsonObject.getString(JSONFilm.OVERVIEW_KEY);
-        String movieOriginalTitle = jsonObject.getString(JSONMovie.ORIGINAL_TITLE_KEY);
         String movieTitle = jsonObject.getString(JSONMovie.TITLE_KEY);
         String movieReleaseDate = jsonObject.getString(JSONMovie.RELEASE_DATE_KEY);
 
@@ -84,7 +57,6 @@ public class Movie implements Film{
         return new Movie(
             movieId,
             movieOverview,
-            movieOriginalTitle,
             movieTitle,
             movieReleaseDate,
             moviePopularity,
@@ -99,7 +71,6 @@ public class Movie implements Film{
     public Movie(
         int id,
         String overview,
-        String originalTitle,
         String title,
         String releaseDate,
         double popularity,
@@ -109,117 +80,17 @@ public class Movie implements Film{
         String posterPath,
         Bitmap poster)
     {
-        mId = id;
-        mOverview = overview;
-        mOriginalTitle = originalTitle;
-        mTitle = title;
-        mReleaseDate = releaseDate;
-        mPopularity = popularity;
-        mVoteCount = voteCount;
-        mRating = rating;
-        mGenreIds = genreIds;
-        mPosterPath = posterPath;
-        mPoster = poster;
-    }
-
-    @Override
-    public int getId() {
-        return mId;
-    }
-
-    @Override
-    public String getName() {
-        return mTitle;
-    }
-
-    @Override
-    public String getOverview() {
-        return mOverview;
-    }
-
-    @Override
-    public String getReleaseDate() {return mReleaseDate;}
-
-    @Override
-    public double getPopularity() {
-        return mPopularity;
-    }
-
-    @Override
-    public int getVoteCount() {
-
-        return mVoteCount;
-    }
-
-    @Override
-    public double getRating() {
-        return mRating;
-    }
-
-    @Override
-    public int[] getGenres() {
-
-        return mGenreIds;
-    }
-
-    @Override
-    public Bitmap getPoster() {
-
-        return mPoster;
-    }
-
-    @Override
-    public void setPoster(Bitmap poster) {
-
-        mPoster = poster;
-    }
-
-    @Override
-    public String getPosterPath() {
-        return mPosterPath;
-    }
-
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(mId);
-        dest.writeString(mOverview);
-        dest.writeString(mOriginalTitle);
-        dest.writeString(mTitle);
-        dest.writeString(mReleaseDate);
-        dest.writeDouble(mPopularity);
-        dest.writeInt(mVoteCount);
-        dest.writeIntArray(mGenreIds);
-        dest.writeString(mPosterPath);
-        dest.writeParcelable(mPoster, flags);
-    }
-
-    @Override
-    public String getYearRelease() {
-
-        return mReleaseDate.isEmpty()
-            ? ""
-            :mReleaseDate.split("-")[0];
-    }
-
-    @Override
-    public String getMonthRelease() {
-
-        return mReleaseDate.isEmpty()
-            ? ""
-            :mReleaseDate.split("-")[1];
-    }
-
-    @Override
-    public String getDayRelease() {
-
-        return mReleaseDate.isEmpty()
-            ? ""
-            :mReleaseDate.split("-")[2];
+        super(
+            id,
+            overview,
+            title,
+            releaseDate,
+            popularity,
+            voteCount,
+            rating,
+            genreIds,
+            posterPath,
+            poster
+        );
     }
 }

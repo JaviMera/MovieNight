@@ -16,7 +16,6 @@ public class FakeMovies {
             put(1, new Movie(
                 1234,
                 "Story about the life of an amazing gorilla that was shot by humans at a zoo",
-                "Hashtag Harambe",
                 "Harambe",
                 "1999-01-22",
                 9000.0,
@@ -29,7 +28,6 @@ public class FakeMovies {
             put(2, new Movie(
                     456,
                     "Some amazing fake movie not being made",
-                    "Fake mega title",
                     "Fake title",
                     "1999-01-22",
                     0.000,

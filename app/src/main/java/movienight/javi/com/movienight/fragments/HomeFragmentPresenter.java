@@ -2,8 +2,7 @@ package movienight.javi.com.movienight.fragments;
 
 import java.util.List;
 
-import movienight.javi.com.movienight.model.Film;
-import movienight.javi.com.movienight.model.Movie;
+import movienight.javi.com.movienight.model.FilmBase;
 
 /**
  * Created by Javier on 10/31/2016.
@@ -18,7 +17,7 @@ public class HomeFragmentPresenter {
         mView = view;
     }
 
-    public void setTopMoviesRecyclerViewAdapter(List<Film> films) {
+    public void setTopMoviesRecyclerViewAdapter(List<FilmBase> films) {
 
         mView.setTopMoviesRecyclerViewAdapter(films);
     }
@@ -33,7 +32,7 @@ public class HomeFragmentPresenter {
         mView.setTopMoviesRecyclerViewSize(fixedSize);
     }
 
-    public void updateMoviesRecyclerViewAdapter(List<Film> films) {
+    public void updateMoviesRecyclerViewAdapter(List<FilmBase> films) {
 
         mView.updateMoviesRecyclerViewAdapter(films);
     }

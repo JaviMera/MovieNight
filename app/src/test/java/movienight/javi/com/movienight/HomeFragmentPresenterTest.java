@@ -9,10 +9,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
 
-import movienight.javi.com.movienight.model.Film;
-import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.fragments.HomeFragmentPresenter;
 import movienight.javi.com.movienight.fragments.HomeFragmentView;
+import movienight.javi.com.movienight.model.FilmBase;
 
 /**
  * Created by Javier on 10/31/2016.
@@ -36,7 +35,7 @@ public class HomeFragmentPresenterTest {
     public void setTopMoviesRecyclerViewAdapter() throws Exception {
 
         // Arrange
-       List<Film> items = null;
+       List<FilmBase> items = null;
 
         // Act
         mPresenter.setTopMoviesRecyclerViewAdapter(items);
@@ -76,7 +75,7 @@ public class HomeFragmentPresenterTest {
     public void updateTopMoviesRecyclerViewAdapter() throws Exception {
 
         // Arrange
-        List<Film> items = null;
+        List<FilmBase> items = null;
 
         // Act
         mPresenter.updateMoviesRecyclerViewAdapter(items);

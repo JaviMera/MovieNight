@@ -28,7 +28,7 @@ import movienight.javi.com.movienight.dialogs.MovieDialog.FilmDialogFragment;
 import movienight.javi.com.movienight.listeners.MoviePostersListener;
 import movienight.javi.com.movienight.listeners.FilmSelectedListener;
 import movienight.javi.com.movienight.listeners.FilmAsyncTaskListener;
-import movienight.javi.com.movienight.model.Film;
+import movienight.javi.com.movienight.model.FilmBase;
 import movienight.javi.com.movienight.model.FilterItems.Genre;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.ui.MainActivity;
@@ -43,7 +43,7 @@ public class HomeFragment extends Fragment implements
 
     private List<Genre> mGenres;
     private MainActivity mParentActivity;
-    private Map<String, Film> mFilms;
+    private Map<String, FilmBase> mFilms;
     private HomeFragmentPresenter mPresenter;
 
     @BindView(R.id.popularMoviesRecyclerView)
@@ -97,7 +97,7 @@ public class HomeFragment extends Fragment implements
 
         mPresenter = new HomeFragmentPresenter(this);
 
-        mPresenter.setTopMoviesRecyclerViewAdapter(new ArrayList<Film>(){});
+        mPresenter.setTopMoviesRecyclerViewAdapter(new ArrayList<FilmBase>(){});
         mPresenter.setTopMoviesRecyclerViewLayoutManager(3, GridLayoutManager.VERTICAL);
         mPresenter.setTopMoviesRecyclerViewSize(true);
 
@@ -107,14 +107,14 @@ public class HomeFragment extends Fragment implements
     @Override
     public void onPostersCompleted(String path, Bitmap poster) {
 
-        Film updatedMovie = mFilms.get(path);
+        FilmBase updatedMovie = mFilms.get(path);
         updatedMovie.setPoster(poster);
         MovieRecyclerViewAdapter adapter = (MovieRecyclerViewAdapter) mMoviesRecyclerView.getAdapter();
         adapter.updateMoviePoster(updatedMovie);
     }
 
     @Override
-    public void setTopMoviesRecyclerViewAdapter(List<Film> films) {
+    public void setTopMoviesRecyclerViewAdapter(List<FilmBase> films) {
 
         MovieRecyclerViewAdapter adapter = new MovieRecyclerViewAdapter(
                 mParentActivity,
@@ -143,18 +143,18 @@ public class HomeFragment extends Fragment implements
     }
 
     @Override
-    public void updateMoviesRecyclerViewAdapter(List<Film> films) {
+    public void updateMoviesRecyclerViewAdapter(List<FilmBase> films) {
 
         MovieRecyclerViewAdapter adapter = (MovieRecyclerViewAdapter) mMoviesRecyclerView.getAdapter();
         adapter.updateData(films);
     }
 
     @Override
-    public void onCompleted(Integer totalPages, Film[] films) {
+    public void onCompleted(Integer totalPages, FilmBase[] films) {
 
         mFilms.clear();
 
-        for(Film film : films) {
+        for(FilmBase film : films) {
 
             mFilms.put(film.getPosterPath(), film);
         }
@@ -165,7 +165,7 @@ public class HomeFragment extends Fragment implements
                 this.getResources(),
                 R.drawable.no_poster_image);
 
-        for(Film film : mFilms.values()) {
+        for(FilmBase film : mFilms.values()) {
 
             new PostersAsyncTask(
                     this,
@@ -177,11 +177,11 @@ public class HomeFragment extends Fragment implements
     }
 
     @Override
-    public void onFilmSelectedItem(Film film) {
+    public void onFilmSelectedItem(FilmBase film) {
 
         FilmDialogFragment dialog = FilmDialogFragment.newInstance(
                 film,
-                getGenres(film.getGenres()));
+                getGenres(film.getGenreIds()));
 
         dialog.show(
                 mParentActivity.getSupportFragmentManager(),

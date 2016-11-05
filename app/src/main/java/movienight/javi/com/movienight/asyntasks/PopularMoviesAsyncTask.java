@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import movienight.javi.com.movienight.listeners.FilmAsyncTaskListener;
-import movienight.javi.com.movienight.model.Film;
+import movienight.javi.com.movienight.model.FilmBase;
 import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.model.jsonvalues.JSONMovieDiscover;
 import movienight.javi.com.movienight.urls.AbstractUrl;
@@ -49,12 +49,12 @@ public class PopularMoviesAsyncTask extends AsyncTask<AbstractUrl, Void, Movie[]
             String jsonString = response.body().string();
             JSONObject jsonObject = new JSONObject(jsonString);
             JSONArray resultsArray = jsonObject.getJSONArray(JSONMovieDiscover.RESULTS_KEY);
-            List<Film> movies = new LinkedList<>();
+            List<FilmBase> movies = new LinkedList<>();
 
             for(int result = 0 ; result < resultsArray.length(); result++) {
 
                 JSONObject currentJSONObject = resultsArray.getJSONObject(result);
-                Film newMovie = Movie.fromJSON(currentJSONObject);
+                FilmBase newMovie = Movie.fromJSON(currentJSONObject);
 
                 movies.add(newMovie);
             }

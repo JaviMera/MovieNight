@@ -7,6 +7,7 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import movienight.javi.com.movienight.model.FilmBase;
 import movienight.javi.com.movienight.model.Movie;
 
 /**
@@ -15,10 +16,9 @@ import movienight.javi.com.movienight.model.Movie;
 
 public class MovieTest {
 
-    private Movie mMovie;
+    private FilmBase mMovie;
     private int mExpectedId = 246655;
     private String mExpectedOverview = "After the re-emergence of the world's first mutant, world-destroyer Apocalypse, the X-Men must unite to defeat his extinction level plan.";
-    private String mExpectedOriginalTitle = "X-Men: Apocalypse";
     private String mExpectedTitle = "X-Men: Apocalypse";
     private String mExpectedDate = "1999-02-02";
     private double mExpectedPopularity = 13.733509;
@@ -34,7 +34,6 @@ public class MovieTest {
         mMovie = new Movie(
             mExpectedId,
             mExpectedOverview,
-            mExpectedOriginalTitle,
             mExpectedTitle,
             mExpectedDate,
             mExpectedPopularity,
@@ -64,16 +63,6 @@ public class MovieTest {
 
         // Assert
         Assert.assertEquals(mExpectedOverview, actualOverview);
-    }
-
-    @Test
-    public void getMovieOriginalTitle() throws Exception {
-
-        // Act
-        String actualOriginalTitle = mMovie.getOriginalTitle();
-
-        // Assert
-        Assert.assertEquals(mExpectedOriginalTitle, actualOriginalTitle);
     }
 
     @Test
@@ -133,7 +122,6 @@ public class MovieTest {
         mMovie = new Movie(
             mExpectedId,
             mExpectedOverview,
-            mExpectedOriginalTitle,
             mExpectedTitle,
             "",
             mExpectedPopularity,

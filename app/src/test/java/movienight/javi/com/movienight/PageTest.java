@@ -4,6 +4,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import movienight.javi.com.movienight.model.FilmBase;
 import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.model.Page;
 
@@ -26,7 +27,7 @@ public class PageTest {
 
         // Act
         Integer actualNumber = mPage.getNumber();
-        Movie[] actualMovies = mPage.getFilms();
+        FilmBase[] actualMovies = mPage.getFilms();
 
         // Assert
         Assert.assertEquals(expectedNumber, actualNumber);

@@ -7,9 +7,9 @@ package movienight.javi.com.movienight.model;
 public class Page {
 
     private Integer mNumber;
-    private Film[] mFilms;
+    private FilmBase[] mFilms;
 
-    public Page(Integer number, Film[] films) {
+    public Page(Integer number, FilmBase[] films) {
 
         mNumber = number;
         mFilms = films;
@@ -19,7 +19,7 @@ public class Page {
         return mNumber;
     }
 
-    public Film[] getFilms() {
+    public FilmBase[] getFilms() {
         return mFilms;
     }
 }

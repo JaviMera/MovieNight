@@ -1,13 +1,11 @@
 package movienight.javi.com.movienight.fragments;
 
 import android.support.v7.widget.RecyclerView;
-import android.widget.AdapterView;
 
 import java.util.List;
 
-import movienight.javi.com.movienight.model.Film;
+import movienight.javi.com.movienight.model.FilmBase;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
-import movienight.javi.com.movienight.model.Movie;
 
 /**
  * Created by Javi on 10/22/2016.
@@ -22,12 +20,12 @@ public class FilmFragmentPresenter {
         mView = view;
     }
 
-    public void updateRecyclerViewAdapter(List<Film> films) {
+    public void updateRecyclerViewAdapter(List<FilmBase> films) {
 
         mView.updateRecyclerAdapter(films);
     }
 
-    public void setMoviesRecyclerViewAdapter(Film[] films) {
+    public void setMoviesRecyclerViewAdapter(FilmBase[] films) {
 
         mView.setMoviesRecyclerViewAdapter(films);
     }

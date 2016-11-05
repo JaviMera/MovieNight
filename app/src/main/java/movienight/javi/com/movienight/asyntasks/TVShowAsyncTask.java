@@ -14,15 +14,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 import movienight.javi.com.movienight.listeners.FilmAsyncTaskListener;
-import movienight.javi.com.movienight.model.Film;
+import movienight.javi.com.movienight.model.FilmBase;
 import movienight.javi.com.movienight.model.Page;
 import movienight.javi.com.movienight.model.TVShow;
-import movienight.javi.com.movienight.model.jsonvalues.JSONFilm;
 import movienight.javi.com.movienight.model.jsonvalues.JSONMovieDiscover;
 import movienight.javi.com.movienight.model.jsonvalues.JSONTVShow;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.urls.AbstractUrl;
-import movienight.javi.com.movienight.urls.MovieUrl;
 import movienight.javi.com.movienight.urls.TVShowUrl;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
@@ -70,7 +68,7 @@ public class TVShowAsyncTask extends AsyncTask<AbstractUrl, Void, Page> {
             mTotalPages = jsonObject.getInt(JSONMovieDiscover.TOTAL_PAGES_KEY);
 
             JSONArray resultsArray = jsonObject.getJSONArray(JSONMovieDiscover.RESULTS_KEY);
-            List<Film> films = new LinkedList<>();
+            List<FilmBase> films = new LinkedList<>();
 
             for(int result = 0 ; result < resultsArray.length(); result++) {
 
@@ -98,7 +96,7 @@ public class TVShowAsyncTask extends AsyncTask<AbstractUrl, Void, Page> {
 
             int pageNumber = jsonObject.getInt("page");
 
-            return new Page(pageNumber, films.toArray(new Film[films.size()]));
+            return new Page(pageNumber, films.toArray(new FilmBase[films.size()]));
         }
         catch (IOException e) {
             e.printStackTrace();

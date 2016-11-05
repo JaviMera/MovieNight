@@ -11,9 +11,8 @@ import android.widget.TextView;
 import java.util.List;
 
 import movienight.javi.com.movienight.R;
-import movienight.javi.com.movienight.model.Film;
-import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.listeners.FilmSelectedListener;
+import movienight.javi.com.movienight.model.FilmBase;
 
 /**
  * Created by Javi on 10/21/2016.
@@ -22,17 +21,17 @@ import movienight.javi.com.movienight.listeners.FilmSelectedListener;
 public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecyclerViewAdapter.FilmViewHolder>{
 
     private Context mContext;
-    private List<Film> mFilms;
+    private List<FilmBase> mFilms;
     private FilmSelectedListener mListener;
 
-    public MovieRecyclerViewAdapter(Context context, List<Film> films, FilmSelectedListener listener) {
+    public MovieRecyclerViewAdapter(Context context, List<FilmBase> films, FilmSelectedListener listener) {
 
         mContext = context;
         mFilms = films;
         mListener = listener;
     }
 
-    public void updateData(List<Film> films) {
+    public void updateData(List<FilmBase> films) {
 
         mFilms.addAll(films);
 
@@ -67,9 +66,9 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
         return mFilms.size();
     }
 
-    public void updateMoviePoster(Film updateFilm) {
+    public void updateMoviePoster(FilmBase updateFilm) {
 
-        for(Film film : mFilms) {
+        for(FilmBase film : mFilms) {
 
             if(film.getPosterPath().equals(updateFilm.getPosterPath())) {
 
@@ -99,7 +98,7 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
             mFilmTextView = (TextView) itemView.findViewById(R.id.filmItemTextView);
         }
 
-        public void bindMovie(final Film film, final FilmSelectedListener listener) {
+        public void bindMovie(final FilmBase film, final FilmSelectedListener listener) {
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -108,7 +107,7 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
                 }
             });
 
-            mFilmTextView.setText(film.getName());
+            mFilmTextView.setText(film.getTitle());
             mFilmPoster.setImageBitmap(film.getPoster());
         }
     }

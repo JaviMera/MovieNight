@@ -13,7 +13,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.LinkedList;
 import java.util.List;
 
-import movienight.javi.com.movienight.model.Film;
+import movienight.javi.com.movienight.model.FilmBase;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
 import movienight.javi.com.movienight.model.Movie;
 import movienight.javi.com.movienight.fragments.FilmFragmentPresenter;
@@ -35,33 +35,6 @@ public class MovieFragmentPresenterTest {
     public void SetUp() throws Exception {
 
         mPresenter = new FilmFragmentPresenter(mView);
-    }
-
-    @Test
-    public void setFilterSpinnerViewAdapter() throws Exception {
-
-        // Arrange
-        String[] items = null;
-
-        // Act
-        mPresenter.setFilterOptionsSpinnerViewAdapter(items);
-
-        // Assert
-        Mockito.verify(mView).setFilterOptionsSpinnerViewAdapter(items);
-    }
-
-
-    @Test
-    public void setFilterSpinnerItemClickListener() throws Exception {
-
-        // Arrange
-        AdapterView.OnItemSelectedListener listener = null;
-
-        // Act
-        mPresenter.setFilterSpinnerItemClickListener(listener);
-
-        // Assert
-        Mockito.verify(mView).setFilterSpinnerItemClickListener(listener);
     }
 
     @Test
@@ -94,7 +67,7 @@ public class MovieFragmentPresenterTest {
     public void updateRecyclerViewAdapter() throws Exception {
 
         // Arrange
-        List<Film> movies = new LinkedList<>();
+        List<FilmBase> movies = new LinkedList<>();
 
         // Act
         mPresenter.updateRecyclerViewAdapter(movies);

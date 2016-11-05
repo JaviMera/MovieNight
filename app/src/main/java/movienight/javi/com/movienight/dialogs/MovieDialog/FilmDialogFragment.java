@@ -22,8 +22,7 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import movienight.javi.com.movienight.R;
-import movienight.javi.com.movienight.model.Film;
-import movienight.javi.com.movienight.model.Movie;
+import movienight.javi.com.movienight.model.FilmBase;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 
 /**
@@ -31,7 +30,7 @@ import movienight.javi.com.movienight.ui.ActivityExtras;
  */
 public class FilmDialogFragment extends DialogFragment implements MovieDialogFramgnetView {
 
-    private Film mFilm;
+    private FilmBase mFilm;
     private List<String> mMovieGenres;
     private MovieDialogFragmentPresenter mPresenter;
 
@@ -43,7 +42,7 @@ public class FilmDialogFragment extends DialogFragment implements MovieDialogFra
     @BindView(R.id.movieGenresDialogTextView) TextView mGenresTextView;
     @BindView(R.id.movieReleaseDateDialogTextView) TextView mReleaseDateTextView;
 
-    public static FilmDialogFragment newInstance(Film film, List<String> genreDescriptions) {
+    public static FilmDialogFragment newInstance(FilmBase film, List<String> genreDescriptions) {
 
         FilmDialogFragment dialog = new FilmDialogFragment();
 
@@ -82,7 +81,7 @@ public class FilmDialogFragment extends DialogFragment implements MovieDialogFra
         mPresenter.setTextViewText(
             mTitleTextView,
             resources.getString(R.string.movie_title_dialog),
-            mFilm.getName(),
+            mFilm.getTitle(),
             mFilm.getYearRelease()
         );
 
