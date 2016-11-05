@@ -80,8 +80,6 @@ public abstract class FilmFragment extends Fragment implements
     private Integer mTotalPages;
     private AsyncTask mFilmAsyncTask;
 
-    private LruCache<String, Bitmap> mMemoryCache;
-
     protected abstract AbstractUrl createUrl(
         int pageNumber,
         String genreIds,
@@ -114,34 +112,9 @@ public abstract class FilmFragment extends Fragment implements
         mParentActivity = (MainActivity)getActivity();
     }
 
-    public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
-
-        if(key != null && bitmap != null && getBitmapFromMemoryCache(key) == null) {
-
-            mMemoryCache.put(key, bitmap);
-        }
-    }
-
-    public Bitmap getBitmapFromMemoryCache(String key) {
-
-        return mMemoryCache.get(key);
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-        final int cacheSize = maxMemory / 8;
-
-        mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
-
-            @Override
-            protected int sizeOf(String key, Bitmap bitmap) {
-
-                return bitmap.getByteCount();
-            }
-        };
 
         isLoading = false;
         isFiltering = false;
@@ -258,7 +231,8 @@ public abstract class FilmFragment extends Fragment implements
             updatedMovie.setPoster(poster);
             MovieRecyclerViewAdapter adapter = (MovieRecyclerViewAdapter) mFilmsRecyclerView.getAdapter();
             adapter.updateMoviePoster(updatedMovie);
-            addBitmapToMemoryCache(path, poster);
+
+            mParentActivity.addBitmapToMemoryCache(path, poster);
         }
     }
 
@@ -296,7 +270,7 @@ public abstract class FilmFragment extends Fragment implements
 
         for(FilmBase film : mFilms.values()) {
 
-            Bitmap bitmap = mMemoryCache.get(film.getPosterPath());
+            Bitmap bitmap = mParentActivity.getBitmapFromMemoryCache(film.getPosterPath());
             if(bitmap == null){
 
                 new PostersAsyncTask(
