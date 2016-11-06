@@ -6,18 +6,23 @@ import android.support.v4.app.DialogFragment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import movienight.javi.com.movienight.R;
+import movienight.javi.com.movienight.asyntasks.MoviePopularAsyncTask;
+import movienight.javi.com.movienight.asyntasks.TVShowPopularAsyncTask;
 import movienight.javi.com.movienight.model.DialogContainer;
 import movienight.javi.com.movienight.model.FilmCatetory;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItemKeys;
 import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.urls.AbstractUrl;
+import movienight.javi.com.movienight.urls.MoviePopularUrl;
 import movienight.javi.com.movienight.urls.MovieUrlBuilder;
+import movienight.javi.com.movienight.urls.TVShowPopularUrl;
 
 /**
  * Created by Javi on 11/4/2016.
@@ -39,13 +44,23 @@ public class MovieFragment extends FilmFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
+        super.onCreate(savedInstanceState);
+
         category = FilmCatetory.MOVIE;
         mGenres = getArguments().getParcelableArrayList(ActivityExtras.GENRES_KEY);
 
         String[] sortItems = getArguments().getStringArray(ActivityExtras.SORT_OPTIONS_KEY);
         mDialogContainer = new DialogContainer(mGenres, sortItems);
 
-        super.onCreate(savedInstanceState);
+        if (mParentActivity.isNetworkedConnected()) {
+
+            new MoviePopularAsyncTask(this)
+                .execute(new MoviePopularUrl(mCurrentPageNumber));
+
+        } else {
+
+            mParentActivity.removeFragment(this);
+        }
     }
 
     @Override
@@ -57,6 +72,12 @@ public class MovieFragment extends FilmFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(!mParentActivity.isNetworkedConnected()) {
+
+            mParentActivity.removeFragment(this);
+            return false;
+        }
 
         int position = -1;
 

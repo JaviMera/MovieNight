@@ -6,11 +6,13 @@ import android.support.v4.app.DialogFragment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import movienight.javi.com.movienight.R;
+import movienight.javi.com.movienight.asyntasks.TVShowPopularAsyncTask;
 import movienight.javi.com.movienight.dialogs.FilterDialogBase;
 import movienight.javi.com.movienight.model.DialogContainer;
 import movienight.javi.com.movienight.model.FilmCatetory;
@@ -20,6 +22,7 @@ import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.urls.AbstractUrl;
 import movienight.javi.com.movienight.urls.MovieUrlBuilder;
+import movienight.javi.com.movienight.urls.TVShowPopularUrl;
 import movienight.javi.com.movienight.urls.TVShowUrlBuilder;
 
 /**
@@ -43,13 +46,23 @@ public class TVShowFragment extends FilmFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
+        super.onCreate(savedInstanceState);
+
         category = FilmCatetory.TV_SHOW;
         mGenres = getArguments().getParcelableArrayList(ActivityExtras.GENRES_KEY);
 
         String[] sortItems = getArguments().getStringArray(ActivityExtras.SORT_OPTIONS_KEY);
         mDialogContainer = new DialogContainer(mGenres, sortItems);
 
-        super.onCreate(savedInstanceState);
+        if (mParentActivity.isNetworkedConnected()) {
+
+            new TVShowPopularAsyncTask(this)
+                .execute(new TVShowPopularUrl(mCurrentPageNumber));
+
+        } else {
+
+            mParentActivity.removeFragment(this);
+        }
     }
 
     @Override
@@ -61,6 +74,12 @@ public class TVShowFragment extends FilmFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(!mParentActivity.isNetworkedConnected()) {
+
+            mParentActivity.removeFragment(this);
+            return false;
+        }
 
         int position = -1;
 

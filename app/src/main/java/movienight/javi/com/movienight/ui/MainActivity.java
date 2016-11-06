@@ -1,6 +1,9 @@
 package movienight.javi.com.movienight.ui;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -14,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,11 +49,11 @@ public class MainActivity extends AppCompatActivity implements
     private String[] mMovieSortItems;
     private String[] mTVShowSortItems;
     private LruCache<String, Bitmap> mMemoryCache;
+    private LoadingFilterDialog mDialog;
 
     @BindView(R.id.toolbar) Toolbar mToolBar;
     @BindView(R.id.navigationView) NavigationView mNavigationView;
     @BindView(R.id.drawerLayout) DrawerLayout mDrawerLayout;
-    private LoadingFilterDialog mDialog;
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
@@ -90,13 +94,34 @@ public class MainActivity extends AppCompatActivity implements
         mTVShowSortItems = getResources().getStringArray(R.array.tv_show_sort_options_array);
 
         mGenresCount = 0;
-        new MovieGenresAsyncTask(this).execute(new MovieGenreUrl());
+
+        if(isNetworkedConnected()) {
+
+            requestMovieGenres();
+            requestTVShowGenres();
+            launchLoadDialog();
+        }
+        else {
+
+            Toast.makeText(this, "No Internet Connection!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void requestTVShowGenres() {
+
         new TVShowGenresAsyncTask(this).execute(new TVShowGenreUrl());
+    }
+
+    private void requestMovieGenres() {
+
+        new MovieGenresAsyncTask(this).execute(new MovieGenreUrl());
+    }
+
+    private void launchLoadDialog() {
 
         mDialog = LoadingFilterDialog.newInstance();
         mDialog.show(mFragmentManager, "loading_dialog");
     }
-
     @Override
     public void onBackPressed() {
 
@@ -125,75 +150,115 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        if(!item.isChecked()) {
+        if(mGenresCount < 2) {
 
-            item.setChecked(true);
+            requestMovieGenres();
+            requestTVShowGenres();
+            launchLoadDialog();
 
-            Fragment fragment = null;
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+            return true;
+        }
 
-            switch(item.getItemId()) {
+        item.setChecked(true);
 
-                case R.id.movieItemNavigationView:
+        Fragment fragment = null;
 
-                    mToolBar.setTitle("Movies");
-                    fragment = MovieFragment.newInstance(mMovieGenres, mMovieSortItems);
+        switch(item.getItemId()) {
 
-                    mFragmentManager
-                            .beginTransaction()
-                            .replace(R.id.fragmentContainer, fragment)
-                            .commit();
-                    break;
+            case R.id.movieItemNavigationView:
 
-                case R.id.tvShowItemNavigationItem:
+                mToolBar.setTitle("Movies");
+                fragment = MovieFragment.newInstance(mMovieGenres, mMovieSortItems);
 
-                    mToolBar.setTitle("TV Shows");
-                    fragment = TVShowFragment.newInstance(mTVShowGenres, mTVShowSortItems);
+                mFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragmentContainer, fragment)
+                        .commit();
+                break;
 
-                    mFragmentManager
-                            .beginTransaction()
-                            .replace(R.id.fragmentContainer, fragment)
-                            .commit();
-                    break;
-            }
+            case R.id.tvShowItemNavigationItem:
+
+                mToolBar.setTitle("TV Shows");
+                fragment = TVShowFragment.newInstance(mTVShowGenres, mTVShowSortItems);
+
+                mFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragmentContainer, fragment)
+                        .commit();
+                break;
         }
 
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
-        @Override
-        public void onTaskCompleted(Integer category, Genre[] result) {
+    @Override
+    public void onTaskCompleted(Integer category, Genre[] result) {
 
-            if(category.equals(FilmCatetory.MOVIE)) {
+        if(category.equals(FilmCatetory.MOVIE)) {
 
-                mMovieGenres = new ArrayList<>(Arrays.asList(result));
-                mGenresCount++;
-            }
-            else if(category.equals(FilmCatetory.TV_SHOW)) {
+            mMovieGenres = new ArrayList<>(Arrays.asList(result));
+            mGenresCount++;
+        }
+        else if(category.equals(FilmCatetory.TV_SHOW)) {
 
-                mTVShowGenres = new ArrayList<>(Arrays.asList(result));
-                mGenresCount++;
-            }
-
-            if(mGenresCount == 2) {
-
-                onNavigationItemSelected(
-                        mNavigationView.getMenu().getItem(0)
-                );
-                mDialog.dismiss();
-            }
+            mTVShowGenres = new ArrayList<>(Arrays.asList(result));
+            mGenresCount++;
         }
 
-        public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
+        if(mGenresCount == 2) {
 
-            if(key != null && bitmap != null && getBitmapFromMemoryCache(key) == null) {
-
-                mMemoryCache.put(key, bitmap);
-            }
-        }
-
-        public Bitmap getBitmapFromMemoryCache(String key) {
-
-            return mMemoryCache.get(key);
+            mDialog.dismiss();
+            onNavigationItemSelected(
+                    mNavigationView.getMenu().getItem(0)
+            );
         }
     }
+
+    public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
+
+        if(key != null && bitmap != null && getBitmapFromMemoryCache(key) == null) {
+
+            mMemoryCache.put(key, bitmap);
+        }
+    }
+
+    public Bitmap getBitmapFromMemoryCache(String key) {
+
+        return mMemoryCache.get(key);
+    }
+
+    public boolean isNetworkedConnected() {
+
+        ConnectivityManager cManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo networkInfo = cManager.getActiveNetworkInfo();
+        boolean isAvailable = false;
+
+        if(networkInfo != null && networkInfo.isConnected()) {
+
+            isAvailable = true;
+        }
+
+        return isAvailable;
+    }
+
+    public void removeFragment(Fragment fragment) {
+
+        mToolBar.setTitle("Movie Night");
+
+        mFragmentManager
+            .beginTransaction()
+            .remove(fragment)
+            .commit();
+
+        for(int i = 0 ; i < mNavigationView.getMenu().size() ; i++) {
+
+            MenuItem item = mNavigationView.getMenu().getItem(i);
+            item.setChecked(false);
+        }
+
+        Toast.makeText(this, "No Internet Connection.", Toast.LENGTH_SHORT).show();
+    }
+}

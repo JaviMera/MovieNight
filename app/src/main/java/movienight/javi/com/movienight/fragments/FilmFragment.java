@@ -72,11 +72,11 @@ public abstract class FilmFragment extends Fragment implements
     protected FilmFragmentPresenter mPresenter;
     protected DialogContainer mDialogContainer;
     protected List<Genre> mGenres;
+    protected int mCurrentPageNumber;
 
     private boolean isLoading;
     private boolean isFiltering;
     private FilterItemContainer mFilterItemContainer;
-    private int mCurrentPageNumber;
     private Integer mTotalPages;
     private AsyncTask mFilmAsyncTask;
 
@@ -124,15 +124,6 @@ public abstract class FilmFragment extends Fragment implements
 
         setTargetFragment(this, 1);
         setHasOptionsMenu(true);
-
-        if(category == FilmCatetory.MOVIE) {
-
-            new MoviePopularAsyncTask(this).execute(new MoviePopularUrl(mCurrentPageNumber));
-        }
-        else if(category == FilmCatetory.TV_SHOW) {
-
-            new TVShowPopularAsyncTask(this).execute(new TVShowPopularUrl(mCurrentPageNumber));
-        }
     }
 
     @Override
@@ -252,6 +243,8 @@ public abstract class FilmFragment extends Fragment implements
     @Override
     public void onCompleted(Integer totalPages, FilmBase[] films) {
 
+        isLoading = false;
+
         mTotalPages = totalPages;
         mFilms.clear();
 
@@ -287,8 +280,6 @@ public abstract class FilmFragment extends Fragment implements
                 adapter.updateMoviePoster(film);
             }
         }
-
-        isLoading = false;
     }
 
     @Override
@@ -346,6 +337,7 @@ public abstract class FilmFragment extends Fragment implements
         mFiltersRecyclerView.setAdapter(adapter);
     }
 
+
     @Override
     public void setMovieRecyclerScrollListener(RecyclerView.OnScrollListener listener) {
 
@@ -353,6 +345,11 @@ public abstract class FilmFragment extends Fragment implements
     }
 
     protected void requestFilms(int pageNumber) {
+
+        if(!mParentActivity.isNetworkedConnected()) {
+
+            mParentActivity.removeFragment(this);
+        }
 
         mPresenter.setProgressBarVisibility(View.VISIBLE);
 
