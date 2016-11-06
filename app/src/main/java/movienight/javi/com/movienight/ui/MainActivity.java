@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements
     private int mGenresCount;
     private String[] mMovieSortItems;
     private String[] mTVShowSortItems;
-    private LruCache<String, Bitmap> mMemoryCache;
+    private ImageCache mImageCache;
     private LoadingFilterDialog mDialog;
     private MainActivityPresenter mPresenter;
 
@@ -72,16 +72,7 @@ public class MainActivity extends AppCompatActivity implements
         ButterKnife.bind(this);
 
         final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-        final int cacheSize = maxMemory / 8;
-
-        mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
-
-            @Override
-            protected int sizeOf(String key, Bitmap bitmap) {
-
-                return bitmap.getByteCount();
-            }
-        };
+        mImageCache = new ImageCache(maxMemory);
 
         setSupportActionBar(mToolBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -175,27 +166,28 @@ public class MainActivity extends AppCompatActivity implements
                 mPresenter.setToolBarTitle("Movies");
 
                 fragment = MovieFragment.newInstance(mMovieGenres, mMovieSortItems);
-
-                mFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.fragmentContainer, fragment)
-                        .commit();
                 break;
 
             case R.id.tvShowItemNavigationItem:
 
                 mPresenter.setToolBarTitle("TV Shows");
-                fragment = TVShowFragment.newInstance(mTVShowGenres, mTVShowSortItems);
 
-                mFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.fragmentContainer, fragment)
-                        .commit();
+                fragment = TVShowFragment.newInstance(mTVShowGenres, mTVShowSortItems);
                 break;
         }
 
+        replace(R.id.fragmentContainer, fragment);
         mDrawerLayout.closeDrawer(GravityCompat.START);
+
         return true;
+    }
+
+    private void replace(int containerId, Fragment fragment) {
+
+        mFragmentManager
+                .beginTransaction()
+                .replace(containerId, fragment)
+                .commit();
     }
 
     @Override
@@ -223,15 +215,12 @@ public class MainActivity extends AppCompatActivity implements
 
     public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
 
-        if(key != null && bitmap != null && getBitmapFromMemoryCache(key) == null) {
-
-            mMemoryCache.put(key, bitmap);
-        }
+        mImageCache.insert(key, bitmap);
     }
 
     public Bitmap getBitmapFromMemoryCache(String key) {
 
-        return mMemoryCache.get(key);
+        return mImageCache.get(key);
     }
 
     public boolean isNetworkedConnected() {
