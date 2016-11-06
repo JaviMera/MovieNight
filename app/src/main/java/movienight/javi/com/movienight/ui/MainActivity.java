@@ -37,6 +37,7 @@ import movienight.javi.com.movienight.urls.MovieGenreUrl;
 import movienight.javi.com.movienight.urls.TVShowGenreUrl;
 
 public class MainActivity extends AppCompatActivity implements
+        MainActivityView,
         NavigationView.OnNavigationItemSelectedListener,
         GenreListener
     {
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements
     private String[] mTVShowSortItems;
     private LruCache<String, Bitmap> mMemoryCache;
     private LoadingFilterDialog mDialog;
+    private MainActivityPresenter mPresenter;
 
     @BindView(R.id.toolbar) Toolbar mToolBar;
     @BindView(R.id.navigationView) NavigationView mNavigationView;
@@ -83,6 +85,8 @@ public class MainActivity extends AppCompatActivity implements
 
         setSupportActionBar(mToolBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mPresenter = new MainActivityPresenter(this);
 
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(mToggle);
@@ -168,7 +172,8 @@ public class MainActivity extends AppCompatActivity implements
 
             case R.id.movieItemNavigationView:
 
-                mToolBar.setTitle("Movies");
+                mPresenter.setToolBarTitle("Movies");
+
                 fragment = MovieFragment.newInstance(mMovieGenres, mMovieSortItems);
 
                 mFragmentManager
@@ -179,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements
 
             case R.id.tvShowItemNavigationItem:
 
-                mToolBar.setTitle("TV Shows");
+                mPresenter.setToolBarTitle("TV Shows");
                 fragment = TVShowFragment.newInstance(mTVShowGenres, mTVShowSortItems);
 
                 mFragmentManager
@@ -246,7 +251,7 @@ public class MainActivity extends AppCompatActivity implements
 
     public void removeFragment(Fragment fragment) {
 
-        mToolBar.setTitle("Movie Night");
+        mPresenter.setToolBarTitle("Movie Night");
 
         mFragmentManager
             .beginTransaction()
@@ -259,6 +264,17 @@ public class MainActivity extends AppCompatActivity implements
             item.setChecked(false);
         }
 
+        showErrorMessage();
+    }
+
+    private void showErrorMessage() {
+
         Toast.makeText(this, "No Internet Connection.", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setToolBarTitle(String title) {
+
+        mToolBar.setTitle(title);
     }
 }
