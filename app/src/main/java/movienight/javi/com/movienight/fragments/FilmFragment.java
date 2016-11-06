@@ -31,11 +31,7 @@ import butterknife.ButterKnife;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.adapters.FilterItemRecyclerAdapter;
 import movienight.javi.com.movienight.adapters.MovieRecyclerViewAdapter;
-import movienight.javi.com.movienight.asyntasks.MoviePopularAsyncTask;
-import movienight.javi.com.movienight.asyntasks.MoviesAsyncTask;
 import movienight.javi.com.movienight.asyntasks.PostersAsyncTask;
-import movienight.javi.com.movienight.asyntasks.TVShowAsyncTask;
-import movienight.javi.com.movienight.asyntasks.TVShowPopularAsyncTask;
 import movienight.javi.com.movienight.dialogs.FilterDialogBase;
 import movienight.javi.com.movienight.dialogs.MovieDialog.FilmDialogFragment;
 import movienight.javi.com.movienight.listeners.FilterItemAddedListener;
@@ -46,7 +42,6 @@ import movienight.javi.com.movienight.listeners.FilmAsyncTaskListener;
 import movienight.javi.com.movienight.model.DateRange;
 import movienight.javi.com.movienight.model.DialogContainer;
 import movienight.javi.com.movienight.model.FilmBase;
-import movienight.javi.com.movienight.model.FilmCatetory;
 import movienight.javi.com.movienight.model.FilterItemContainer;
 import movienight.javi.com.movienight.model.FilterItems.DateRangeFilterableItem;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
@@ -55,8 +50,6 @@ import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.ui.MainActivity;
 import movienight.javi.com.movienight.urls.AbstractUrl;
-import movienight.javi.com.movienight.urls.MoviePopularUrl;
-import movienight.javi.com.movienight.urls.TVShowPopularUrl;
 
 public abstract class FilmFragment extends Fragment implements
         FilterItemAddedListener,
@@ -66,7 +59,6 @@ public abstract class FilmFragment extends Fragment implements
         FilmSelectedListener,
         MoviePostersListener {
 
-    protected int category;
     protected MainActivity mParentActivity;
     protected Map<String, FilmBase> mFilms;
     protected FilmFragmentPresenter mPresenter;
@@ -89,6 +81,18 @@ public abstract class FilmFragment extends Fragment implements
         String voteCount,
         String sort
     );
+
+    protected abstract AsyncTask callPopularFilmAsyncTask(
+        FilmAsyncTaskListener listener,
+        AbstractUrl url
+    );
+
+    protected abstract AsyncTask callFilmAsyncTask(
+        FilmAsyncTaskListener listener,
+        AbstractUrl url
+    );
+
+    protected abstract AbstractUrl getFilmPopularUrl(int pageNumber);
 
     protected FilterDialogBase getDialog(int position) {
 
@@ -382,29 +386,12 @@ public abstract class FilmFragment extends Fragment implements
                 sort
             );
 
-            if(category == FilmCatetory.MOVIE){
-
-                mFilmAsyncTask = new MoviesAsyncTask(this).execute(url);
-            }
-            else if(category == FilmCatetory.TV_SHOW){
-
-                mFilmAsyncTask = new TVShowAsyncTask(this).execute(url);
-            }
+            mFilmAsyncTask = callFilmAsyncTask(this, url);
         }
         else {
 
-            url = category == FilmCatetory.MOVIE
-                ? new MoviePopularUrl(mCurrentPageNumber)
-                : new TVShowPopularUrl(mCurrentPageNumber);
-
-            if(category == FilmCatetory.MOVIE) {
-
-                mFilmAsyncTask = new MoviePopularAsyncTask(this).execute(url);
-            }
-            else if(category == FilmCatetory.TV_SHOW) {
-
-                mFilmAsyncTask = new TVShowPopularAsyncTask(this).execute(url);
-            }
+            url = getFilmPopularUrl(mCurrentPageNumber);
+            mFilmAsyncTask = callPopularFilmAsyncTask(this, url);
         }
     }
 
@@ -415,33 +402,33 @@ public abstract class FilmFragment extends Fragment implements
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 
-                GridLayoutManager linearManager = (GridLayoutManager) recyclerView.getLayoutManager();
+            GridLayoutManager linearManager = (GridLayoutManager) recyclerView.getLayoutManager();
 
-                if(!mParentActivity.isNetworkedConnected()) {
+            if(!mParentActivity.isNetworkedConnected()) {
 
-                    mParentActivity.removeFragment(getTargetFragment());
-                    return;
+                mParentActivity.removeFragment(getTargetFragment());
+                return;
+            }
+
+            if(isLoading)
+                return;
+
+            int itemCount = linearManager.getItemCount();
+            // Check if the scroll happened when the adapter's data was cleared
+            // In such case, we don't want to call the endless scroll code.
+            if (itemCount == 0)
+                return;
+
+            int lastPositionVisible = linearManager.findLastCompletelyVisibleItemPosition();
+            if (itemCount == lastPositionVisible + 1) {
+
+                if (mCurrentPageNumber < mTotalPages) {
+
+                    isLoading = true;
+                    mCurrentPageNumber++;
+                    requestFilms(mCurrentPageNumber);
                 }
-
-                if(isLoading)
-                    return;
-
-                int itemCount = linearManager.getItemCount();
-                // Check if the scroll happened when the adapter's data was cleared
-                // In such case, we don't want to call the endless scroll code.
-                if (itemCount == 0)
-                    return;
-
-                int lastPositionVisible = linearManager.findLastCompletelyVisibleItemPosition();
-                if (itemCount == lastPositionVisible + 1) {
-
-                    if (mCurrentPageNumber < mTotalPages) {
-
-                        isLoading = true;
-                        mCurrentPageNumber++;
-                        requestFilms(mCurrentPageNumber);
-                    }
-                }
+            }
             }
         };
     }

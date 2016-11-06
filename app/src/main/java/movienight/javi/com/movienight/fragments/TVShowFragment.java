@@ -1,27 +1,25 @@
 package movienight.javi.com.movienight.fragments;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import movienight.javi.com.movienight.R;
+import movienight.javi.com.movienight.asyntasks.TVShowAsyncTask;
 import movienight.javi.com.movienight.asyntasks.TVShowPopularAsyncTask;
 import movienight.javi.com.movienight.dialogs.FilterDialogBase;
+import movienight.javi.com.movienight.listeners.FilmAsyncTaskListener;
 import movienight.javi.com.movienight.model.DialogContainer;
-import movienight.javi.com.movienight.model.FilmCatetory;
-import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
 import movienight.javi.com.movienight.model.FilterItems.FilterableItemKeys;
 import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.urls.AbstractUrl;
-import movienight.javi.com.movienight.urls.MovieUrlBuilder;
 import movienight.javi.com.movienight.urls.TVShowPopularUrl;
 import movienight.javi.com.movienight.urls.TVShowUrlBuilder;
 
@@ -48,7 +46,6 @@ public class TVShowFragment extends FilmFragment {
 
         super.onCreate(savedInstanceState);
 
-        category = FilmCatetory.TV_SHOW;
         mGenres = getArguments().getParcelableArrayList(ActivityExtras.GENRES_KEY);
 
         String[] sortItems = getArguments().getStringArray(ActivityExtras.SORT_OPTIONS_KEY);
@@ -139,5 +136,23 @@ public class TVShowFragment extends FilmFragment {
             .withVoteCount(voteCount)
             .sortBy(sort)
             .createTVShowUrl();
+    }
+
+    @Override
+    protected AsyncTask callPopularFilmAsyncTask(FilmAsyncTaskListener listener, AbstractUrl url) {
+
+        return new TVShowPopularAsyncTask(listener).execute(url);
+    }
+
+    @Override
+    protected AsyncTask callFilmAsyncTask(FilmAsyncTaskListener listener, AbstractUrl url) {
+
+        return new TVShowAsyncTask(listener).execute(url);
+    }
+
+    @Override
+    protected AbstractUrl getFilmPopularUrl(int pageNumber) {
+
+        return new TVShowPopularUrl(pageNumber);
     }
 }
