@@ -50,16 +50,6 @@ public class TVShowFragment extends FilmFragment {
 
         String[] sortItems = getArguments().getStringArray(ActivityExtras.SORT_OPTIONS_KEY);
         mDialogContainer = new DialogContainer(mGenres, sortItems);
-
-        if (mParentActivity.isNetworkedConnected()) {
-
-            new TVShowPopularAsyncTask(this)
-                .execute(new TVShowPopularUrl(mCurrentPageNumber));
-
-        } else {
-
-            mParentActivity.removeFragment(this);
-        }
     }
 
     @Override

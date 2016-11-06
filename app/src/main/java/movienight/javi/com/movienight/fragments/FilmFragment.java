@@ -31,6 +31,7 @@ import butterknife.ButterKnife;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.adapters.FilterItemRecyclerAdapter;
 import movienight.javi.com.movienight.adapters.MovieRecyclerViewAdapter;
+import movienight.javi.com.movienight.asyntasks.MoviePopularAsyncTask;
 import movienight.javi.com.movienight.asyntasks.PostersAsyncTask;
 import movienight.javi.com.movienight.dialogs.FilterDialogBase;
 import movienight.javi.com.movienight.dialogs.MovieDialog.FilmDialogFragment;
@@ -50,6 +51,7 @@ import movienight.javi.com.movienight.model.Genre;
 import movienight.javi.com.movienight.ui.ActivityExtras;
 import movienight.javi.com.movienight.ui.MainActivity;
 import movienight.javi.com.movienight.urls.AbstractUrl;
+import movienight.javi.com.movienight.urls.MoviePopularUrl;
 
 public abstract class FilmFragment extends Fragment implements
         FilterItemAddedListener,
@@ -128,6 +130,16 @@ public abstract class FilmFragment extends Fragment implements
 
         setTargetFragment(this, 1);
         setHasOptionsMenu(true);
+
+        if (mParentActivity.isNetworkedConnected()) {
+
+            AbstractUrl url = getFilmPopularUrl(mCurrentPageNumber);
+            callPopularFilmAsyncTask(this,url);
+
+        } else {
+
+            mParentActivity.removeFragment(this);
+        }
     }
 
     @Override

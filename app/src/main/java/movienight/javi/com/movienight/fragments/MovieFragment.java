@@ -49,16 +49,6 @@ public class MovieFragment extends FilmFragment {
 
         String[] sortItems = getArguments().getStringArray(ActivityExtras.SORT_OPTIONS_KEY);
         mDialogContainer = new DialogContainer(mGenres, sortItems);
-
-        if (mParentActivity.isNetworkedConnected()) {
-
-            new MoviePopularAsyncTask(this)
-                .execute(new MoviePopularUrl(mCurrentPageNumber));
-
-        } else {
-
-            mParentActivity.removeFragment(this);
-        }
     }
 
     @Override
