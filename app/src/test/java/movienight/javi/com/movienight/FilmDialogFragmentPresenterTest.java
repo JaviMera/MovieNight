@@ -12,8 +12,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
 
-import movienight.javi.com.movienight.dialogs.MovieDialog.MovieDialogFragmentPresenter;
-import movienight.javi.com.movienight.dialogs.MovieDialog.MovieDialogFramgnetView;
+import movienight.javi.com.movienight.dialogs.FilmDialog.FilmDialogFragmentPresenter;
+import movienight.javi.com.movienight.dialogs.FilmDialog.FilmDialogFramgnetView;
 
 /**
  * Created by Javi on 11/1/2016.
@@ -22,14 +22,14 @@ import movienight.javi.com.movienight.dialogs.MovieDialog.MovieDialogFramgnetVie
 public class FilmDialogFragmentPresenterTest {
 
     @Mock
-    public MovieDialogFramgnetView mView;
+    public FilmDialogFramgnetView mView;
 
-    private MovieDialogFragmentPresenter mPresenter;
+    private FilmDialogFragmentPresenter mPresenter;
 
     @Before
     public void SetUp() throws Exception {
 
-        mPresenter = new MovieDialogFragmentPresenter(mView);
+        mPresenter = new FilmDialogFragmentPresenter(mView);
     }
 
     @Test

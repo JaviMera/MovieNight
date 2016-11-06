@@ -1,4 +1,4 @@
-package movienight.javi.com.movienight.dialogs.MovieDialog;
+package movienight.javi.com.movienight.dialogs.FilmDialog;
 
 import android.graphics.Bitmap;
 import android.widget.TextView;
@@ -9,11 +9,11 @@ import java.util.List;
  * Created by Javi on 11/1/2016.
  */
 
-public class MovieDialogFragmentPresenter {
+public class FilmDialogFragmentPresenter {
 
-    private MovieDialogFramgnetView mView;
+    private FilmDialogFramgnetView mView;
 
-    public MovieDialogFragmentPresenter(MovieDialogFramgnetView view) {
+    public FilmDialogFragmentPresenter(FilmDialogFramgnetView view) {
 
         mView = view;
     }

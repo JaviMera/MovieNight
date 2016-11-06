@@ -1,4 +1,4 @@
-package movienight.javi.com.movienight.dialogs.MovieDialog;
+package movienight.javi.com.movienight.dialogs.FilmDialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -28,11 +28,11 @@ import movienight.javi.com.movienight.ui.ActivityExtras;
 /**
  * Created by Javi on 11/1/2016.
  */
-public class FilmDialogFragment extends DialogFragment implements MovieDialogFramgnetView {
+public class FilmDialogFragment extends DialogFragment implements FilmDialogFramgnetView {
 
     private FilmBase mFilm;
     private List<String> mMovieGenres;
-    private MovieDialogFragmentPresenter mPresenter;
+    private FilmDialogFragmentPresenter mPresenter;
 
     @BindView(R.id.movieTitleDialogTextView) TextView mTitleTextView;
     @BindView(R.id.movieOverviewDialogTextView) TextView mOverviewTextView;
@@ -76,7 +76,7 @@ public class FilmDialogFragment extends DialogFragment implements MovieDialogFra
 
         ButterKnife.bind(this, view);
 
-        mPresenter = new MovieDialogFragmentPresenter(this);
+        mPresenter = new FilmDialogFragmentPresenter(this);
 
         mPresenter.setTextViewText(
             mTitleTextView,
@@ -143,7 +143,7 @@ public class FilmDialogFragment extends DialogFragment implements MovieDialogFra
         if(!year.isEmpty() && !month.isEmpty() && !day.isEmpty()) {
 
             Calendar c = getCalendar(year, month, day);
-            format = getReleaseDateFormat(c, ActivityExtras.MOVIE_DIALOG_RELEASE_DATE_FORMAT);
+            format = getReleaseDateFormat(c, ActivityExtras.FILM_DIALOG_RELEASE_DATE_FORMAT);
         }
 
         mReleaseDateTextView.setText(format);
@@ -162,7 +162,7 @@ public class FilmDialogFragment extends DialogFragment implements MovieDialogFra
 
         Calendar c = Calendar.getInstance();
         c.set(Calendar.YEAR, yearInt);
-        c.set(Calendar.MONTH, monthInt);
+        c.set(Calendar.MONTH, monthInt - 1);
         c.set(Calendar.DAY_OF_MONTH, dayInt);
 
         return c;
