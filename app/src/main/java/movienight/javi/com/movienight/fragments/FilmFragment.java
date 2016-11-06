@@ -417,11 +417,16 @@ public abstract class FilmFragment extends Fragment implements
 
                 GridLayoutManager linearManager = (GridLayoutManager) recyclerView.getLayoutManager();
 
-                int itemCount = linearManager.getItemCount();
+                if(!mParentActivity.isNetworkedConnected()) {
+
+                    mParentActivity.removeFragment(getTargetFragment());
+                    return;
+                }
 
                 if(isLoading)
                     return;
 
+                int itemCount = linearManager.getItemCount();
                 // Check if the scroll happened when the adapter's data was cleared
                 // In such case, we don't want to call the endless scroll code.
                 if (itemCount == 0)
