@@ -1,26 +1,33 @@
 <resources>
     <string name="app_name">Movie Night</string>
-    <string name="loading_text">Loading...</string>
     <string name="start_release_date_text">Start Release Date:</string>
     <string name="end_release_date_text">End Release Date</string>
-    <string name="empty_date_picker_text">mm-dd-yyyy</string>
     <string name="rating_text">Rating:</string>
     <string name="vote_count_text">People\'s votes:</string>
     <string name="vote_count_hint_text">Example: 12345</string>
     <string name="genre_text">Genre:</string>
-    <string name="search_title_text">Search for films!</string>
     <string name="find_movies_button_text">Search for Movies!</string>
-    <string name="movies_result_text">Movies Result!</string>
-    <string name="empty_genre_text">no genres selected</string>
     <string name="dialog_button_text">done !</string>
-    <string name="dialog_load_title_text">Movie Night</string>
-    <string name="popular_movies_text">Weekly Popular Movies!</string>
-    <string name="movie_title_dialog">%1$s (%2$s)</string>
-    <string name="movie_rating_text_dialog">%.1f / 10</string>
-    <string name="movie_vote_count_text_dialog">%1$d votes</string>
+    <string name="popular_films_text">Weekly Popular Movies!</string>
+    <string name="film_title_dialog">%1$s (%2$s)</string>
+    <string name="film_rating_text_dialog">%.1f / 10</string>
+    <string name="film_vote_count_text_dialog">%1$d votes</string>
     <string name="rate_text_format_dialog">%.1f</string>
-    <string name="movie_genre_title_text">Genre</string>
-    <string name="movie_release_date_title_text">Release Date</string>
+    <string name="film_genre_title_text">Genre</string>
+    <string name="film_release_date_title_text">Release Date</string>
+    <string name="nav_drawer_header_text">Film Categories</string>
+    <string name="movie_filter_by_genre">Filter by Genre</string>
+    <string name="movie_filter_by_release_date">Filter by Release Date</string>
+    <string name="movie_filter_by_rating">Filter by Rating</string>
+    <string name="movie_filter_by_vote_count">Filter by Vote Count</string>
+    <string name="movie_sort_by">Sort by...</string>
+    <string name="nav_drawer_item_movies">Movies</string>
+    <string name="nav_drawer_item_tv_shows">TV Shows</string>
+    <string name="tv_show_filter_by_genre">Filter by Genre</string>
+    <string name="tv_show_filter_by_first_air_date">Filter by First Air Date</string>
+    <string name="tv_show_filter_by_rating">Filter by Rating</string>
+    <string name="tv_show_filter_by_vote_count">Filter by Vote Count</string>
+    <string name="tv_show_sort_by">Sort by...</string>
 
     <string-array name="movie_sort_options_array">
         <item>Popularity Ascending</item>
@@ -44,14 +51,6 @@
         <item>Rating Descending</item>
     </string-array>
 
-    <string name="title_activity_navigation">NavigationActivity</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="action_settings">Settings</string>
-    <string name="top_rated_movies_text">Weekly Top Rated Movies!</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

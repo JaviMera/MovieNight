@@ -6,17 +6,9 @@
 
     <TextView
         android:id="@+id/genreDescriptionTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:gravity="start"
-        android:padding="@dimen/input_view_left_margin"
-        android:textColor="@color/movie_dark_purple"
-        android:textSize="@dimen/input_view_text_size" />
+        style="@style/GenreRecyclerItemTextView" />
 
     <CheckBox
         android:id="@+id/genreCheckBoxView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        style="@style/GenreRecyclerItemCheckBox" />
 </LinearLayout>

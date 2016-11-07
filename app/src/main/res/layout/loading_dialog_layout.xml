@@ -2,21 +2,17 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/movie_extra_dark_color">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/dialogTitleTextView"
-        android:layout_gravity="center"
         style="@style/DialogLoadTitleTextView"
         />
 
     <ProgressBar
         android:id="@+id/loadingActivityProgressBar"
         android:layout_below="@+id/dialogTitleTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        style="@style/DialogLoadProgressBar"
         />
 
 </RelativeLayout>

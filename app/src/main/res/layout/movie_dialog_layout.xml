@@ -15,12 +15,12 @@
         <TextView
             android:id="@+id/movieTitleDialogTextView"
             tools:text="This is where the title goes that and it can support multiple lines (releaseDate)"
-            style="@style/TitleTextView"/>
+            style="@style/FilmTitleTextView"/>
 
         <TextView
             android:id="@+id/movieOverviewDialogTextView"
             tools:text="This is the overview of the movie and it might support multiple lines too."
-            style="@style/OverviewTextView"/>
+            style="@style/FilmOverviewTextView"/>
 
         <View
             style="@style/LineSeparatorView"/>
@@ -32,14 +32,14 @@
 
             <ImageView
                 android:id="@+id/moviePosterDialogImageView"
-                style="@style/MoviePosterImageView"
+                style="@style/FilmPosterImageView"
                 tools:src="@drawable/no_poster_image"/>
 
             <ImageView
                 android:id="@+id/starIcon"
                 android:layout_gravity="center"
                 android:maxHeight="50dp"
-                style="@style/MovieRateImageView" />
+                style="@style/FilmRateImageView" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -50,12 +50,12 @@
                 <TextView
                     android:id="@+id/movieRatingDialogTextView"
                     tools:text="Rating value"
-                    style="@style/MovieRatingTextView"/>
+                    style="@style/FilmRatingTextView"/>
 
                 <TextView
                     android:id="@+id/movieVoteCountDialogTextView"
                     tools:text="Vote Count value"
-                    style="@style/MovieVoteCountTextView"/>
+                    style="@style/FilmVoteCountTextView"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -63,19 +63,19 @@
             style="@style/LineSeparatorView"/>
 
         <TextView
-            style="@style/MovieGenreTitleTextView" />
+            style="@style/FilmGenreTitleTextView" />
 
         <TextView
             android:id="@+id/movieGenresDialogTextView"
             tools:text="Genre 1, Genre 2"
-            style="@style/MovieGenreTextView"/>
+            style="@style/FilmGenreTextView"/>
 
         <TextView
-            style="@style/MovieReleaseDateTitleTextView" />
+            style="@style/FilmReleaseDateTitleTextView" />
 
         <TextView
             android:id="@+id/movieReleaseDateDialogTextView"
             tools:text="Nov 4, 2016"
-            style="@style/MovieReleaseDateTextView"/>
+            style="@style/FilmReleaseDateTextView"/>
     </LinearLayout>
 </ScrollView>

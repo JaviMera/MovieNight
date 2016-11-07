@@ -8,12 +8,7 @@
 
     <TextView
         android:id="@+id/sortItemTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:textSize="20sp"
-        android:textColor="@color/movie_dark_purple"
-        android:background="@drawable/sort_item_background">
+        style="@style/SortRecyclerItemTextView">
     </TextView>
 
     <View

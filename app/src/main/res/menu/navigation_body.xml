@@ -4,17 +4,13 @@
 
     <group android:checkableBehavior="single">
 
-        <!--<item-->
-            <!--android:id="@+id/popularItemNavigationView"-->
-            <!--android:title="Popular"/>-->
-
         <item
             android:id="@+id/movieItemNavigationView"
-            android:title="Movies"/>
+            android:title="@string/nav_drawer_item_movies"/>
 
         <item
             android:id="@+id/tvShowItemNavigationItem"
             android:checked="false"
-            android:title="TV Shows" />
+            android:title="@string/nav_drawer_item_tv_shows" />
     </group>
 </menu>

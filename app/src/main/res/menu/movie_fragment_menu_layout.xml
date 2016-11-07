@@ -5,30 +5,30 @@
 
     <item
         android:id="@+id/movieFilterGenreItem"
-        android:title="Filter by Genre"
+        android:title="@string/movie_filter_by_genre"
         android:orderInCategory="100"
         myapp:showAsAction="never"/>
     <item
         android:id="@+id/movieFilterReleaseDate"
-        android:title="Filter by Release Date"
+        android:title="@string/movie_filter_by_release_date"
         android:orderInCategory="101"
         myapp:showAsAction="never"/>
 
     <item
         android:id="@+id/movieFilterRateItem"
-        android:title="Filter by Rating"
+        android:title="@string/movie_filter_by_rating"
         android:orderInCategory="102"
         myapp:showAsAction="never"/>
 
     <item
         android:id="@+id/movieFilterVoteCountItem"
-        android:title="Filter by Vote Count"
+        android:title="@string/movie_filter_by_vote_count"
         android:orderInCategory="103"
         myapp:showAsAction="never"/>
 
     <item
         android:id="@+id/movieFilterSortItem"
-        android:title="Sort by..."
+        android:title="@string/movie_sort_by"
         android:orderInCategory="104"
         myapp:showAsAction="never"/>
 </menu>

@@ -5,30 +5,30 @@
 
     <item
         android:id="@+id/tvFilterGenreItem"
-        android:title="Filter by Genre"
+        android:title="@string/tv_show_filter_by_genre"
         android:orderInCategory="100"
         myapp:showAsAction="never"/>
     <item
         android:id="@+id/tvFilterAirDateItem"
-        android:title="Filter by First Air Date"
+        android:title="@string/tv_show_filter_by_first_air_date"
         android:orderInCategory="101"
         myapp:showAsAction="never"/>
 
     <item
         android:id="@+id/tvFilterRatingItem"
-        android:title="Filter by Rating"
+        android:title="@string/tv_show_filter_by_rating"
         android:orderInCategory="102"
         myapp:showAsAction="never"/>
 
     <item
         android:id="@+id/tvFilterVoteCountItem"
-        android:title="Filter by Vote Count"
+        android:title="@string/tv_show_filter_by_vote_count"
         android:orderInCategory="103"
         myapp:showAsAction="never"/>
 
     <item
         android:id="@+id/tvFilterSortItem"
-        android:title="Sort by..."
+        android:title="@string/tv_show_sort_by"
         android:orderInCategory="104"
         myapp:showAsAction="never"/>
 </menu>

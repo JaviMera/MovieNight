@@ -80,7 +80,7 @@ public class FilmDialogFragment extends DialogFragment implements FilmDialogFram
 
         mPresenter.setTextViewText(
             mTitleTextView,
-            resources.getString(R.string.movie_title_dialog),
+            resources.getString(R.string.film_title_dialog),
             mFilm.getTitle(),
             mFilm.getYearRelease()
         );
@@ -93,13 +93,13 @@ public class FilmDialogFragment extends DialogFragment implements FilmDialogFram
 
         mPresenter.setTextViewText(
             mRatingTextView,
-            resources.getString(R.string.movie_rating_text_dialog),
+            resources.getString(R.string.film_rating_text_dialog),
             mFilm.getRating()
         );
 
         mPresenter.setTextViewText(
             mVoteCountTextView,
-            resources.getString(R.string.movie_vote_count_text_dialog),
+            resources.getString(R.string.film_vote_count_text_dialog),
             mFilm.getVoteCount()
         );
 
