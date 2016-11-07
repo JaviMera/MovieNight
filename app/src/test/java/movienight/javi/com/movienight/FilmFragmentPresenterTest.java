@@ -1,7 +1,6 @@
 package movienight.javi.com.movienight;
 
 import android.support.v7.widget.RecyclerView;
-import android.widget.AdapterView;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +23,7 @@ import movienight.javi.com.movienight.fragments.FilmFragmentView;
  */
 
 @RunWith(MockitoJUnitRunner.class)
-public class MovieFragmentPresenterTest {
+public class FilmFragmentPresenterTest {
 
     private FilmFragmentPresenter mPresenter;
 
@@ -51,33 +50,33 @@ public class MovieFragmentPresenterTest {
     }
 
     @Test
-    public void setMoviesRecyclerViewAdapter() throws Exception {
+    public void setFilmRecyclerViewAdapter() throws Exception {
 
         // Arrange
-        Movie[] movies = new Movie[]{FakeMovies.get(1)};
+        FilmBase[] films = new Movie[]{FakeMovies.get(1)};
 
         // Act
-        mPresenter.setMoviesRecyclerViewAdapter(movies);
+        mPresenter.setFilmRecyclerViewAdapter(films);
 
         // Assert
-        Mockito.verify(mView).setMoviesRecyclerViewAdapter(movies);
+        Mockito.verify(mView).setFilmRecyclerViewAdapter(films);
     }
 
     @Test
-    public void updateRecyclerViewAdapter() throws Exception {
+    public void updateFilmRecyclerViewAdapter() throws Exception {
 
         // Arrange
         List<FilmBase> movies = new LinkedList<>();
 
         // Act
-        mPresenter.updateRecyclerViewAdapter(movies);
+        mPresenter.updateFilmRecyclerViewAdapter(movies);
 
         // Assert
-        Mockito.verify(mView).updateRecyclerAdapter(movies);
+        Mockito.verify(mView).updateFilmRecyclerAdapter(movies);
     }
 
     @Test
-    public void setRecyclerViewProgressBarVisibility() throws Exception {
+    public void setViewProgressBarVisibility() throws Exception {
 
         // Arrange
         int someVisibility = 1;
@@ -119,15 +118,15 @@ public class MovieFragmentPresenterTest {
     }
 
     @Test
-    public void setMovieRecyclerScrollListener() throws Exception {
+    public void setFilmRecyclerScrollListener() throws Exception {
 
         // Arrange
         RecyclerView.OnScrollListener listener = null;
 
         // Act
-        mPresenter.setMovieRecyclerScrollListener(listener);
+        mPresenter.setFilmRecyclerScrollListener(listener);
 
         // Assert
-        Mockito.verify(mView).setMovieRecyclerScrollListener(listener);
+        Mockito.verify(mView).setFilmRecyclerScrollListener(listener);
     }
 }

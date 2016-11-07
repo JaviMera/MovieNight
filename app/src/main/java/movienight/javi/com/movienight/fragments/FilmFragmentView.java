@@ -13,11 +13,11 @@ import movienight.javi.com.movienight.model.FilterItems.FilterableItem;
 
 public interface FilmFragmentView {
 
-    void setMoviesRecyclerViewAdapter(FilmBase[] films);
-    void updateRecyclerAdapter(List<FilmBase> films);
+    void setFilmRecyclerViewAdapter(FilmBase[] films);
+    void updateFilmRecyclerAdapter(List<FilmBase> films);
     void setProgressBarVisibility(int someVisibility);
     void setRecyclerViewManager(RecyclerView view, int numberOfColumns, int orientation);
     void setRecyclerSize(RecyclerView view, boolean fixedSize);
     void setFilterItemRecyclerViewAdapter(FilterableItem[] items);
-    void setMovieRecyclerScrollListener(RecyclerView.OnScrollListener listener);
+    void setFilmRecyclerScrollListener(RecyclerView.OnScrollListener listener);
 }

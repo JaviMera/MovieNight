@@ -18,13 +18,13 @@ import movienight.javi.com.movienight.model.FilmBase;
  * Created by Javi on 10/21/2016.
  */
 
-public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecyclerViewAdapter.FilmViewHolder>{
+public class FilmRecyclerViewAdapter extends RecyclerView.Adapter<FilmRecyclerViewAdapter.FilmViewHolder>{
 
     private Context mContext;
     private List<FilmBase> mFilms;
     private FilmSelectedListener mListener;
 
-    public MovieRecyclerViewAdapter(Context context, List<FilmBase> films, FilmSelectedListener listener) {
+    public FilmRecyclerViewAdapter(Context context, List<FilmBase> films, FilmSelectedListener listener) {
 
         mContext = context;
         mFilms = films;

@@ -20,14 +20,14 @@ public class FilmFragmentPresenter {
         mView = view;
     }
 
-    public void updateRecyclerViewAdapter(List<FilmBase> films) {
+    public void updateFilmRecyclerViewAdapter(List<FilmBase> films) {
 
-        mView.updateRecyclerAdapter(films);
+        mView.updateFilmRecyclerAdapter(films);
     }
 
-    public void setMoviesRecyclerViewAdapter(FilmBase[] films) {
+    public void setFilmRecyclerViewAdapter(FilmBase[] films) {
 
-        mView.setMoviesRecyclerViewAdapter(films);
+        mView.setFilmRecyclerViewAdapter(films);
     }
 
     public void setProgressBarVisibility(int progressBarVisibility) {
@@ -51,8 +51,8 @@ public class FilmFragmentPresenter {
         mView.setFilterItemRecyclerViewAdapter(items);
     }
 
-    public void setMovieRecyclerScrollListener(RecyclerView.OnScrollListener listener) {
+    public void setFilmRecyclerScrollListener(RecyclerView.OnScrollListener listener) {
 
-        mView.setMovieRecyclerScrollListener(listener);
+        mView.setFilmRecyclerScrollListener(listener);
     }
 }

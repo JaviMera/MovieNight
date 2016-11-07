@@ -28,7 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import movienight.javi.com.movienight.R;
 import movienight.javi.com.movienight.adapters.FilterItemRecyclerAdapter;
-import movienight.javi.com.movienight.adapters.MovieRecyclerViewAdapter;
+import movienight.javi.com.movienight.adapters.FilmRecyclerViewAdapter;
 import movienight.javi.com.movienight.asyntasks.PostersAsyncTask;
 import movienight.javi.com.movienight.dialogs.FilterDialogBase;
 import movienight.javi.com.movienight.dialogs.FilmDialog.FilmDialogFragment;
@@ -151,10 +151,10 @@ public abstract class FilmFragment extends Fragment implements
         mPresenter.setRecyclerViewManager(mFiltersRecyclerView, 1, LinearLayoutManager.HORIZONTAL);
         mPresenter.setRecyclerSize(mFiltersRecyclerView, true);
 
-        mPresenter.setMoviesRecyclerViewAdapter(mFilms.values().toArray(new FilmBase[]{}));
+        mPresenter.setFilmRecyclerViewAdapter(mFilms.values().toArray(new FilmBase[]{}));
         mPresenter.setRecyclerViewManager(mFilmsRecyclerView, 3, LinearLayoutManager.VERTICAL);
         mPresenter.setRecyclerSize(mFilmsRecyclerView, true);
-        mPresenter.setMovieRecyclerScrollListener(scrollListener());
+        mPresenter.setFilmRecyclerScrollListener(scrollListener());
 
         return fragmentLayout;
     }
@@ -173,19 +173,20 @@ public abstract class FilmFragment extends Fragment implements
             return;
         }
 
-        if(mFilmAsyncTask != null)
+        if(mFilmAsyncTask != null){
+
             if(mFilmAsyncTask.getStatus() == AsyncTask.Status.RUNNING) {
 
                 mFilmAsyncTask.cancel(true);
                 mPresenter.setProgressBarVisibility(View.INVISIBLE);
             }
+        }
 
+        FilterItemRecyclerAdapter filterItemAdapter = (FilterItemRecyclerAdapter) mFiltersRecyclerView.getAdapter();
+        filterItemAdapter.updateData(mFilterItemContainer.getAll());
 
-        FilterItemRecyclerAdapter adapter = (FilterItemRecyclerAdapter) mFiltersRecyclerView.getAdapter();
-        adapter.updateData(mFilterItemContainer.getAll());
-
-        MovieRecyclerViewAdapter movieSearchAdapter = (MovieRecyclerViewAdapter) mFilmsRecyclerView.getAdapter();
-        movieSearchAdapter.removeData();
+        FilmRecyclerViewAdapter filmSearchAdapter = (FilmRecyclerViewAdapter) mFilmsRecyclerView.getAdapter();
+        filmSearchAdapter.removeData();
 
         mFilms.clear();
         mCurrentPageNumber = 1;
@@ -204,7 +205,7 @@ public abstract class FilmFragment extends Fragment implements
             }
         }
 
-        MovieRecyclerViewAdapter movieSearchAdapter = (MovieRecyclerViewAdapter) mFilmsRecyclerView.getAdapter();
+        FilmRecyclerViewAdapter movieSearchAdapter = (FilmRecyclerViewAdapter) mFilmsRecyclerView.getAdapter();
         movieSearchAdapter.removeData();
 
         mCurrentPageNumber = 1;
@@ -232,7 +233,7 @@ public abstract class FilmFragment extends Fragment implements
 
             FilmBase updatedMovie = mFilms.get(path);
             updatedMovie.setPoster(poster);
-            MovieRecyclerViewAdapter adapter = (MovieRecyclerViewAdapter) mFilmsRecyclerView.getAdapter();
+            FilmRecyclerViewAdapter adapter = (FilmRecyclerViewAdapter) mFilmsRecyclerView.getAdapter();
             adapter.updateMoviePoster(updatedMovie);
 
             mParentActivity.addBitmapToMemoryCache(path, poster);
@@ -266,7 +267,7 @@ public abstract class FilmFragment extends Fragment implements
         }
 
         mPresenter.setProgressBarVisibility(View.INVISIBLE);
-        mPresenter.updateRecyclerViewAdapter(new ArrayList<>(mFilms.values()));
+        mPresenter.updateFilmRecyclerViewAdapter(new ArrayList<>(mFilms.values()));
 
         Bitmap defaultBitmap = BitmapFactory.decodeResource(
                 mParentActivity.getResources(),
@@ -288,16 +289,16 @@ public abstract class FilmFragment extends Fragment implements
             else {
 
                 film.setPoster(bitmap);
-                MovieRecyclerViewAdapter adapter = (MovieRecyclerViewAdapter) mFilmsRecyclerView.getAdapter();
+                FilmRecyclerViewAdapter adapter = (FilmRecyclerViewAdapter) mFilmsRecyclerView.getAdapter();
                 adapter.updateMoviePoster(film);
             }
         }
     }
 
     @Override
-    public void setMoviesRecyclerViewAdapter(FilmBase[] films) {
+    public void setFilmRecyclerViewAdapter(FilmBase[] films) {
 
-        MovieRecyclerViewAdapter movieAdapter = new MovieRecyclerViewAdapter(
+        FilmRecyclerViewAdapter movieAdapter = new FilmRecyclerViewAdapter(
                 mParentActivity,
                 new LinkedList<>(Arrays.asList(films)),
                 this);
@@ -306,10 +307,10 @@ public abstract class FilmFragment extends Fragment implements
     }
 
     @Override
-    public void updateRecyclerAdapter(List<FilmBase> films) {
+    public void updateFilmRecyclerAdapter(List<FilmBase> films) {
 
-        MovieRecyclerViewAdapter movieAdapter = (MovieRecyclerViewAdapter) mFilmsRecyclerView.getAdapter();
-        movieAdapter.updateData(films);
+        FilmRecyclerViewAdapter filmAdapter = (FilmRecyclerViewAdapter) mFilmsRecyclerView.getAdapter();
+        filmAdapter.updateData(films);
     }
 
     @Override
@@ -351,7 +352,7 @@ public abstract class FilmFragment extends Fragment implements
 
 
     @Override
-    public void setMovieRecyclerScrollListener(RecyclerView.OnScrollListener listener) {
+    public void setFilmRecyclerScrollListener(RecyclerView.OnScrollListener listener) {
 
         mFilmsRecyclerView.addOnScrollListener(listener);
     }
