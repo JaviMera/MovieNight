@@ -2,6 +2,7 @@ package movienight.javi.com.movienight.fragments;
 
 import android.support.v7.widget.RecyclerView;
 
+import java.util.Collection;
 import java.util.List;
 
 import movienight.javi.com.movienight.model.FilmBase;
@@ -54,5 +55,15 @@ public class FilmFragmentPresenter {
     public void setFilmRecyclerScrollListener(RecyclerView.OnScrollListener listener) {
 
         mView.setFilmRecyclerScrollListener(listener);
+    }
+
+    public void updateFilterItemsRecyclerViewAdapter(Collection<List<FilterableItem>> items) {
+
+        mView.updateFilterItemsRecyclerViewAdapter(items);
+    }
+
+    public void updateFilmPoster(FilmBase film) {
+
+        mView.updateFilmPoster(film);
     }
 }

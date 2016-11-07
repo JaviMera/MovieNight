@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -69,6 +70,7 @@ public abstract class FilmFragment extends Fragment implements
     private FilterItemContainer mFilterItemContainer;
     private Integer mTotalPages;
     private AsyncTask mFilmAsyncTask;
+    private Bitmap mDefaultPoster;
 
     protected abstract AbstractUrl createUrl(
         int pageNumber,
@@ -156,6 +158,11 @@ public abstract class FilmFragment extends Fragment implements
         mPresenter.setRecyclerSize(mFilmsRecyclerView, true);
         mPresenter.setFilmRecyclerScrollListener(scrollListener());
 
+        mDefaultPoster = BitmapFactory.decodeResource(
+                mParentActivity.getResources(),
+                R.drawable.no_poster_image
+        );
+
         return fragmentLayout;
     }
 
@@ -182,9 +189,7 @@ public abstract class FilmFragment extends Fragment implements
             }
         }
 
-        FilterItemRecyclerAdapter filterItemAdapter = (FilterItemRecyclerAdapter) mFiltersRecyclerView.getAdapter();
-        filterItemAdapter.updateData(mFilterItemContainer.getAll());
-
+        mPresenter.updateFilterItemsRecyclerViewAdapter(mFilterItemContainer.getAll());
         FilmRecyclerViewAdapter filmSearchAdapter = (FilmRecyclerViewAdapter) mFilmsRecyclerView.getAdapter();
         filmSearchAdapter.removeData();
 
@@ -231,11 +236,9 @@ public abstract class FilmFragment extends Fragment implements
 
         if(!mFilms.isEmpty()) {
 
-            FilmBase updatedMovie = mFilms.get(path);
-            updatedMovie.setPoster(poster);
-            FilmRecyclerViewAdapter adapter = (FilmRecyclerViewAdapter) mFilmsRecyclerView.getAdapter();
-            adapter.updateMoviePoster(updatedMovie);
-
+            FilmBase film = mFilms.get(path);
+            film.setPoster(poster);
+            mPresenter.updateFilmPoster(film);
             mParentActivity.addBitmapToMemoryCache(path, poster);
         }
     }
@@ -269,11 +272,6 @@ public abstract class FilmFragment extends Fragment implements
         mPresenter.setProgressBarVisibility(View.INVISIBLE);
         mPresenter.updateFilmRecyclerViewAdapter(new ArrayList<>(mFilms.values()));
 
-        Bitmap defaultBitmap = BitmapFactory.decodeResource(
-                mParentActivity.getResources(),
-                R.drawable.no_poster_image
-        );
-
         for(FilmBase film : mFilms.values()) {
 
             Bitmap bitmap = mParentActivity.getBitmapFromMemoryCache(film.getPosterPath());
@@ -283,16 +281,29 @@ public abstract class FilmFragment extends Fragment implements
                         this,
                         mParentActivity.getSupportFragmentManager(),
                         ActivityExtras.POSTER_RESOLUTION_342,
-                        defaultBitmap
+                        mDefaultPoster
                 ).execute(film.getPosterPath());
             }
             else {
 
                 film.setPoster(bitmap);
-                FilmRecyclerViewAdapter adapter = (FilmRecyclerViewAdapter) mFilmsRecyclerView.getAdapter();
-                adapter.updateMoviePoster(film);
+                mPresenter.updateFilmPoster(film);
             }
         }
+    }
+
+    @Override
+    public void updateFilmPoster(FilmBase film) {
+
+        FilmRecyclerViewAdapter adapter = (FilmRecyclerViewAdapter) mFilmsRecyclerView.getAdapter();
+        adapter.updateMoviePoster(film);
+    }
+
+    @Override
+    public void updateFilterItemsRecyclerViewAdapter(Collection<List<FilterableItem>> items) {
+
+        FilterItemRecyclerAdapter adapter = (FilterItemRecyclerAdapter) mFiltersRecyclerView.getAdapter();
+        adapter.updateData(items);
     }
 
     @Override

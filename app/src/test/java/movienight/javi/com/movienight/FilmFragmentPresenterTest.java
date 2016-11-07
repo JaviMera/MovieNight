@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -76,6 +77,19 @@ public class FilmFragmentPresenterTest {
     }
 
     @Test
+    public void updateFilterItemsRecyclerViewAdapter() throws Exception {
+
+        // Arrange
+        Collection<List<FilterableItem>> items = null;
+
+        // Act
+        mPresenter.updateFilterItemsRecyclerViewAdapter(items);
+
+        // Assert
+        Mockito.verify(mView).updateFilterItemsRecyclerViewAdapter(items);
+    }
+
+    @Test
     public void setViewProgressBarVisibility() throws Exception {
 
         // Arrange
@@ -128,5 +142,18 @@ public class FilmFragmentPresenterTest {
 
         // Assert
         Mockito.verify(mView).setFilmRecyclerScrollListener(listener);
+    }
+
+    @Test
+    public void updateFilmPosterRecyclerViewAdapter() throws Exception {
+
+        // Arrange
+        FilmBase film = null;
+
+        // Act
+        mPresenter.updateFilmPoster(film);
+
+        // Assert
+        Mockito.verify(mView).updateFilmPoster(film);
     }
 }

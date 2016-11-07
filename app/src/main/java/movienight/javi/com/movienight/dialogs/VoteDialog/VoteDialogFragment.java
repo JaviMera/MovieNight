@@ -81,12 +81,6 @@ public class VoteDialogFragment extends FilterDialogBase implements VoteDialogFr
         return dialog;
     }
 
-    @OnClick(R.id.voteCountEditTextView)
-    public void onEditTextClick(View view) {
-
-        mPresenter.setVoteEditText("");
-    }
-
     @OnClick(R.id.voteCountDoneButtonView)
     public void onDialogButtonClick(View view) {
 
